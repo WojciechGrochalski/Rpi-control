@@ -39,7 +39,7 @@ namespace Server
             services.AddControllers();
             RpiController.actualGPIOStatus = FileManager.ReadFile();
             services.AddDbContext<DbRpi>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("MyAzureDataBase")));
+                    options.UseSqlServer(Configuration.GetConnectionString("RpiDatabase")));
             services.AddSingleton<IWebsocketHandler, ConnectionManager>();
             services.AddCors(options =>
             {
