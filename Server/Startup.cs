@@ -7,6 +7,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Server.Controllers;
+using Server.Repository;
+using Server.Ws;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +31,7 @@ namespace Server
         {
             services.AddControllers();
             RpiController.actualGPIOStatus = FileManager.ReadFile();
+            services.AddSingleton<IWebsocketHandler, ConnectionManager>();
             services.AddCors(options =>
             {
                 options.AddPolicy(name: AllowSpecificOrigins,
@@ -37,6 +40,7 @@ namespace Server
                                                     .AllowAnyHeader()
                                                     .AllowAnyMethod());
             });
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,17 +50,17 @@ namespace Server
             {
                 app.UseDeveloperExceptionPage();
             }
+           
 
-            // app.UseCors(x => x
-            //.WithOrigins("https://localhost:4200",
-            //            "http://localhost:4200")
-            //.AllowAnyMethod()
-            //.AllowAnyHeader());
             app.UseCors(AllowSpecificOrigins);
             app.UseHttpsRedirection();
-          
+            var webSocketOptions = new WebSocketOptions()
+            {
+                KeepAliveInterval = TimeSpan.FromSeconds(300)
+            };
+            app.UseWebSockets(webSocketOptions);
             app.UseRouting();
-            //app.UseCors(AllowSpecificOrigins);
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

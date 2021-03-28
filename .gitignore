@@ -394,3 +394,9 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+**/venv
+**/.idea
+**/dist
+**/e2e
+**/out-tcs

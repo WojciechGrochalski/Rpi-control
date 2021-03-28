@@ -37,7 +37,7 @@
   {
     "GPIONumber": 7,
     "GPIOMode": "out",
-    "GPIOStatus": 1
+    "GPIOStatus": 0
   },
   {
     "GPIONumber": 8,
