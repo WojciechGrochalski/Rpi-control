@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Server.Models
+namespace Server.DBModels
 {
     public class GPIO
     {
+        public int ID { get; set; }
         public int GPIONumber { get; set; }
         public string GPIOMode { get; set; }
         public int GPIOStatus { get; set; }
+        public int UserId { get; set; }
+        public User User { get; set; }
 
         public GPIO(GPIO gpio)
         {
@@ -23,8 +26,6 @@ namespace Server.Models
             {
                 GPIOStatus = 0;
             }
-
-
         }
         public GPIO()
         {
