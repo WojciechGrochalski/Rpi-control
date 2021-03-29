@@ -8,7 +8,7 @@ import {GPIO} from '../Models/GPIO';
 })
 export class GpioService {
 
-  baseUrl = 'https://localhost:5000/api/Rpi';
+  baseUrl = 'http://localhost:5000/api/Rpi';
 
   constructor(private http: HttpClient) {
   }

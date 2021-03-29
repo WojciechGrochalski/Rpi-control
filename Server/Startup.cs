@@ -1,13 +1,11 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Server.Controllers;
 using Server.DataBase;
@@ -15,8 +13,6 @@ using Server.Repository;
 using Server.Tools;
 using Server.Ws;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -37,6 +33,12 @@ namespace Server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddControllersWithViews();
+            // In production, the Angular files will be served from this directory
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "rpi-client/dist";
+            });
             RpiController.actualGPIOStatus = FileManager.ReadFile();
             services.AddDbContext<DbRpi>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("RpiDatabase")));
@@ -118,11 +120,28 @@ namespace Server
             app.UseWebSockets(webSocketOptions);
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseDefaultFiles()
+               .UseStaticFiles()
+               .UseWebSockets()
+               .UseRouting()
+               .UseAuthorization()
+           .UseEndpoints(endpoints =>
+           {
+               endpoints.MapControllerRoute(
+                   name: "default",
+                   pattern: "{controller}/{action=Index}/{id?}");
+           });
 
-            app.UseEndpoints(endpoints =>
+
+            app.UseSpa(spa =>
             {
-                endpoints.MapControllers();
+
+                spa.Options.SourcePath = "rpi-client";
+
+                if (env.IsDevelopment())
+                {
+                    spa.UseAngularCliServer(npmScript: "start");
+                }
             });
         }
     }
