@@ -1,142 +1,226 @@
 [
   {
+    "ID": 0,
     "GPIONumber": 0,
     "GPIOMode": "IN",
-    "GPIOStatus": 0
+    "GPIOStatus": 0,
+    "UserId": 0,
+    "User": null
   },
   {
+    "ID": 0,
     "GPIONumber": 1,
     "GPIOMode": "IN",
-    "GPIOStatus": 0
+    "GPIOStatus": 0,
+    "UserId": 0,
+    "User": null
   },
   {
+    "ID": 0,
     "GPIONumber": 2,
     "GPIOMode": "IN",
-    "GPIOStatus": 0
+    "GPIOStatus": 0,
+    "UserId": 0,
+    "User": null
   },
   {
+    "ID": 0,
     "GPIONumber": 3,
     "GPIOMode": "out",
-    "GPIOStatus": 1
+    "GPIOStatus": 1,
+    "UserId": 0,
+    "User": null
   },
   {
+    "ID": 0,
     "GPIONumber": 4,
     "GPIOMode": "out",
-    "GPIOStatus": 1
+    "GPIOStatus": 1,
+    "UserId": 0,
+    "User": null
   },
   {
+    "ID": 0,
     "GPIONumber": 5,
     "GPIOMode": "IN",
-    "GPIOStatus": 0
+    "GPIOStatus": 0,
+    "UserId": 0,
+    "User": null
   },
   {
+    "ID": 0,
     "GPIONumber": 6,
     "GPIOMode": "IN",
-    "GPIOStatus": 0
+    "GPIOStatus": 0,
+    "UserId": 0,
+    "User": null
   },
   {
+    "ID": 0,
     "GPIONumber": 7,
     "GPIOMode": "out",
-    "GPIOStatus": 0
+    "GPIOStatus": 0,
+    "UserId": 0,
+    "User": null
   },
   {
+    "ID": 0,
     "GPIONumber": 8,
     "GPIOMode": "IN",
-    "GPIOStatus": 0
+    "GPIOStatus": 0,
+    "UserId": 0,
+    "User": null
   },
   {
+    "ID": 0,
     "GPIONumber": 9,
     "GPIOMode": "out",
-    "GPIOStatus": 1
+    "GPIOStatus": 1,
+    "UserId": 0,
+    "User": null
   },
   {
+    "ID": 0,
     "GPIONumber": 10,
     "GPIOMode": "IN",
-    "GPIOStatus": 0
+    "GPIOStatus": 0,
+    "UserId": 0,
+    "User": null
   },
   {
+    "ID": 0,
     "GPIONumber": 11,
     "GPIOMode": "IN",
-    "GPIOStatus": 0
+    "GPIOStatus": 0,
+    "UserId": 0,
+    "User": null
   },
   {
+    "ID": 0,
     "GPIONumber": 12,
     "GPIOMode": "IN",
-    "GPIOStatus": 0
+    "GPIOStatus": 0,
+    "UserId": 0,
+    "User": null
   },
   {
+    "ID": 0,
     "GPIONumber": 13,
     "GPIOMode": "IN",
-    "GPIOStatus": 0
+    "GPIOStatus": 0,
+    "UserId": 0,
+    "User": null
   },
   {
+    "ID": 0,
     "GPIONumber": 14,
     "GPIOMode": "IN",
-    "GPIOStatus": 0
+    "GPIOStatus": 0,
+    "UserId": 0,
+    "User": null
   },
   {
+    "ID": 0,
     "GPIONumber": 15,
     "GPIOMode": "IN",
-    "GPIOStatus": 0
+    "GPIOStatus": 0,
+    "UserId": 0,
+    "User": null
   },
   {
+    "ID": 0,
     "GPIONumber": 16,
     "GPIOMode": "IN",
-    "GPIOStatus": 0
+    "GPIOStatus": 0,
+    "UserId": 0,
+    "User": null
   },
   {
+    "ID": 0,
     "GPIONumber": 17,
     "GPIOMode": "out",
-    "GPIOStatus": 1
+    "GPIOStatus": 1,
+    "UserId": 0,
+    "User": null
   },
   {
+    "ID": 0,
     "GPIONumber": 18,
     "GPIOMode": "IN",
-    "GPIOStatus": 0
+    "GPIOStatus": 0,
+    "UserId": 0,
+    "User": null
   },
   {
+    "ID": 0,
     "GPIONumber": 19,
     "GPIOMode": "IN",
-    "GPIOStatus": 0
+    "GPIOStatus": 0,
+    "UserId": 0,
+    "User": null
   },
   {
+    "ID": 0,
     "GPIONumber": 20,
     "GPIOMode": "IN",
-    "GPIOStatus": 0
+    "GPIOStatus": 0,
+    "UserId": 0,
+    "User": null
   },
   {
+    "ID": 0,
     "GPIONumber": 21,
     "GPIOMode": "IN",
-    "GPIOStatus": 0
+    "GPIOStatus": 0,
+    "UserId": 0,
+    "User": null
   },
   {
+    "ID": 0,
     "GPIONumber": 22,
     "GPIOMode": "IN",
-    "GPIOStatus": 0
+    "GPIOStatus": 0,
+    "UserId": 0,
+    "User": null
   },
   {
+    "ID": 0,
     "GPIONumber": 23,
     "GPIOMode": "IN",
-    "GPIOStatus": 0
+    "GPIOStatus": 0,
+    "UserId": 0,
+    "User": null
   },
   {
+    "ID": 0,
     "GPIONumber": 24,
     "GPIOMode": "IN",
-    "GPIOStatus": 0
+    "GPIOStatus": 0,
+    "UserId": 0,
+    "User": null
   },
   {
+    "ID": 0,
     "GPIONumber": 25,
     "GPIOMode": "IN",
-    "GPIOStatus": 0
+    "GPIOStatus": 0,
+    "UserId": 0,
+    "User": null
   },
   {
+    "ID": 0,
     "GPIONumber": 26,
     "GPIOMode": "IN",
-    "GPIOStatus": 0
+    "GPIOStatus": 0,
+    "UserId": 0,
+    "User": null
   },
   {
+    "ID": 0,
     "GPIONumber": 27,
     "GPIOMode": "ALT0",
-    "GPIOStatus": 0
+    "GPIOStatus": 0,
+    "UserId": 0,
+    "User": null
   }
 ]

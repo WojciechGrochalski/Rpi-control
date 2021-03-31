@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ForgetPasswordComponent} from '../Components/forget-password/forget-password.component';
 import {RegisterComponent} from '../Components/register/register.component';
 import {LogInComponent} from '../Components/Login/log-in.component';
@@ -13,6 +13,11 @@ import {HttpInterceptorService} from '../Services/http-interceptor.service';
 import {ErrorInterceptorService} from '../Services/error-interceptor.service';
 import {RouterModule} from '@angular/router';
 import {FlashMessagesModule} from 'flash-messages-angular';
+import { HomeComponent } from '../Components/home/home.component';
+
+
+
+
 
 @NgModule({
   declarations: [
@@ -21,25 +26,33 @@ import {FlashMessagesModule} from 'flash-messages-angular';
     LogInComponent,
     RegisterComponent,
     VerifyUserComponent,
-    NewPasswordComponent
+    NewPasswordComponent,
+    HomeComponent
   ],
   imports: [
-    BrowserModule,
+    BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
+    FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
     FlashMessagesModule.forRoot(),
     RouterModule.forRoot([
+      {path: '', component: HomeComponent, pathMatch: 'full'},
       { path: 'login', component: LogInComponent},
       { path: 'login/:confirm', component: LogInComponent},
       { path: 'register', component: RegisterComponent},
       { path: 'new-password', component: NewPasswordComponent},
       { path: 'forgot-password', component: ForgetPasswordComponent},
-    ]),
+    ])
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptorService, multi: true },
+    { provide: 'BASE_URL', useFactory: getBaseUrl, deps: [] }
   ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+export function getBaseUrl() {
+  return document.getElementsByTagName('base')[0].href;
+}
