@@ -12,7 +12,7 @@ namespace Server
     public static class FileManager
     {
         public static string GPIOFilePath = @"Json/GPIOData.json";
-
+        public static string GPIOFilePathAllGPIO = @"Json/AllPins.json";
 
         public static void SaveToJson(List<GPIO> data)
         {
@@ -22,10 +22,24 @@ namespace Server
         }
         public static List<GPIO> ReadFile()
         {
-            string content = File.ReadAllText(GPIOFilePath);
+            string content = File.ReadAllText(GPIOFilePathAllGPIO);
             List<GPIO> actualGPIO = JsonConvert.DeserializeObject<List<GPIO>>(content);
-           // actualGPIO.Sort((x ,y)=>x.GPIONumber.CompareTo(y.GPIONumber));
-            return actualGPIO;
+            List<GPIO> leftGPIO = new List<GPIO>();
+            List<GPIO> rightGPIO = new List<GPIO>();
+            foreach (var item in actualGPIO)
+            {
+                if (item.GPIONumber % 2 == 0)
+                {
+                    rightGPIO.Add(item);
+                }
+                else
+                {
+                    leftGPIO.Add(item);
+                }
+            }
+            leftGPIO.AddRange(rightGPIO);
+            // actualGPIO.Sort((x ,y)=>x.GPIONumber.CompareTo(y.GPIONumber));
+            return leftGPIO;
 
         }
 

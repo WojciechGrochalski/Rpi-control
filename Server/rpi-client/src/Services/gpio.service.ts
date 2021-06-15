@@ -14,7 +14,6 @@ export class GpioService {
   }
 
   GetGpio(): Observable<any> {
-
     return this.http.get<GPIO[]>(this.baseUrl);
   }
 }

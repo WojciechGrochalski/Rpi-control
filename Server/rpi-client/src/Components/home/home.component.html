@@ -1,138 +1,21 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <div class="container">
 <h1>Start {{title}}</h1>
-<div *ngFor="let item of data" >
-  <p>{{item.GPIOMode}}, {{item.GPIOStatus}}, {{item.GPIONumber}}</p>
-</div>
-
 
       <div class="col-12 col-md-8 center ">
         <h2>Raspberry Pi B+, 2, 3 &amp; Zero</h2>
-        <table class="w3-table w3-bordered w3-border w3-centered center">
-          <tbody><tr>
-            <td style="width:40%" class="w3-red">3V3</td>
-            <td style="width:10%">1</td>
-            <td style="width:10%">2</td>
-            <td style="width:40%" class="w3-red">5V</td>
-          </tr>
-          <tr>
-            <td class="w3-green">GPIO 2</td>
-            <td>3</td>
-            <td>4</td>
-            <td class="w3-red">5V</td>
-          </tr>
-          <tr>
-            <td class="w3-green">GPIO 3</td>
-            <td>5</td>
-            <td>6</td>
-            <td class="w3-blue">GND</td>
-          </tr>
-          <tr>
-            <td class="w3-khaki">GPIO 4</td>
-            <td>7</td>
-            <td>8</td>
-            <td class="w3-gray">GPIO 14</td>
-          </tr>
-          <tr>
-            <td class="w3-blue">GND</td>
-            <td>9</td>
-            <td>10</td>
-            <td class="w3-gray">GPIO 15</td>
-          </tr>
-          <tr>
-            <td class="w3-khaki">GPIO 17</td>
-            <td>11</td>
-            <td>12</td>
-            <td class="w3-khaki">GPIO 18</td>
-          </tr>
-          <tr>
-            <td class="w3-khaki">GPIO 27</td>
-            <td>13</td>
-            <td>14</td>
-            <td class="w3-blue">GND</td>
-          </tr>
-          <tr>
-            <td class="w3-khaki">GPIO 22</td>
-            <td>15</td>
-            <td>16</td>
-            <td class="w3-khaki">GPIO 23</td>
-          </tr>
-          <tr>
-            <td class="w3-red">3V3</td>
-            <td>17</td>
-            <td>18</td>
-            <td class="w3-khaki">GPIO 24</td>
-          </tr>
-          <tr>
-            <td class="w3-orange">GPIO 10</td>
-            <td>19</td>
-            <td>20</td>
-            <td class="w3-blue">GND</td>
-          </tr>
-          <tr>
-            <td class="w3-orange">GPIO 9</td>
-            <td>21</td>
-            <td>22</td>
-            <td class="w3-khaki">GPIO 25</td>
-          </tr>
-          <tr>
-            <td class="w3-orange">GPIO 11</td>
-            <td>23</td>
-            <td>24</td>
-            <td class="w3-orange">GPIO 8</td>
-          </tr>
-          <tr>
-            <td class="w3-blue">GND</td>
-            <td>25</td>
-            <td>26</td>
-            <td class="w3-orange">GPIO 7</td>
-          </tr>
-          <tr>
-            <td class="w3-black">DNC</td>
-            <td>27</td>
-            <td>28</td>
-            <td class="w3-black">DNC</td>
-          </tr>
-          <tr>
-            <td class="w3-khaki">GPIO 5</td>
-            <td>29</td>
-            <td>30</td>
-            <td class="w3-blue">GND</td>
-          </tr>
-          <tr>
-            <td class="w3-khaki">GPIO 6</td>
-            <td>31</td>
-            <td>32</td>
-            <td class="w3-khaki">GPIO 12</td>
-          </tr>
-          <tr>
-            <td class="w3-khaki">GPIO 13</td>
-            <td>33</td>
-            <td>34</td>
-            <td class="w3-blue">GND</td>
-          </tr>
-          <tr>
-            <td class="w3-khaki">GPIO 19</td>
-            <td>35</td>
-            <td>36</td>
-            <td class="w3-khaki">GPIO 16</td>
-          </tr>
-          <tr>
-            <td class="w3-khaki">GPIO 26</td>
-            <td>37</td>
-            <td>38</td>
-            <td class="w3-khaki">GPIO 20</td>
-          </tr>
-          <tr>
-            <td class="w3-blue">GND</td>
-            <td>39</td>
-            <td>40</td>
-            <td class="w3-khaki">GPIO 21</td>
+        <table class="w3-table w3-bordered w3-border w3-centered center" >
+          <tbody >
+          <tr *ngFor="let item  of leftGpio let i = index">
+            <td style="width:40%" class="w3-{{item.color}}">{{item.GPIOName}}</td>
+            <td style="width:10%">{{item.GPIONumber}}</td>
+            <td style="width:10%">{{rightGpio[i].GPIONumber}}</td>
+            <td style="width:40%" class="w3-{{rightGpio[i].color}}">{{rightGpio[i].GPIOName}}</td>
           </tr>
           </tbody></table>
+        <tbody>
+
         </div>
       </div>
-
-
 
 
