@@ -19,7 +19,8 @@ namespace Server.DBModels
         public string ResetPasswordToken { get; set; }
         public bool IsVerify { get; set; }
         public DateTime Created { get; set; }
-        public List<GPIO> GPIOs { get; set; }
+        public int GPIOListId { get; set; }
+        public GPIOList GPIOList { get; set; }
         public List<RefreshToken> RefreshTokens { get; set; }
     }
 }

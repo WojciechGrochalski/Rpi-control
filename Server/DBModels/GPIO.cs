@@ -10,9 +10,9 @@ namespace Server.DBModels
         public int ID { get; set; }
         public int GPIONumber { get; set; }
         public string GPIOMode { get; set; }
+        public string GPIOName { get; set; }
         public int GPIOStatus { get; set; }
-        public int UserId { get; set; }
-        public User User { get; set; }
+
 
         public GPIO(GPIO gpio)
         {

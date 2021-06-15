@@ -10,7 +10,7 @@ using Server.DataBase;
 namespace Server.Migrations
 {
     [DbContext(typeof(DbRpi))]
-    [Migration("20210328165148_InitialCreate")]
+    [Migration("20210615110923_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,20 +31,35 @@ namespace Server.Migrations
                     b.Property<string>("GPIOMode")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("GPIOName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("GPIONumber")
                         .HasColumnType("int");
 
                     b.Property<int>("GPIOStatus")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
+                    b.HasKey("ID");
+
+                    b.ToTable("Gpio");
+                });
+
+            modelBuilder.Entity("Server.DBModels.GPIOList", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("GPIOId")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("GPIOId");
 
-                    b.ToTable("Gpio");
+                    b.ToTable("GpioList");
                 });
 
             modelBuilder.Entity("Server.DBModels.RefreshToken", b =>
@@ -80,6 +95,9 @@ namespace Server.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("GPIOListId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsVerify")
                         .HasColumnType("bit");
 
@@ -97,14 +115,17 @@ namespace Server.Migrations
 
                     b.HasKey("ID");
 
+                    b.HasIndex("GPIOListId")
+                        .IsUnique();
+
                     b.ToTable("User");
                 });
 
-            modelBuilder.Entity("Server.DBModels.GPIO", b =>
+            modelBuilder.Entity("Server.DBModels.GPIOList", b =>
                 {
-                    b.HasOne("Server.DBModels.User", "User")
-                        .WithMany("GPIOs")
-                        .HasForeignKey("UserId")
+                    b.HasOne("Server.DBModels.GPIO", "GPIO")
+                        .WithMany()
+                        .HasForeignKey("GPIOId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -114,6 +135,15 @@ namespace Server.Migrations
                     b.HasOne("Server.DBModels.User", "User")
                         .WithMany("RefreshTokens")
                         .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Server.DBModels.User", b =>
+                {
+                    b.HasOne("Server.DBModels.GPIOList", "GPIOList")
+                        .WithOne("User")
+                        .HasForeignKey("Server.DBModels.User", "GPIOListId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

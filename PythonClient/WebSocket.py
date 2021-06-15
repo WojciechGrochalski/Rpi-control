@@ -29,12 +29,13 @@ class WebSocket:
             except websockets.exceptions.ConnectionClosed:
                 print('Connection with server closed')
                 break
+            await asyncio.sleep(1)
 
     async def heartbeat(self, connection):
         while True:
             try:
                 await connection.send('ping')
-                await asyncio.sleep(5)
+                await asyncio.sleep(10)
             except websockets.exceptions.ConnectionClosed:
                 print('Connection with server closed')
                 break

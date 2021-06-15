@@ -16,6 +16,7 @@ namespace Server.DataBase
 
         public DbSet<User> User { get; set; }
         public DbSet<GPIO> Gpio { get; set; }
+        public DbSet<GPIOList> GpioList { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
     }
 }

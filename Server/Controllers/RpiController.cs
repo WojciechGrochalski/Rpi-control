@@ -23,38 +23,35 @@ namespace Server.Controllers
     {
         private readonly ILogger<RpiController> _logger;
         public IWebsocketHandler WebsocketHandler { get; }
-        
-
-
         public static List<GPIO> actualGPIOStatus = new List<GPIO>();
-       // ConnectionManager connection = new ConnectionManager();
+
         public RpiController(ILogger<RpiController> logger,
-                    IWebsocketHandler websocketHandler)       
+                    IWebsocketHandler websocketHandler)
         {
             _logger = logger;
             WebsocketHandler = websocketHandler;
 
 
         }
-      
+
         [HttpPost]
-        public async Task<IActionResult> SetGpio([FromBody]GPIO gpio)
+        public async Task<IActionResult> SetGpio( GPIO gpio)
         {
             if (gpio != null)
             {
                 SetValue(actualGPIOStatus, gpio);
-                _logger.LogInformation("Pin {0} is set to mode {1} and status {2}", gpio.GPIONumber, gpio.GPIOMode,gpio.GPIOStatus);
+                _logger.LogInformation("Pin {0} is set to mode {1} and status {2}", gpio.GPIONumber, gpio.GPIOMode, gpio.GPIOStatus);
                 FileManager.SaveToJson(actualGPIOStatus);
                 await WebsocketHandler.SendToUserNewPinTable("wojtek", JsonConvert.SerializeObject(actualGPIOStatus, Formatting.Indented));
                 //Task.Factory.StartNew(() => connection.SendToUserNewPinTable("wojtek", actualGPIOStatus));
                 //await connection.SendToUserNewPinTable("wojtek", actualGPIOStatus,connection.websocketConnections);
                 return Ok();
-                
+
             }
             return BadRequest();
 
         }
-      
+
         [HttpGet]
         public string GetActualGPIO()
         {
@@ -72,7 +69,7 @@ namespace Server.Controllers
                     item.GPIOStatus = gpio.GPIOStatus;
                 }
             }
-             
+
         }
         [HttpGet("/ws/{User}")]
         public async Task AddClient(string User)
@@ -80,10 +77,11 @@ namespace Server.Controllers
             if (HttpContext.WebSockets.IsWebSocketRequest)
             {
                 WebSocket webSocket = await HttpContext.WebSockets.AcceptWebSocketAsync();
-               await WebsocketHandler.Handle(User, webSocket);
                 _logger.Log(LogLevel.Information, $"Add WebSocket Clients: {User}");
+                await WebsocketHandler.Handle(User, webSocket);
 
-               // Task.Factory.StartNew(() => Connections(webSocket));
+
+                // Task.Factory.StartNew(() => Connections(webSocket));
 
             }
             else
@@ -123,7 +121,7 @@ namespace Server.Controllers
                 handleMessage(result, buffer);
             }
         }
-            private async Task Connections(WebSocket webSocket)
+        private async Task Connections(WebSocket webSocket)
         {
             var buffer = new byte[1024 * 4];
             string msg = JsonConvert.SerializeObject(actualGPIOStatus, Formatting.Indented);

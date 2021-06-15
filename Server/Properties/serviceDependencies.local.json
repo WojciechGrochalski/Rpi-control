@@ -1,12 +1,18 @@
 {
   "dependencies": {
+    "identityapp1": {
+      "type": "identityapp",
+      "connectionId": "",
+      "suggestion": "true",
+      "ignored": "true"
+    },
     "secrets1": {
       "type": "secrets.user"
     },
     "mssql1": {
-      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/rpicontroldbserver/databases/RpiControl",
-      "type": "mssql.azure",
-      "connectionId": "RpiDatabase",
+      "resourceId": null,
+      "type": "mssql.local",
+      "connectionId": "ConnectionStrings:RpiDatabase",
       "secretStore": "LocalSecretsFile"
     }
   }

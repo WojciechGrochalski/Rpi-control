@@ -11,7 +11,7 @@ namespace Server
 {
     public static class FileManager
     {
-        public static string GPIOFilePath = @"GPIOData.json";
+        public static string GPIOFilePath = @"Json/GPIOData.json";
 
 
         public static void SaveToJson(List<GPIO> data)
@@ -24,7 +24,7 @@ namespace Server
         {
             string content = File.ReadAllText(GPIOFilePath);
             List<GPIO> actualGPIO = JsonConvert.DeserializeObject<List<GPIO>>(content);
-            actualGPIO.Sort((x ,y)=>x.GPIONumber.CompareTo(y.GPIONumber));
+           // actualGPIO.Sort((x ,y)=>x.GPIONumber.CompareTo(y.GPIONumber));
             return actualGPIO;
 
         }

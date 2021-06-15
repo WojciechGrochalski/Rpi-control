@@ -15,8 +15,14 @@ namespace Server.Ws
 {
     public class ConnectionManager : IWebsocketHandler
     {
+        private readonly ILogger<ConnectionManager> _logger;
         public List<SocketConnection> websocketConnections = new List<SocketConnection>();
        public bool newGpio;
+
+        public ConnectionManager(ILogger<ConnectionManager> logger)
+        {
+            _logger = logger;
+        }
         public WebSocket GetSocketById(string id)
         {
             return websocketConnections.FirstOrDefault(p => p.Name == id).WebSocket;
@@ -27,20 +33,19 @@ namespace Server.Ws
             lock (websocketConnections)
             {
                 websocketConnections.Add(new SocketConnection(name, webSocket));
-               
-
             }
             await SendMessageToSockets($"User with id {name} conneted");
 
             while (webSocket.State == WebSocketState.Open)
             {
-                
+                string messageSocket = await ReceiveMessage(name, webSocket);
                 if (newGpio)
                 {
                     string message = JsonConvert.SerializeObject(RpiController.actualGPIOStatus, Formatting.Indented);
                     await SendToUserNewPinTable("wojtek", message);
                     newGpio = false;
                 }
+                Thread.Sleep(TimeSpan.FromSeconds(3));
             }
         }
 
@@ -70,7 +75,10 @@ namespace Server.Ws
             {
                 var message = Encoding.Default.GetString(arraySegment).TrimEnd('\0');
                 if (!string.IsNullOrWhiteSpace(message))
+                {
+                    _logger.LogInformation($"{id}: {message}");
                     return $"{id}: {message}";
+                }
             }
             return null;
         }
