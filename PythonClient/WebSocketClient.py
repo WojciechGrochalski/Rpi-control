@@ -1,3 +1,4 @@
+import requests
 import websockets
 import asyncio
 
@@ -10,7 +11,7 @@ class WebSocket:
 
     async def connect(self):
 
-        self.connection = await websockets.client.connect(self.url)
+        self.connection = await websockets.connect(self.url)
         if self.connection.open:
             print('Connection stablished. Client correcly connected')
             # Send greeting
@@ -26,6 +27,7 @@ class WebSocket:
             try:
                 message = await connection.recv()
                 print('Received message from server: ' + str(message))
+               # requests.post("http://localhost:8080/post", json={"msg": message})
             except websockets.exceptions.ConnectionClosed:
                 print('Connection with server closed')
                 break

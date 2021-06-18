@@ -1,21 +1,23 @@
-import asyncio
-import WebSocket
+import requests as requests
+from flask import jsonify, request
+import flask
 
 
-url = "ws://localhost:5001/ws/wojtek2"
 
-url2 = "wss://dockerinz.azurewebsites.net/ws"
+app = flask.Flask(__name__)
 
-client = WebSocket.WebSocket(url)
-loop = asyncio.get_event_loop()
-# Start connection and get client connection protocol
-connection = loop.run_until_complete(client.connect())
-# Start listener and heartbeat
-tasks = [
-    asyncio.ensure_future(client.heartbeat(connection)),
-    asyncio.ensure_future(client.receiveMessage(connection)),
-]
+app.config["DEBUG"] = True
 
-loop.run_until_complete(asyncio.wait(tasks))
+@app.route('/', methods=['GET'])
+def home():
+    return jsonify("RpiControllApp")
+
+@app.route('/post', methods=['POST'])
+def post():
+    data = request.json
+    print(data)
+    return jsonify(data)
 
 
+if __name__ == '__main__':
+    app.run(port=8080, threaded=True)

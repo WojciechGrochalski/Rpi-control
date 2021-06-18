@@ -1,21 +1,28 @@
-import asyncio
-import WebSocket
+import sys
+import WebSocketServer as ws
+import WebSocketClient
 
+import asyncio
+from sys import argv
 
 url = "ws://localhost:5001/ws/wojtek"
-
+localurl = "ws://localhost:8085"
 url2 = "wss://dockerinz.azurewebsites.net/ws"
 
-client = WebSocket.WebSocket(url)
-loop = asyncio.get_event_loop()
-# Start connection and get client connection protocol
-connection = loop.run_until_complete(client.connect())
-# Start listener and heartbeat
-tasks = [
-    asyncio.ensure_future(client.heartbeat(connection)),
-    asyncio.ensure_future(client.receiveMessage(connection)),
-]
+mode = sys.argv[1]
 
-loop.run_until_complete(asyncio.wait(tasks))
+if mode == "Server":
+    print("Server Up")
+    ws.run()
+if mode == "Client":
+    client = WebSocketClient.WebSocket(localurl)
+    loop = asyncio.get_event_loop()
+    connection = loop.run_until_complete(client.connect())
+    tasks = [
+        asyncio.ensure_future(client.receiveMessage(connection))
+    ]
+    loop.run_until_complete(asyncio.wait(tasks))
 
 
+
+ #asyncio.ensure_future(client.heartbeat(connection)),
