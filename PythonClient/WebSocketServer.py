@@ -1,22 +1,36 @@
 import asyncio
+import pickle
+
 import websockets
 
-pin = "xd"
+
+def check_it_not_equal(actualgpios, gpios):
+    if actualgpios == gpios:
+        print("equal")
+        return False
+    else:
+        print("not equal")
+        return True
+
+
 async def Server(websocket, path):
+    with open("gpio.pkl", "rb") as fp:
+        gpios = pickle.load(fp)
+    await websocket.send(gpios)
     while True:
         try:
+            with open("gpio.pkl", "rb") as fpc:
+                newgpios = pickle.load(fpc)
+            if check_it_not_equal(newgpios, gpios):
+                print("Send message to client")
+                await websocket.send(newgpios)
+                gpios = newgpios
             msg = await websocket.recv()
             print(f"< {msg}")
-            await websocket.send("msg from server")
-            if pin == "xd":
-                await websocket.send(pin)
-
         except websockets.exceptions.ConnectionClosed:
             print('Connection with client closed')
             break
-        await asyncio.sleep(1)
-
-
+        await asyncio.sleep(3)
 
 
 def run():
