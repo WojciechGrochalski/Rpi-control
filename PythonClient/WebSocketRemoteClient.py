@@ -4,6 +4,10 @@ import requests
 import websockets
 import asyncio
 
+gpio = any
+def get_gpio():
+    return gpio
+
 
 class WebSocket:
 
@@ -29,6 +33,8 @@ class WebSocket:
             try:
                 message = await connection.recv()
                 print('Received message from server: ' + str(message))
+                global gpio
+                gpio = json.loads(message)
             except websockets.exceptions.ConnectionClosed:
                 print('Connection with server closed')
                 break

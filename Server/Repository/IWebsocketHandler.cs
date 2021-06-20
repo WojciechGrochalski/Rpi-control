@@ -10,6 +10,8 @@ namespace Server.Repository
     {
         Task Handle(string name, WebSocket websocket);
 
-         Task SendToUserNewPinTable(string userID, string message);
+       Task SendToUserNewPinTable(string userID, string message);
+
+        Task RemoveSocket(string id);
     }
 }

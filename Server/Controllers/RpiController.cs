@@ -71,23 +71,34 @@ namespace Server.Controllers
             }
 
         }
-        [HttpGet("/ws/{User}")]
-        public async Task AddClient(string User)
+        [HttpGet("/ws/{User}/{jwt}")]
+        public async Task AddClient(string User, string jwt)
         {
             if (HttpContext.WebSockets.IsWebSocketRequest)
             {
-                WebSocket webSocket = await HttpContext.WebSockets.AcceptWebSocketAsync();
-                _logger.Log(LogLevel.Information, $"Add WebSocket Clients: {User}");
-                await WebsocketHandler.Handle(User, webSocket);
+                if (jwt != "123")
+                {
+                    HttpContext.Response.StatusCode = 400;
+                }
+                else
+                {
+                    WebSocket webSocket = await HttpContext.WebSockets.AcceptWebSocketAsync();
+                    _logger.Log(LogLevel.Information, $"Add WebSocket Clients: {User}");
+                    await WebsocketHandler.Handle(User, webSocket);
+                }
 
-
-                // Task.Factory.StartNew(() => Connections(webSocket));
 
             }
             else
             {
                 HttpContext.Response.StatusCode = 400;
             }
+        }
+        [HttpGet("/ws/dc/{User}/{jwt}")]
+        public async Task<IActionResult> DisconnectClient(string User, string jwt)
+        {
+            await WebsocketHandler.RemoveSocket(User);
+            return Ok();
         }
 
         //private async Task Connections( WebSocket webSocket)

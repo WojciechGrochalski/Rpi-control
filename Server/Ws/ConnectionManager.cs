@@ -34,7 +34,7 @@ namespace Server.Ws
             {
                 websocketConnections.Add(new SocketConnection(name, webSocket));
             }
-            await SendMessageToSockets($"User with id {name} conneted");
+            await SendMessageToSockets(JsonConvert.SerializeObject(RpiController.actualGPIOStatus, Formatting.Indented));
 
             while (webSocket.State == WebSocketState.Open)
             {
@@ -42,7 +42,7 @@ namespace Server.Ws
                 if (newGpio)
                 {
                     string message = JsonConvert.SerializeObject(RpiController.actualGPIOStatus, Formatting.Indented);
-                    await SendToUserNewPinTable("wojtek", message);
+                    await SendToUserNewPinTable(name, message);
                     newGpio = false;
                 }
                 Thread.Sleep(TimeSpan.FromSeconds(3));

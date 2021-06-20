@@ -1,6 +1,6 @@
 import asyncio
 import pickle
-
+import flask_server
 import websockets
 
 
@@ -14,13 +14,11 @@ def check_it_not_equal(actualgpios, gpios):
 
 
 async def Server(websocket, path):
-    with open("gpio.pkl", "rb") as fp:
-        gpios = pickle.load(fp)
+    gpios = flask_server.get_gpio()
     await websocket.send(gpios)
     while True:
         try:
-            with open("gpio.pkl", "rb") as fpc:
-                newgpios = pickle.load(fpc)
+            newgpios = flask_server.get_gpio()
             if check_it_not_equal(newgpios, gpios):
                 print("Send message to client")
                 await websocket.send(newgpios)
