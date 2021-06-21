@@ -7,12 +7,12 @@ import requests
 from flask import Flask, jsonify, request
 
 import WebSocketRemoteClient
-from Gpio import Gpio
+
 
 url = "http://localhost:5001/ws/dc/wojtek/123"
 localurl = "ws://localhost:8085"
 url2 = "wss://dockerinz.azurewebsites.net/ws"
-
+shutdown = False
 
 def connect_to_dotnetServer():
     url = "ws://localhost:5001/ws/wojtek" + "/" + "123"
@@ -76,25 +76,29 @@ def run_server():
 
 @app.route('/reload_server', methods=['GET'])
 def reload_server():
-    try:
-        response = requests.get(url)
-        if response.status_code == 200:
-            thread = Thread(target=connect_to_dotnetServer)
-            thread.daemon = True
-            thread.start()
-            return jsonify("Server is starting up ...")
-        else:
-            return jsonify("Socket cant be disconnected")
-    except Exception as e:
-        print(str(e))
+    global shutdown
+    shutdown = True
+    os.system("pkill -f websocket.py")
+    os.system("python websocket.py Server")
+    # try:
+    #     response = requests.get(url)
+    #     if response.status_code == 200:
+    #         thread = Thread(target=connect_to_dotnetServer)
+    #         thread.daemon = True
+    #         thread.start()
+    #         return jsonify("Server is starting up ...")
+    #     else:
+    #         return jsonify("Socket cant be disconnected")
+    # except Exception as e:
+    #     print(str(e))
 
 
 @app.route('/setMode', methods=['POST'])
 def set_mode():
     mode = json.dumps(request.json)
-    print(mode)
-    os.system("pkill -f main")
-    os.system(f"python main.py {mode}")
+    print(f"{mode=}")
+    print("Server Up")
+
     return jsonify("RpiControllApp")
 
 
