@@ -1,9 +1,6 @@
 import asyncio
 import json
 import os
-from collections import namedtuple
-
-import jsonpickle
 from threading import Thread
 
 import requests
