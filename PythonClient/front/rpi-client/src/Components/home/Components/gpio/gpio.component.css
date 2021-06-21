@@ -1,5 +1,5 @@
 table{
-  max-width: 40%;
+  max-width: 60%;
 }
 .center {
   margin-left: auto;
@@ -10,6 +10,6 @@ table{
   width: 200px;
   height: 75px;
 }
-.margin{
-  margin-top: 5px;
+.w3-table{
+  width: 100%;
 }

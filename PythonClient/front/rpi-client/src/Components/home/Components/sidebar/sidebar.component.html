@@ -1,0 +1,29 @@
+
+<div class="container">
+  <div class="row justify-content-md-center">
+    <div class="col-2 ">
+      <div class="sidebar-header ">
+        <h3>Menu <img src="assets/raspberry-pi.svg" class="img-fluid rpi"></h3>
+      </div >
+      <nav class="nav flex-column nav-pills ">
+        <a class="nav-link" routerLink="login" routerLinkActive="active">Logowanie</a>
+        <a class="nav-link" routerLink="gpio" routerLinkActive="active">Stan pinów</a>
+      </nav>
+    </div>
+    <div class="col ">
+      <router-outlet></router-outlet>
+    </div>
+    <div class="col-2 ">
+      <div class=" right-menu ">
+        <button class="btn btn-success btn-lg "
+                type="button">
+          Server Mode
+        </button>
+        <button class="btn btn-danger btn-lg margin"
+                type="button">
+          Client Mode
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

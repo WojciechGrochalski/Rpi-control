@@ -1,0 +1,15 @@
+
+<div >
+  <h2 class="text-center">Raspberry Pi B+, 2, 3 &amp; Zero</h2>
+  <br>
+  <table class="w3-table  w3-bordered w3-border w3-centered center " >
+    <tbody >
+    <tr *ngFor="let item  of leftGpio let i = index">
+      <td style="width:40%" class="w3-{{item.color}}">{{item.GPIOName}}</td>
+      <td style="width:10%">{{item.GPIONumber}}</td>
+      <td style="width:10%">{{rightGpio[i].GPIONumber}}</td>
+      <td style="width:40%" class="w3-{{rightGpio[i].color}}">{{rightGpio[i].GPIOName}}</td>
+    </tr>
+    </tbody></table>
+  <tbody>
+</div>

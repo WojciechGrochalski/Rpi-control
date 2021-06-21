@@ -2,8 +2,8 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {FlashMessagesService} from 'flash-messages-angular';
-import {AuthService} from '../../Services/auth.service';
-import {AuthModel} from '../../Models/AuthModel';
+import {AuthService} from '../../../../Services/auth.service';
+import {AuthModel} from '../../../../Models/AuthModel';
 
 
 @Component({

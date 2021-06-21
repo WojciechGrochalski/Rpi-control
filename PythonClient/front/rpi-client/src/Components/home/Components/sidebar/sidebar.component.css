@@ -1,0 +1,21 @@
+.sidebar{
+  margin-top: 50px;
+}
+.margin{
+  margin-top: 5px;
+}
+
+.menu{
+  justify-content: space-between;
+  display:flex;
+  flex-direction: row;
+}
+.right-menu{
+  padding: 15px;
+  display:flex;
+  flex-direction: column;
+}
+.rpi{
+  width: 30px;
+}
+
