@@ -1,8 +1,9 @@
 import asyncio
 import json
 import os
+import platform
 from threading import Thread
-
+import subprocess
 import requests
 from flask import Flask, jsonify, request
 
@@ -76,30 +77,45 @@ def run_server():
 
 @app.route('/reload_server', methods=['GET'])
 def reload_server():
-    global shutdown
-    shutdown = True
-    os.system("pkill -f websocket.py")
-    os.system("python websocket.py Server")
-    # try:
-    #     response = requests.get(url)
-    #     if response.status_code == 200:
-    #         thread = Thread(target=connect_to_dotnetServer)
-    #         thread.daemon = True
-    #         thread.start()
-    #         return jsonify("Server is starting up ...")
-    #     else:
-    #         return jsonify("Socket cant be disconnected")
-    # except Exception as e:
-    #     print(str(e))
+    try:
+        response = requests.get(url)
+        if response.status_code == 200:
+            thread = Thread(target=connect_to_dotnetServer)
+            thread.daemon = True
+            thread.start()
+            return jsonify("Server is starting up ...")
+        else:
+            return jsonify("Socket cant be disconnected")
+    except Exception as e:
+        print(str(e))
 
 
 @app.route('/setMode', methods=['POST'])
 def set_mode():
-    mode = json.dumps(request.json)
-    print(f"{mode=}")
-    print("Server Up")
+    mode = request.json
+    mode = mode["mode"]
+    try:
+        if platform.system() == 'Windows':
+            pid = os.popen("netstat -ano | findstr :8085").read()
+            if pid:
+                pid = pid.split()
+                print(pid[4])
+                output = subprocess.Popen(f"Taskkill /PID {pid[4]} /F  ",  stdout=subprocess.PIPE)
+                print(output.communicate()[0])
+        else:
+            output = subprocess.Popen("pkill - f websocket.py ",  stdout=subprocess.PIPE)
+            print(output.communicate()[0])
+    except Exception as e:
+        print(str(e))
+    try:
+        subprocess.Popen(f"python websocket.py {mode}")
+        pid = os.popen("netstat -ano | findstr :8085").read()
+        if pid:
+            print("ok")
+    except Exception as e:
+        print(str(e))
 
-    return jsonify("RpiControllApp")
+    return jsonify(f"Start websocket in {mode=}")
 
 
 @app.route('/changeGPIO', methods=['POST'])

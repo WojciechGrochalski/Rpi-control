@@ -19,26 +19,12 @@ if sys.argv[2:]:
 else:
     url = localurl
 
-
-def shutdown():
-    while True:
-        exit_signal = flask_server.shutdown
-        if exit_signal:
-            sys.exit()
-        sleep(2)
-
-
-thread = Thread(target=shutdown)
-thread.daemon = True
-
 if mode == "Server":
     print("Server Up")
-    thread.start()
     ws.run()
 if mode == "Client":
     print("Connecting to  server...")
     print(url)
-    thread.start()
     client = WebSocketClient.WebSocket(url)
     loop = asyncio.get_event_loop()
     connection = loop.run_until_complete(client.connect())

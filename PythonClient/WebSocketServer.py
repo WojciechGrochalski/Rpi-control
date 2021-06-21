@@ -30,7 +30,7 @@ async def Server(websocket, path):
         except websockets.exceptions.ConnectionClosed:
             print('Connection with client closed')
             break
-        await asyncio.sleep(5)
+        await asyncio.sleep(15)
 
 
 def run():
