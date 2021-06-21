@@ -1,10 +1,10 @@
 import json
-
-import requests
 import websockets
 import asyncio
 
 gpio = any
+
+
 def get_gpio():
     return gpio
 

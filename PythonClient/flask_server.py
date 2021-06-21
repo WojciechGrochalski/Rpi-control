@@ -1,14 +1,16 @@
 import asyncio
 import json
-
 import os
-import pickle
+from collections import namedtuple
+
+import jsonpickle
 from threading import Thread
 
 import requests
-from flask import Flask, jsonify, abort, request
+from flask import Flask, jsonify, request
 
 import WebSocketRemoteClient
+from Gpio import Gpio
 
 url = "http://localhost:5001/ws/dc/wojtek/123"
 localurl = "ws://localhost:8085"
@@ -39,27 +41,17 @@ app.config["DEBUG"] = True
 
 with open('AllPins.json', ) as file:
     gpios = file.read()
-jsonstring = json.dumps(gpios)
-# print(json.dumps(gpios, indent = 4))
-with open("gpio.pkl", "wb") as fp:
-    pickle.dump(jsonstring, fp)
 
 
-# thread = Thread(target=connect_to_dotnetServer)
-# thread.daemon = True
+def change_pin(pin):
+    gpio = json.loads(gpios)
+    for i in range(len(gpio)):
+        if gpio[i]["GPIONumber"] == pin["GPIONumber"]:
+            gpio[i] = pin
+    print(gpio[2])
 
+    return json.dumps(gpio, indent=4)
 
-def get_gpio():
-    return gpios
-
-
-def change_pin(newpin):
-    for pin in gpios:
-        if pin == newpin:
-            pin = newpin
-            break
-    with open("gpio.pkl", "wb") as fp:
-        pickle.dump(gpios, fp)
 
 
 @app.route('/', methods=['GET'])
@@ -71,6 +63,10 @@ def home():
 def get_gpio():
     return jsonify(WebSocketRemoteClient.get_gpio())
 
+
+@app.route('/local/gpio', methods=['GET'])
+def get_local_gpio():
+    return jsonify(gpios)
 
 
 @app.route('/run_server', methods=['GET'])
@@ -108,8 +104,8 @@ def set_mode():
 @app.route('/changeGPIO', methods=['POST'])
 def post():
     data = request.json
-    print(data)
-    change_pin(data)
+    global gpios
+    gpios = change_pin(data)
     return jsonify(data)
 
 

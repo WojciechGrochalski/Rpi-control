@@ -1,5 +1,7 @@
 import asyncio
-import pickle
+
+import requests
+
 import flask_server
 import websockets
 
@@ -14,11 +16,11 @@ def check_it_not_equal(actualgpios, gpios):
 
 
 async def Server(websocket, path):
-    gpios = flask_server.get_gpio()
+    gpios = requests.get("http://localhost:8080/local/gpio").json()
     await websocket.send(gpios)
     while True:
         try:
-            newgpios = flask_server.get_gpio()
+            newgpios = requests.get("http://localhost:8080/local/gpio").json()
             if check_it_not_equal(newgpios, gpios):
                 print("Send message to client")
                 await websocket.send(newgpios)
@@ -28,7 +30,7 @@ async def Server(websocket, path):
         except websockets.exceptions.ConnectionClosed:
             print('Connection with client closed')
             break
-        await asyncio.sleep(3)
+        await asyncio.sleep(5)
 
 
 def run():

@@ -18,10 +18,8 @@ exit_signal = False
 if mode == "Server":
     print("Server Up")
     ws.run()
-    if exit_signal:
-        sys.exit()
 if mode == "Client":
-    print("Connecting to dotnet server...")
+    print("Connecting to  server...")
     print(url)
     client = WebSocketClient.WebSocket(url)
     loop = asyncio.get_event_loop()
@@ -32,6 +30,4 @@ if mode == "Client":
 
     ]
     loop.run_until_complete(asyncio.wait(tasks))
-    if exit_signal:
-        sys.exit()
 #
