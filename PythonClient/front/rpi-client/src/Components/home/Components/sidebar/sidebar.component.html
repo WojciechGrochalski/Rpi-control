@@ -15,12 +15,12 @@
     </div>
     <div class="col-2 ">
       <div class=" right-menu ">
-        <button class="btn btn-success btn-lg "
-                type="button">
+        <button class="btn btn-success btn-lg" [disabled]="btnServerState"
+                type="button" (click)="setMode('Server')">
           Server Mode
         </button>
-        <button class="btn btn-danger btn-lg margin"
-                type="button">
+        <button class="btn btn-danger btn-lg margin" [disabled]="btnClientState"
+                type="button" (click)="setMode('Client')">
           Client Mode
         </button>
       </div>

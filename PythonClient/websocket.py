@@ -1,12 +1,7 @@
 import sys
-from threading import Thread
-from time import sleep
 
-import WebSocketServer as ws
-import WebSocketClient
+from WebSocket import WebSocketServer as ws, WebSocketClient
 import asyncio
-
-import flask_server
 
 url = "ws://localhost:5001/ws/wojtek"
 localurl = "ws://localhost:8085"

@@ -1,6 +1,4 @@
-import json
 
-import requests
 import websockets
 import asyncio
 

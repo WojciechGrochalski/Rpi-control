@@ -10,7 +10,6 @@ export class HttpInterceptorService implements HttpInterceptor {
 
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-
     if (request.url.includes('cash') || request.url.includes('baseUrl') || request.url.includes('login')) {
       return next.handle(request);
     } else {
@@ -20,6 +19,7 @@ export class HttpInterceptorService implements HttpInterceptor {
         request = request.clone({
           setHeaders: {
             Authorization: `Bearer ${refreshToken}`,
+            CORS: 'Access-Control-Allow-Origin'
           }
         });
         return next.handle(request);

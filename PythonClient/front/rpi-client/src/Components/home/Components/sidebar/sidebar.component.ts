@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {LocalConnectionService} from '../../../../Services/local-connection.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -7,9 +8,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SidebarComponent implements OnInit {
 
-  constructor() { }
+  btnClientState = false;
+  btnServerState = false;
+  constructor(
+    private localCon: LocalConnectionService
+  ) { }
 
   ngOnInit(): void {
   }
 
+  setMode(mode: string){
+
+    if (mode === 'Server'){
+     this.btnServerState = !this.btnServerState;
+     this.btnClientState = false;
+     this.localCon.SetMode(mode).subscribe();
+    }
+    else{
+      this.btnClientState = !this.btnClientState;
+      this.btnServerState = false;
+      this.localCon.SetMode(mode).subscribe();
+    }
+  }
 }

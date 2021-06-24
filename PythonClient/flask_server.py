@@ -1,19 +1,17 @@
 import asyncio
 import json
-import os
-import platform
 from threading import Thread
-import subprocess
 import requests
 from flask import Flask, jsonify, request
-
-import WebSocketRemoteClient
-
+from flask_cors import CORS
+from WebSocket import WebSocketRemoteClient
+from WebSocket.ScriptsManager import ScriptsManager
 
 url = "http://localhost:5001/ws/dc/wojtek/123"
 localurl = "ws://localhost:8085"
 url2 = "wss://dockerinz.azurewebsites.net/ws"
 shutdown = False
+
 
 def connect_to_dotnetServer():
     url = "ws://localhost:5001/ws/wojtek" + "/" + "123"
@@ -36,7 +34,7 @@ def connect_to_dotnetServer():
 
 app = Flask(__name__)
 app.config["DEBUG"] = True
-
+cors = CORS(app, resources={r"/*": {"origins": "http://localhost:4200/*"}})
 with open('AllPins.json', ) as file:
     gpios = file.read()
 
@@ -49,7 +47,6 @@ def change_pin(pin):
     print(gpio[2])
 
     return json.dumps(gpio, indent=4)
-
 
 
 @app.route('/', methods=['GET'])
@@ -94,28 +91,11 @@ def reload_server():
 def set_mode():
     mode = request.json
     mode = mode["mode"]
-    try:
-        if platform.system() == 'Windows':
-            pid = os.popen("netstat -ano | findstr :8085").read()
-            if pid:
-                pid = pid.split()
-                print(pid[4])
-                output = subprocess.Popen(f"Taskkill /PID {pid[4]} /F  ",  stdout=subprocess.PIPE)
-                print(output.communicate()[0])
-        else:
-            output = subprocess.Popen("pkill - f websocket.py ",  stdout=subprocess.PIPE)
-            print(output.communicate()[0])
-    except Exception as e:
-        print(str(e))
-    try:
-        subprocess.Popen(f"python websocket.py {mode}")
-        pid = os.popen("netstat -ano | findstr :8085").read()
-        if pid:
-            print("ok")
-    except Exception as e:
-        print(str(e))
-
-    return jsonify(f"Start websocket in {mode=}")
+    print(mode)
+    ScriptsManager.RestartScript(mode)
+    response = jsonify(f"Start websocket in {mode=}")
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
 
 
 @app.route('/changeGPIO', methods=['POST'])
