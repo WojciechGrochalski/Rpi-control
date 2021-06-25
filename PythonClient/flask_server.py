@@ -1,16 +1,19 @@
 import asyncio
 import json
+import platform
 from threading import Thread
 import requests
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, abort, Response
 from flask_cors import CORS
 from WebSocket import WebSocketRemoteClient
 from WebSocket.ScriptsManager import ScriptsManager
+from tools import TokenManager
 
 url = "http://localhost:5001/ws/dc/wojtek/123"
 localurl = "ws://localhost:8085"
 url2 = "wss://dockerinz.azurewebsites.net/ws"
 shutdown = False
+jwt_token = ""
 
 
 def connect_to_dotnetServer():
@@ -52,6 +55,22 @@ def change_pin(pin):
 @app.route('/', methods=['GET'])
 def home():
     return jsonify("RpiControllApp")
+
+
+@app.route('/getToken', methods=['GET'])
+def getToken():
+    token = TokenManager.decode_token(jwt_token)
+    if token:
+        return jsonify(jwt_token)
+    else:
+        abort(404)
+
+
+@app.route('/createToken', methods=['GET'])
+def createToken():
+    global jwt_token
+    jwt_token = TokenManager.create_token(platform.node())
+    return Response(status=201)
 
 
 @app.route('/gpio', methods=['GET'])
