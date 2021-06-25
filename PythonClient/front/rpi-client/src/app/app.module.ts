@@ -17,7 +17,7 @@ import { HomeComponent } from '../Components/home/Components/Home/home.component
 import { SidebarComponent } from '../Components/home/Components/sidebar/sidebar.component';
 import { GpioComponent } from '../Components/home/Components/gpio/gpio.component';
 import {HomeRoutingModules} from '../Components/home/home-routing.modules';
-
+import { TokenComponent } from '../Components/home/Components/token/token.component';
 
 
 
@@ -33,6 +33,7 @@ import {HomeRoutingModules} from '../Components/home/home-routing.modules';
     HomeComponent,
     SidebarComponent,
     GpioComponent,
+    TokenComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

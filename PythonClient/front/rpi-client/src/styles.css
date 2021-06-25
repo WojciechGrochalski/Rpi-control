@@ -1,8 +1,12 @@
 @import "~bootstrap/dist/css/bootstrap.css";
-html,
-body {
-  color: whitesmoke;
+@import "~bootstrap-icons/font/bootstrap-icons.css";
+
+
+html{
   height: 100%;
+}
+body {
+  color: whitesmoke!important;
   background-image: url("assets/bg3.jpg");
   background-repeat: no-repeat ;
   background-size: cover;

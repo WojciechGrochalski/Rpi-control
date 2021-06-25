@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import {HomeComponent} from './Components/Home/home.component';
 import {LogInComponent} from './Components/Login/log-in.component';
 import {GpioComponent} from './Components/gpio/gpio.component';
+import {TokenComponent} from './Components/token/token.component';
 
 
 
@@ -13,7 +14,8 @@ const routes: Routes = [
      children:
       [
         { path: 'login', component: LogInComponent},
-        { path: 'gpio', component: GpioComponent}
+        { path: 'gpio', component: GpioComponent},
+        { path: 'get-token', component: TokenComponent}
       ]},
 ];
 

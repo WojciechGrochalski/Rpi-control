@@ -1,29 +1,45 @@
 
-<div class="container">
-  <div class="row justify-content-md-center">
-    <div class="col-2 ">
-      <div class="sidebar-header ">
-        <h3>Menu <img src="assets/raspberry-pi.svg" class="img-fluid rpi"></h3>
-      </div >
-      <nav class="nav flex-column nav-pills ">
-        <a class="nav-link" routerLink="login" routerLinkActive="active">Logowanie</a>
-        <a class="nav-link" routerLink="gpio" routerLinkActive="active">Stan pinów</a>
-      </nav>
-    </div>
-    <div class="col ">
-      <router-outlet></router-outlet>
-    </div>
-    <div class="col-2 ">
-      <div class=" right-menu ">
-        <button class="btn btn-success btn-lg" [disabled]="btnServerState"
-                type="button" (click)="setMode('Server')">
-          Server Mode
-        </button>
-        <button class="btn btn-danger btn-lg margin" [disabled]="btnClientState"
-                type="button" (click)="setMode('Client')">
-          Client Mode
-        </button>
+  <div class="container">
+    <div class="row justify-content-md-center">
+      <div class="col-2 ">
+        <div class="sidebar-header ">
+          <h3>Menu <img src="assets/raspberry-pi.svg" class="img-fluid rpi"></h3>
+        </div >
+        <nav class="nav flex-column nav-pills  ">
+
+          <li class="active">
+            <a class="nav-link" routerLink="login" routerLinkActive="active">Logowanie</a>
+            <a class="nav-link" routerLink="gpio" routerLinkActive="active">Stan pinów</a>
+            <a href="#tokenSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">Token</a>
+            <ul class="collapse list-unstyled " id="tokenSubmenu" >
+              <li>
+                <a class="nav-link"  href="get-token">Get Token</a>
+              </li>
+              <li>
+                <a class="nav-link"  href="#">Home 2</a>
+              </li>
+              <li>
+                <a  class="nav-link"  href="#">Home 3</a>
+              </li>
+            </ul>
+          </li>
+        </nav>
+      </div>
+      <div class="col ">
+        <router-outlet></router-outlet>
+      </div>
+      <div class="col-2 ">
+        <div class=" right-menu ">
+          <button class="btn btn-success btn-lg" [disabled]="btnServerState"
+                  type="button" (click)="setMode('Server')" routerLink="get-token">
+            Server Mode
+          </button>
+          <button class="btn btn-danger btn-lg margin" [disabled]="btnClientState"
+                  type="button" (click)="setMode('Client')" >
+            Client Mode
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
+

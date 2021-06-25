@@ -65,8 +65,13 @@ input[type=text]::placeholder, input[type=password]::placeholder {
   color: #0d0d0d!important;
 }
 
+.nav-link{
+  color: dodgerblue;
+}
 /* STRUCTURE */
-
+.login__signup{
+  color: #0d0d0d;
+}
 .wrapper {
   display: flex;
   align-items: center;
