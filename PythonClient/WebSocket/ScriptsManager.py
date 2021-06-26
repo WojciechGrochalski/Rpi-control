@@ -3,20 +3,20 @@ import platform
 import subprocess
 
 
-def startScript(mode):
+def startScript(mode, port):
     try:
-        subprocess.Popen(f"python websocket.py {mode}")
-        pid = os.popen("netstat -ano | findstr :8085").read()
+        subprocess.Popen(f"python websocket.py {mode} {port}")
+        pid = os.popen(f"netstat -ano | findstr :{port}").read()
         if pid:
             print("ok")
     except Exception as e:
         print(str(e))
 
 
-def killScript():
+def killScript(port):
     try:
         if platform.system() == 'Windows':
-            pid = os.popen("netstat -ano | findstr :8085").read()
+            pid = os.popen(f"netstat -ano | findstr :{port}").read()
             if pid:
                 pid = pid.split()
                 print(pid[4])
@@ -32,6 +32,6 @@ def killScript():
 class ScriptsManager:
 
     @staticmethod
-    def RestartScript(mode):
-        killScript()
-        startScript(mode)
+    def RestartScript(mode, port):
+        killScript(port)
+        startScript(mode, port)

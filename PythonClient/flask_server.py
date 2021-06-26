@@ -108,10 +108,11 @@ def reload_server():
 
 @app.route('/setMode', methods=['POST'])
 def set_mode():
-    mode = request.json
-    mode = mode["mode"]
+    data = request.json
+    mode = data["mode"]
+    port = data["port"]
     print(mode)
-    ScriptsManager.RestartScript(mode)
+    ScriptsManager.RestartScript(mode, port)
     response = jsonify(f"Start websocket in {mode=}")
     response.headers.add("Access-Control-Allow-Origin", "*")
     return response
