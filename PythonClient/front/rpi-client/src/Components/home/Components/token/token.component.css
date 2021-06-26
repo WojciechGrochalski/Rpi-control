@@ -27,3 +27,10 @@
   display:flex;
   flex-direction: row;
 }
+input{
+  width: 110%;
+}
+p{
+  color: #0d0d0d;
+  font-size: large;
+}

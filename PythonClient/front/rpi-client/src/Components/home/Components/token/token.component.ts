@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {JWT, LocalConnectionService} from '../../../../Services/local-connection.service';
 
 @Component({
   selector: 'app-token',
@@ -6,10 +7,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./token.component.css']
 })
 export class TokenComponent implements OnInit {
+  jwtToken: JWT;
+  constructor(
+    private get: LocalConnectionService ) { }
 
-  constructor() { }
-
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    this.jwtToken = await this.get.GetToken().toPromise();
   }
   copyInputMessage(inputElement): void{
     inputElement.select();

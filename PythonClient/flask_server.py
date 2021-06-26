@@ -70,7 +70,8 @@ def getToken():
 def createToken():
     global jwt_token
     jwt_token = TokenManager.create_token(platform.node())
-    return Response(status=201)
+    msg = json.dumps('{"msg": "ok"}')
+    return msg, 201
 
 
 @app.route('/gpio', methods=['GET'])

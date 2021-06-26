@@ -1,9 +1,10 @@
 <div class="top">
   <div class="container  d-flex justify-content-center ">
     <div class="wrapper jumbotron my-auto ">
+      <p >Use this token to connect to server</p>
       <div class="clipboard">
-        <input type="text" value="User input Text to copy" #userinput>
-        <button (click)="copyInputMessage(userinput)" value="click to copy" ><i class="bi bi-clipboard"></i></button>
+        <input type="text" value="{{jwtToken}}"  #userinput>
+        <button (click)="copyInputMessage(userinput)" ><i class="bi bi-clipboard"></i></button>
       </div>
     </div>
   </div>
