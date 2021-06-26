@@ -2,6 +2,15 @@ import os
 import platform
 import subprocess
 
+def getPID(pid, device):
+    if device == "Windows":
+        pid = pid.split()
+        print(pid[4])
+        return pid
+    if device == "Linux":
+        pid = pid.split()
+        print(pid[1])
+        return pid
 
 def startScript(mode, port, device):
     try:
@@ -27,6 +36,7 @@ def killScript(port, device):
                 print(output.communicate()[0])
         if device == "Linux":
             pid = os.popen(f"lsof - i :{port}").read()
+            pid = getPID(pid, "Linux")
             output = subprocess.Popen(f"kill  -9 {pid} ", stdout=subprocess.PIPE)
             print(output.communicate()[0])
     except Exception as e:
