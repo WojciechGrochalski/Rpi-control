@@ -16,6 +16,7 @@ export class SidebarComponent implements OnInit {
 
   btnClientState = false;
   btnServerState = false;
+  mode: string;
   alert = true;
   constructor(
     private localCon: LocalConnectionService,
@@ -36,6 +37,7 @@ export class SidebarComponent implements OnInit {
           console.log(true);
           this.localCon.SetMode(mode).subscribe(res => {
             this.router.navigate(['/get-token']);
+            this.mode = mode;
           });
         }
         else {
@@ -43,9 +45,11 @@ export class SidebarComponent implements OnInit {
         }});
     }
     else{
+      this.router.navigate(['connect']);
       this.btnClientState = !this.btnClientState;
       this.btnServerState = false;
-      this.localCon.SetMode(mode).subscribe();
+      //this.localCon.SetMode(mode).subscribe();
+      this.mode = mode;
     }
   }
 }

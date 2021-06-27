@@ -1,6 +1,5 @@
 export class Token{
-
-  Token:string;
+  Token: string;
 
   constructor(token: string) {
     this.Token = token;

@@ -1,5 +1,5 @@
 export class LoginResult{
-  ID:number;
+  ID: number;
   Name: string;
   accessToken: string;
   refreshToken: string;

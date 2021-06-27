@@ -20,14 +20,14 @@ a {
 
 h2 {
   text-align: center;
+  text-decoration: none;
   font-size: 16px;
   font-weight: 600;
   text-transform: uppercase;
   display:inline-block;
-  margin: 40px 8px 10px 8px;
+  margin: 40px 8px 25px 8px;
   color: #cccccc;
 }
-
 
 input[type=text], input[type=password] {
   background-color: #f6f6f6;
@@ -86,11 +86,10 @@ input[type=text]::placeholder, input[type=password]::placeholder {
   -webkit-border-radius: 10px 10px 10px 10px;
   border-radius: 10px 10px 10px 10px;
   background: #fff;
-  padding: 30px;
+  padding: 10px 10px;
   width: 90%;
   max-width: 450px;
   position: relative;
-  padding: 0px;
   -webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
   box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
   text-align: center;

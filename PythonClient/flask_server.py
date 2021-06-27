@@ -47,8 +47,6 @@ def change_pin(pin):
     for i in range(len(gpio)):
         if gpio[i]["GPIONumber"] == pin["GPIONumber"]:
             gpio[i] = pin
-    print(gpio[2])
-
     return json.dumps(gpio, indent=4)
 
 
@@ -70,8 +68,9 @@ def getToken():
 def createToken():
     global jwt_token
     jwt_token = TokenManager.create_token(platform.node())
-    msg = json.dumps('{"msg": "ok"}')
-    return msg, 201
+    response = jsonify("ok")
+    response.status_code = 201
+    return response
 
 
 @app.route('/gpio', methods=['GET'])
@@ -119,13 +118,43 @@ def set_mode():
     return response
 
 
+@app.route('/connect', methods=['POST'])
+def connect_to_server():
+    data = request.json
+    ip = data["ip"]
+    port = data["port"]
+    token = data["token"]
+    print(f"{ip=} {port=} {token=}")
+    try:
+        result = ScriptsManager.RunWebsocketClent(ip, port, token)
+        if result:
+            response = jsonify(result)
+            response.status_code = 200
+        else:
+            response = jsonify(result)
+            response.status_code = 409
+    except:
+        response = jsonify(result)
+        response.status_code = 409
+
+    return response
+
+
 @app.route('/changeGPIO', methods=['POST'])
 def post():
     data = request.json
+    print(str(data))
     global gpios
     gpios = change_pin(data)
+    with open("AllPins.json", "w") as outfile:
+        gpios = json.loads(gpios)
+        #gpio_json = json.dumps(gpios, indent=4)
+        json.dump(gpios, outfile, indent=4)
     return jsonify(data)
 
 
 if __name__ == '__main__':
     app.run(port=8080, threaded=True)
+    with open("AllPins.json", "w") as outfile:
+        gpio_json = json.dumps(gpios, indent=4)
+        json.dump(gpio_json, outfile, indent=4)

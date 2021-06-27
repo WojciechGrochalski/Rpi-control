@@ -3,3 +3,6 @@ class Gpio:
         self.GPIONumber = gpioNumber
         self.GPIOMode = gpioMode
         self.GPIOStatus = gpioStatus
+
+
+

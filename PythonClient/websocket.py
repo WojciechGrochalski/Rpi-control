@@ -8,21 +8,16 @@ localurl = "ws://localhost:"
 url2 = "wss://dockerinz.azurewebsites.net/ws"
 
 mode = sys.argv[1]
-port = sys.argv[2]
-# if sys.argv[2:]:
-#     auth = sys.argv[2]
-#     url += "/" + auth
-# else:
-#     url = localurl
+ip = sys.argv[2]
+port = sys.argv[3]
+token = sys.argv[4]
 
 if mode == "Server":
     print("Server Up")
-    ws.run(port)
+    ws.run(port, token)
 if mode == "Client":
     print("Connecting to  server...")
-    url = localurl + port
-    print(url)
-    client = WebSocketClient.WebSocket(url)
+    client = WebSocketClient.WebSocket(ip, port, token)
     loop = asyncio.get_event_loop()
     connection = loop.run_until_complete(client.connect())
     tasks = [

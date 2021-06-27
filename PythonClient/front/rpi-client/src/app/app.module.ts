@@ -18,6 +18,7 @@ import { SidebarComponent } from '../Components/home/Components/sidebar/sidebar.
 import { GpioComponent } from '../Components/home/Components/gpio/gpio.component';
 import {HomeRoutingModules} from '../Components/home/home-routing.modules';
 import { TokenComponent } from '../Components/home/Components/token/token.component';
+import { ConnectManagerComponent } from '../Components/home/Components/connect-manager/connect-manager.component';
 
 
 
@@ -34,6 +35,7 @@ import { TokenComponent } from '../Components/home/Components/token/token.compon
     SidebarComponent,
     GpioComponent,
     TokenComponent,
+    ConnectManagerComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

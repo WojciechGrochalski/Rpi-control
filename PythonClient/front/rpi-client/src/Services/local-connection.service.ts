@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
+import {Connect} from '../Models/Connect';
 
 export interface JWT{
   token: string;
@@ -24,6 +25,10 @@ export class LocalConnectionService {
   }
   CreateToken() {
     return this.http.get(this.baseUrl + 'createToken');
+  }
+
+  ConnectToServer(conn: Connect){
+    return this.http.post(this.baseUrl + 'connect', conn );
   }
 }
 

@@ -24,4 +24,10 @@
 body{
   color: whitesmoke;
 }
+.back-to-menu{
+  text-decoration: none;
+}
+.back-to-menu:hover{
+  color: whitesmoke;
+}
 

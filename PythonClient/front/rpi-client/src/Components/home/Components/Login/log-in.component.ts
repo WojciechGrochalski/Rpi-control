@@ -38,8 +38,8 @@ export class LogInComponent implements OnInit {
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required]
+      username: ['', [Validators.required]],
+      password: ['', [Validators.required]]
     });
     try {
       const message = this.route.snapshot.paramMap.get('confirm');
