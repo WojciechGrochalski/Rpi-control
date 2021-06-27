@@ -148,13 +148,15 @@ def post():
     gpios = change_pin(data)
     with open("AllPins.json", "w") as outfile:
         gpios = json.loads(gpios)
-        #gpio_json = json.dumps(gpios, indent=4)
         json.dump(gpios, outfile, indent=4)
+    gpios = json.dumps(gpios, indent=4)
+    print(gpios[:50])
     return jsonify(data)
 
 
 if __name__ == '__main__':
     app.run(port=8080, threaded=True)
     with open("AllPins.json", "w") as outfile:
-        gpio_json = json.dumps(gpios, indent=4)
-        json.dump(gpio_json, outfile, indent=4)
+        gpios = json.loads(gpios)
+        json.dump(gpios, outfile, indent=4)
+
