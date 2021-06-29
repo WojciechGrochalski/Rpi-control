@@ -5,9 +5,9 @@ export class GPIO{
   GPIOStatus: number;
   color: string;
 
-  constructor(gpionumber: number, gpioname: string, mode: string, status: number) {
-    this.GPIONumber = gpionumber;
-    this.GPIOName = gpioname;
+  constructor( unit: number, name: string, mode: string, status: number) {
+    this.GPIONumber = unit;
+    this.GPIOName = name;
     this.GPIOMode = mode;
     this.GPIOStatus = status;
   }

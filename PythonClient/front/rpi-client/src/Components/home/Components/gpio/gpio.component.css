@@ -1,15 +1,15 @@
 table{
-  max-width: 60%;
+  max-width: 100%;
+  table-layout: fixed ;
 }
 .center {
   margin-left: auto;
   margin-right: auto;
 }
-.server{
-  margin-top: 100px;
-  width: 200px;
-  height: 75px;
-}
+
 .w3-table{
   width: 100%;
+}
+.gpio{
+  margin-bottom: 100px;
 }

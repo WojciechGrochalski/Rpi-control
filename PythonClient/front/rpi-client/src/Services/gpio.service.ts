@@ -9,6 +9,7 @@ import {GPIO} from '../Models/GPIO';
 export class GpioService {
 
   baseUrl = 'http://localhost:5000/api/Rpi';
+  baseLocalUrl = 'http://localhost:8080/';
 
   constructor(private http: HttpClient) {
   }
@@ -16,4 +17,14 @@ export class GpioService {
   GetGpio(): Observable<any> {
     return this.http.get<GPIO[]>(this.baseUrl);
   }
+
+  GetLocalGpio(): Observable<GPIO[]> {
+    return this.http.get<GPIO[]>(this.baseLocalUrl + '/local/gpio');
+  }
+  SetPin( pin: GPIO) {
+    return this.http.post(this.baseLocalUrl + 'changeGPIO', pin);
+  }
+
+
+
 }

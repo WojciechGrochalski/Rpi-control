@@ -80,7 +80,7 @@ def get_gpio():
 
 @app.route('/local/gpio', methods=['GET'])
 def get_local_gpio():
-    return jsonify(gpios)
+    return jsonify(json.loads(gpios))
 
 
 @app.route('/run_server', methods=['GET'])
@@ -147,10 +147,8 @@ def post():
     global gpios
     gpios = change_pin(data)
     with open("AllPins.json", "w") as outfile:
-        gpios = json.loads(gpios)
-        json.dump(gpios, outfile, indent=4)
-    gpios = json.dumps(gpios, indent=4)
-    print(gpios[:50])
+        newGpio = json.loads(gpios)
+        json.dump(newGpio, outfile, indent=4)
     return jsonify(data)
 
 
@@ -159,4 +157,3 @@ if __name__ == '__main__':
     with open("AllPins.json", "w") as outfile:
         gpios = json.loads(gpios)
         json.dump(gpios, outfile, indent=4)
-

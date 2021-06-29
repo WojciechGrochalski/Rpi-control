@@ -4,39 +4,21 @@
         "GPIOName": "3v3 Power"
     },
     {
-        "GPIONumber": 2,
-        "GPIOName": "5v Power"
-    },
-    {
-        "GPIONumber": 3,
-        "GPIOName": "GPIO 2",
         "GPIOMode": "IN",
-        "GPIOStatus": 0
-    },
-    {
-        "GPIONumber": 4,
-        "GPIOName": "5v Power"
-    },
-    {
-        "GPIONumber": 5,
-        "GPIOName": "GPIO 3",
-        "GPIOMode": "out",
+        "GPIOName": "GPIO 2",
+        "GPIONumber": 3,
         "GPIOStatus": 1
     },
     {
-        "GPIONumber": 6,
-        "GPIOName": "Ground"
+        "GPIONumber": 5,
+        "GPIOMode": "OUT",
+        "GPIOName": "GPIO 3",
+        "GPIOStatus": 1
     },
     {
         "GPIONumber": 7,
-        "GPIOName": "GPIO 4",
         "GPIOMode": "IN",
-        "GPIOStatus": 0
-    },
-    {
-        "GPIONumber": 8,
-        "GPIOName": "GPIO 14",
-        "GPIOMode": "out",
+        "GPIOName": "GPIO 4",
         "GPIOStatus": 0
     },
     {
@@ -44,88 +26,43 @@
         "GPIOName": "Ground"
     },
     {
-        "GPIONumber": 10,
-        "GPIOName": "GPIO 15",
-        "GPIOMode": "IN",
-        "GPIOStatus": 0
-    },
-    {
         "GPIONumber": 11,
+        "GPIOMode": "OUT",
         "GPIOName": "GPIO 17",
-        "GPIOMode": "out",
         "GPIOStatus": 1
     },
     {
-        "GPIONumber": 12,
-        "GPIOName": "GPIO 18",
-        "GPIOMode": "IN",
-        "GPIOStatus": 0
-    },
-    {
         "GPIONumber": 13,
-        "GPIOName": "GPIO 27",
         "GPIOMode": "IN",
+        "GPIOName": "GPIO 27",
         "GPIOStatus": 0
-    },
-    {
-        "GPIONumber": 14,
-        "GPIOName": "Ground"
     },
     {
         "GPIONumber": 15,
+        "GPIOMode": "IN",
         "GPIOName": "GPIO 22",
-        "GPIOMode": "IN",
-        "GPIOStatus": 0
-    },
-    {
-        "GPIONumber": 16,
-        "GPIOName": "GPIO 23",
-        "GPIOMode": "IN",
         "GPIOStatus": 0
     },
     {
         "GPIONumber": 17,
-        "GPIOMode": "in",
-        "GPIOStatus": 0
-    },
-    {
-        "GPIONumber": 18,
-        "GPIOName": "GPIO 24",
-        "GPIOMode": "IN",
-        "GPIOStatus": 0
+        "GPIOName": "3v3 Power"
     },
     {
         "GPIONumber": 19,
+        "GPIOMode": "IN",
         "GPIOName": "GPIO 10",
-        "GPIOMode": "in",
         "GPIOStatus": 1
     },
     {
-        "GPIONumber": 20,
-        "GPIOName": "Ground"
-    },
-    {
         "GPIONumber": 21,
+        "GPIOMode": "IN",
         "GPIOName": "GPIO 9",
-        "GPIOMode": "IN",
-        "GPIOStatus": 0
-    },
-    {
-        "GPIONumber": 22,
-        "GPIOName": "GPIO 25",
-        "GPIOMode": "IN",
         "GPIOStatus": 0
     },
     {
         "GPIONumber": 23,
+        "GPIOMode": "IN",
         "GPIOName": "GPIO 11",
-        "GPIOMode": "IN",
-        "GPIOStatus": 0
-    },
-    {
-        "GPIONumber": 24,
-        "GPIOName": "GPIO 8",
-        "GPIOMode": "IN",
         "GPIOStatus": 0
     },
     {
@@ -133,77 +70,39 @@
         "GPIOName": "Ground"
     },
     {
-        "GPIONumber": 26,
-        "GPIOName": "GPIO 7",
-        "GPIOMode": "IN",
-        "GPIOStatus": 0
-    },
-    {
         "GPIONumber": 27,
+        "GPIOMode": "IN",
         "GPIOName": "GPIO 0",
-        "GPIOMode": "IN",
-        "GPIOStatus": 0
-    },
-    {
-        "GPIONumber": 28,
-        "GPIOName": "GPIO 1",
-        "GPIOMode": "IN",
         "GPIOStatus": 0
     },
     {
         "GPIONumber": 29,
-        "GPIOName": "GPIO 5",
         "GPIOMode": "IN",
+        "GPIOName": "GPIO 5",
         "GPIOStatus": 0
-    },
-    {
-        "GPIONumber": 30,
-        "GPIOName": "Ground"
     },
     {
         "GPIONumber": 31,
+        "GPIOMode": "IN",
         "GPIOName": "GPIO 6",
-        "GPIOMode": "IN",
-        "GPIOStatus": 0
-    },
-    {
-        "GPIONumber": 32,
-        "GPIOName": "GPIO 12",
-        "GPIOMode": "IN",
         "GPIOStatus": 0
     },
     {
         "GPIONumber": 33,
-        "GPIOName": "GPIO 13",
         "GPIOMode": "IN",
+        "GPIOName": "GPIO 13",
         "GPIOStatus": 0
-    },
-    {
-        "GPIONumber": 34,
-        "GPIOName": "Ground"
     },
     {
         "GPIONumber": 35,
+        "GPIOMode": "IN",
         "GPIOName": "GPIO 19",
-        "GPIOMode": "IN",
-        "GPIOStatus": 0
-    },
-    {
-        "GPIONumber": 36,
-        "GPIOName": "GPIO 16",
-        "GPIOMode": "IN",
         "GPIOStatus": 0
     },
     {
         "GPIONumber": 37,
+        "GPIOMode": "IN",
         "GPIOName": "GPIO 26",
-        "GPIOMode": "IN",
-        "GPIOStatus": 0
-    },
-    {
-        "GPIONumber": 38,
-        "GPIOName": "GPIO 20",
-        "GPIOMode": "IN",
         "GPIOStatus": 0
     },
     {
@@ -211,9 +110,109 @@
         "GPIOName": "Ground"
     },
     {
-        "GPIONumber": 40,
-        "GPIOName": "GPIO 21",
+        "GPIONumber": 2,
+        "GPIOName": "5v Power"
+    },
+    {
+        "GPIONumber": 4,
+        "GPIOName": "5v Power"
+    },
+    {
+        "GPIONumber": 6,
+        "GPIOName": "Ground"
+    },
+    {
+        "GPIONumber": 8,
+        "GPIOMode": "OUT",
+        "GPIOName": "GPIO 14",
+        "GPIOStatus": 0
+    },
+    {
+        "GPIONumber": 10,
         "GPIOMode": "IN",
+        "GPIOName": "GPIO 15",
+        "GPIOStatus": 0
+    },
+    {
+        "GPIONumber": 12,
+        "GPIOMode": "IN",
+        "GPIOName": "GPIO 18",
+        "GPIOStatus": 0
+    },
+    {
+        "GPIONumber": 14,
+        "GPIOName": "Ground"
+    },
+    {
+        "GPIONumber": 16,
+        "GPIOMode": "IN",
+        "GPIOName": "GPIO 23",
+        "GPIOStatus": 0
+    },
+    {
+        "GPIONumber": 18,
+        "GPIOMode": "IN",
+        "GPIOName": "GPIO 24",
+        "GPIOStatus": 0
+    },
+    {
+        "GPIONumber": 20,
+        "GPIOName": "Ground"
+    },
+    {
+        "GPIONumber": 22,
+        "GPIOMode": "IN",
+        "GPIOName": "GPIO 25",
+        "GPIOStatus": 0
+    },
+    {
+        "GPIONumber": 24,
+        "GPIOMode": "IN",
+        "GPIOName": "GPIO 8",
+        "GPIOStatus": 0
+    },
+    {
+        "GPIONumber": 26,
+        "GPIOMode": "IN",
+        "GPIOName": "GPIO 7",
+        "GPIOStatus": 0
+    },
+    {
+        "GPIONumber": 28,
+        "GPIOMode": "IN",
+        "GPIOName": "GPIO 1",
+        "GPIOStatus": 0
+    },
+    {
+        "GPIONumber": 30,
+        "GPIOName": "Ground"
+    },
+    {
+        "GPIONumber": 32,
+        "GPIOMode": "IN",
+        "GPIOName": "GPIO 12",
+        "GPIOStatus": 0
+    },
+    {
+        "GPIONumber": 34,
+        "GPIOName": "Ground"
+    },
+    {
+        "GPIONumber": 36,
+        "GPIOMode": "IN",
+        "GPIOName": "GPIO 16",
+        "GPIOStatus": 0
+    },
+    {
+        "GPIONumber": 38,
+        "GPIOMode": "IN",
+        "GPIOName": "GPIO 20",
+        "GPIOStatus": 0
+    },
+    {
+        "GPIONumber": 40,
+        "GPIOMode": "IN",
+        "GPIOName": "GPIO 21",
         "GPIOStatus": 0
     }
 ]

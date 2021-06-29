@@ -1,7 +1,7 @@
 
-<div class="container">
+<div class="container-fluid">
   <div class="row justify-content-md-center">
-    <div class="col-2 ">
+    <div class="col-1 ">
       <div class="sidebar-header ">
         <a class="back-to-menu" routerLink="/" style="text-underline: none"><h3 > Menu &nbsp;<img src="assets/raspberry-pi.svg" class="img-fluid rpi"></h3></a>
       </div >
@@ -28,14 +28,14 @@
         </li>
       </nav>
     </div>
-    <div class="col ">
+    <div class="col-6 gpio ">
       <div  class="alert alert-warning alert-dismissible fade show" role="alert"  hidden="{{alert}}">
         <strong> Wystąpił błąd</strong>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
       <router-outlet></router-outlet>
     </div>
-    <div class="col-2 ">
+    <div class="col-1 ">
       <div class=" right-menu ">
         <button class="btn btn-success btn-lg" [disabled]="btnServerState"
                 type="button" (click)="setMode('Server')" >
