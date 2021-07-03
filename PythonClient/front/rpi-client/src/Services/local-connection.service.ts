@@ -16,8 +16,8 @@ export class LocalConnectionService {
     private http: HttpClient
   ) { }
 
-  SetMode(body: string, portNumber = 8085){
-    return this.http.post(this.baseUrl + 'setMode', {mode: body, port: portNumber} );
+  SetMode(body: string, Servertoken?: string, portNumber = 8085){
+    return this.http.post(this.baseUrl + 'setMode', {mode: body, port: portNumber, token: Servertoken} );
   }
 
   GetToken(): Observable<JWT> {

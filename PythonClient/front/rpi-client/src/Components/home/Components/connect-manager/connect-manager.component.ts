@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {AuthModel} from '../../../../Models/AuthModel';
 import {Connect} from '../../../../Models/Connect';
 import {LocalConnectionService} from '../../../../Services/local-connection.service';
 import {Router} from '@angular/router';

@@ -5,6 +5,7 @@ import {LogInComponent} from './Components/Login/log-in.component';
 import {GpioComponent} from './Components/gpio/gpio.component';
 import {TokenComponent} from './Components/token/token.component';
 import {ConnectManagerComponent} from './Components/connect-manager/connect-manager.component';
+import {ChangemodeComponent} from './Components/changemode/changemode.component';
 
 
 
@@ -17,7 +18,8 @@ const routes: Routes = [
         { path: 'login', component: LogInComponent},
         { path: 'gpio', component: GpioComponent},
         { path: 'get-token', component: TokenComponent},
-        { path: 'connect', component: ConnectManagerComponent}
+        { path: 'connect', component: ConnectManagerComponent},
+        { path: 'change-mode', component: ChangemodeComponent}
       ]},
 ];
 

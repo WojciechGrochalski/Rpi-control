@@ -11,8 +11,6 @@ import {AuthService} from '../../../../Services/auth.service';
 export class HomeComponent implements OnInit {
   title = 'rpi-client';
 
-
-
   constructor(
     private http: HttpClient,
 
@@ -20,7 +18,8 @@ export class HomeComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void>{
-
   }
+
+
 
 }

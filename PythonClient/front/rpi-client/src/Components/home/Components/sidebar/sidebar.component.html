@@ -1,51 +1,50 @@
 
 <div class="container-fluid">
   <div class="row justify-content-md-center">
-    <div class="col-1 ">
+    <div class="col-1  menu-left">
       <div class="sidebar-header ">
         <a class="back-to-menu" routerLink="/" style="text-underline: none"><h3 > Menu &nbsp;<img src="assets/raspberry-pi.svg" class="img-fluid rpi"></h3></a>
       </div >
       <nav class="nav flex-column nav-pills  ">
         <li class="active">
-          <a class="nav-link" routerLink="login" routerLinkActive="active">Logowanie</a>
-          <a class="nav-link" routerLink="gpio" routerLinkActive="active">Stan pinów</a>
+          <a class="nav-link" routerLink="login" routerLinkActive="active">Log in</a>
+          <a class="nav-link" routerLink="change-mode" routerLinkActive="active">Set Mode</a>
+          <a *ngIf="!mode" class="nav-link" routerLink="gpio" routerLinkActive="active">Local Rpi Pins</a>
 
           <div *ngIf="mode=='Server'" >
-            <a href="#tokenSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">Token</a>
-            <ul class="collapse list-unstyled " id="tokenSubmenu" >
+            <a href="#ServerSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">Server managements</a>
+            <ul class="collapse list-unstyled " id="ServerSubmenu" >
               <li>
-                <a class="nav-link"  href="get-token">Get Token</a>
+                <a class="nav-link"  routerLink="get-token">Get Token</a>
               </li>
               <li>
-                <a class="nav-link"  href="#">Home 2</a>
+                <a class="nav-link"  href="#">Show connected Rpi</a>
               </li>
               <li>
-                <a  class="nav-link"  href="#">Home 3</a>
+                <a  class="nav-link"  routerLink="gpio"  href="#">Shared Pins</a>
               </li>
             </ul>
           </div>
-
+          <div *ngIf="mode=='Client'" >
+            <a href="#ClientSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">Client managements</a>
+            <ul class="collapse list-unstyled " id="ClientSubmenu" >
+              <li>
+                <a class="nav-link" routerLink="connect">Connect to server </a>
+              </li>
+              <li>
+                <a class="nav-link"  routerLink="gpio" >Show connected Rpi</a>
+              </li>
+              <li>
+                <a  class="nav-link"  routerLink="gpio" >Shared Pins</a>
+              </li>
+            </ul>
+          </div>
         </li>
       </nav>
     </div>
-    <div class="col-6 gpio ">
-      <div  class="alert alert-warning alert-dismissible fade show" role="alert"  hidden="{{alert}}">
-        <strong> Wystąpił błąd</strong>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-      <router-outlet></router-outlet>
-    </div>
-    <div class="col-1 ">
-      <div class=" right-menu ">
-        <button class="btn btn-success btn-lg" [disabled]="btnServerState"
-                type="button" (click)="setMode('Server')" >
-          Server Mode
-        </button>
-        <button class="btn btn-danger btn-lg margin" [disabled]="btnClientState"
-                type="button" (click)="setMode('Client')" >
-          Client Mode
-        </button>
-      </div>
+
+    <div class="col-4 gpio ">
+      <router-outlet  ></router-outlet>
     </div>
   </div>
 </div>

@@ -4,23 +4,23 @@
   <br>
   <table class="w3-table  w3-bordered w3-border w3-centered center " >
     <tr>
-      <th style="width:5%" >BCM Number</th>
+<!--      <th style="width:5%" >BCM Number</th>-->
       <th style="width:10%">Name</th>
-      <th style="width:5%">Mode</th>
+      <th style="width:10%">Mode</th>
       <th style="width:5%">V</th>
       <th style="width:5%">Physical Pin</th>
       <th style="width:5%">Physical Pin</th>
       <th style="width:5%">V</th>
-      <th style="width:5%">Mode</th>
+      <th style="width:10%">Mode</th>
       <th style="width:10%">Name</th>
-      <th style="width:5%">BCM Number</th>
+<!--      <th style="width:5%">BCM Number</th>-->
     </tr>
     <tbody >
     <tr *ngFor="let item  of leftGpio let i = index" ngSwitch="{{item.GPIOMode}}">
 
-      <td style="width:5%"> <button type="button" (click)="ChangePin(item.GPIONumber, item.GPIOMode, item.GPIOStatus)"class="glyphicon glyphicon-check">get</button></td>
+
       <td style="width:5%" class="w3-{{item.color}}" #name>{{item.GPIOName}}  </td>
-      <td (click)="UpdateModePin(item ,mode.value)" *ngSwitchCase="item.GPIOMode" style="max-width:5%" >
+      <td (click)="UpdateModePin(item ,mode.value)" *ngSwitchCase="item.GPIOMode" style="max-width:10%" >
         <select #mode class="form-select bg-success " style="width: 100%">
           <option #mode selected="selected" >{{item.GPIOMode | uppercase}}</option>
           <div *ngIf=" item.GPIOMode.includes('IN'); then out else in"></div>
@@ -40,7 +40,6 @@
       <td style="width:5%">{{rightGpio[i].GPIONumber}}</td>
       <td style="width:5%" >
       <div *ngIf="rightGpio[i].GPIOStatus===1 || rightGpio[i].GPIOStatus ===0; else empty ">
-
           <select  class="form-select bg-success " style="width: 100%">
             <option   selected="selected">{{rightGpio[i].GPIOStatus}}</option>
             <div *ngIf="rightGpio[i].GPIOStatus === 1; then low else high" ></div>
@@ -48,7 +47,7 @@
       </div>
       </td>
       <div *ngIf="rightGpio[i].GPIOMode != null; else empty ">
-        <td style="width:5%" >
+        <td style="max-width:10%"  >
           <select  class="form-select bg-success " style="width: 100%">
             <option   selected="selected">{{rightGpio[i].GPIOMode | uppercase}}</option>
             <div *ngIf="rightGpio[i].GPIOMode=== 'IN'; then out else  in" ></div>
@@ -56,7 +55,7 @@
         </td>
       </div>
       <td style="width:5%" class="w3-{{rightGpio[i].color}}">{{rightGpio[i].GPIOName}}</td>
-      <td style="width:5%">1</td>
+
     </tr>
     </tbody></table>
   <tbody>

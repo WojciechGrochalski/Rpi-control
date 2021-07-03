@@ -15,7 +15,7 @@ class WebSocket:
         if self.connection.open:
             print('Connection stablished. Client correcly connected')
             # Send greeting
-            await self.sendMessage(self.token)
+            await self.sendMessage(str(self.token))
             return self.connection
 
     async def sendMessage(self, message):

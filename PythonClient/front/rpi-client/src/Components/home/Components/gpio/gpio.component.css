@@ -1,6 +1,6 @@
 table{
   max-width: 100%;
-  table-layout: fixed ;
+  table-layout: auto ;
 }
 .center {
   margin-left: auto;
@@ -11,5 +11,6 @@ table{
   width: 100%;
 }
 .gpio{
-  margin-bottom: 100px;
+  margin-top: 5%;
+  padding-bottom:  100px;
 }

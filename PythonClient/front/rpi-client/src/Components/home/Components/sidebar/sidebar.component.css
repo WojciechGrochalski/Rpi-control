@@ -1,10 +1,7 @@
-.sidebar{
-  margin-top: 20px;
-}
-.margin{
-  margin-top: 5px;
-}
 
+.menu-left{
+  margin-top: 5%;
+}
 .menu{
   justify-content: space-between;
   display:flex;

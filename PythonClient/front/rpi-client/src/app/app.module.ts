@@ -19,6 +19,7 @@ import { GpioComponent } from '../Components/home/Components/gpio/gpio.component
 import {HomeRoutingModules} from '../Components/home/home-routing.modules';
 import { TokenComponent } from '../Components/home/Components/token/token.component';
 import { ConnectManagerComponent } from '../Components/home/Components/connect-manager/connect-manager.component';
+import { ChangemodeComponent } from '../Components/home/Components/changemode/changemode.component';
 
 
 
@@ -36,6 +37,7 @@ import { ConnectManagerComponent } from '../Components/home/Components/connect-m
     GpioComponent,
     TokenComponent,
     ConnectManagerComponent,
+    ChangemodeComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -44,9 +46,8 @@ import { ConnectManagerComponent } from '../Components/home/Components/connect-m
     HttpClientModule,
     FlashMessagesModule.forRoot(),
     RouterModule.forRoot([
-      {path: '', component: HomeComponent, pathMatch: 'full'},
-      { path: 'login', component: LogInComponent},
-      { path: 'gpio', component: GpioComponent},
+      {path: '', component: HomeComponent},
+      {path: '**', component: HomeComponent, pathMatch: 'full'},
       { path: 'login/:confirm', component: LogInComponent},
       { path: 'register', component: RegisterComponent},
       { path: 'new-password', component: NewPasswordComponent},

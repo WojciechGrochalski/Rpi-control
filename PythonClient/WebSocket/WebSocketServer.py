@@ -26,20 +26,19 @@ async def Server(websocket, path):
     print(f"{msg=} {token=}")
     if msg == token:
         invalid_user = False
-        local_gpio = requests.get("http://localhost:8080/local/gpio").json()
+        local_gpio = requests.get("http://localhost:8080/local/gpio/websocket").json()
         await websocket.send(local_gpio)
     while True:
         if invalid_user:
             print("invalid token")
             break
         try:
-            remote_gpio = requests.get("http://localhost:8080/local/gpio").json()
+            remote_gpio = requests.get("http://localhost:8080/local/gpio/websocket").json()
             if check_it_not_equal(remote_gpio, local_gpio):
                 diffrent_pins = GpioControl.get_diffrent_pins(json.loads(remote_gpio), json.loads(local_gpio))
-                #print(diffrent_pins)
                 local_gpio = remote_gpio
                 print("Send message to client")
-                await websocket.send(remote_gpio)
+                await websocket.send(json.dumps(diffrent_pins))
 
             msg = await websocket.recv()
             print(f"< {msg}")

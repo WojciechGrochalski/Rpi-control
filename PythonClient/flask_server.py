@@ -68,7 +68,7 @@ def getToken():
 def createToken():
     global jwt_token
     jwt_token = TokenManager.create_token(platform.node())
-    response = jsonify("ok")
+    response = jsonify(jwt_token)
     response.status_code = 201
     return response
 
@@ -81,6 +81,11 @@ def get_gpio():
 @app.route('/local/gpio', methods=['GET'])
 def get_local_gpio():
     return jsonify(json.loads(gpios))
+
+
+@app.route('/local/gpio/websocket', methods=['GET'])
+def get_local_gpio_ws():
+    return jsonify(gpios)
 
 
 @app.route('/run_server', methods=['GET'])
@@ -111,8 +116,11 @@ def set_mode():
     data = request.json
     mode = data["mode"]
     port = data["port"]
-    print(mode)
-    ScriptsManager.RestartScript(mode, port)
+    token = data["token"]
+    print(f"{mode=}")
+    print(f"{port=}")
+    print(f"{token=}")
+    ScriptsManager.RestartScript(mode, port, token)
     response = jsonify(f"Start websocket in {mode=}")
     response.headers.add("Access-Control-Allow-Origin", "*")
     return response
@@ -126,7 +134,7 @@ def connect_to_server():
     token = data["token"]
     print(f"{ip=} {port=} {token=}")
     try:
-        result = ScriptsManager.RunWebsocketClent(ip, port, token)
+        result = ScriptsManager.RunWebsocketClient(ip, port, token)
         if result:
             response = jsonify(result)
             response.status_code = 200

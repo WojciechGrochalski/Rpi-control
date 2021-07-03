@@ -2,15 +2,27 @@
 @import "~bootstrap-icons/font/bootstrap-icons.css";
 
 
-html{
-  height: 100%;
+html, body {
+  height:100%;
 }
-body {
+body{
+
   color: whitesmoke!important;
   background-image: url("assets/bg3.jpg");
-  background-repeat: no-repeat ;
+  background-repeat: no-repeat  ;
+  background-position: center center;
+  background-attachment: fixed;
   background-size: cover;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+
 }
+.low-menu{
+
+  margin-top: 20%;
+}
+
 body{
 
 

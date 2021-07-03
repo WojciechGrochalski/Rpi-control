@@ -14,13 +14,13 @@ def getPID(pid, device):
         return pid[10]
 
 
-def startScript(ip, port, mode, token,  device):
+def startScript(port, mode, token,  device, ip='127.0.0.1'):
     try:
         if device == "Windows":
-            os.system(f"python websocket.py {mode} {ip} {port} {token} ")
+            os.system(f"start /b python websocket.py {mode} {ip} {port} {token} ")
             pid = os.popen(f"netstat -ano | findstr :{port}").read()
         if device == "Linux":
-            os.system(f"python3 websocket.py {mode} {ip} {port} {token} ")
+            os.system(f"python3 websocket.py {mode} {ip} {port} {token} & ")
             pid = os.popen(f"lsof -i :{port}").read()
         if pid:
             print("ok websocket is runnig")
@@ -51,12 +51,12 @@ def killScript(port, device):
 class ScriptsManager:
 
     @staticmethod
-    def RestartScript(mode, port):
+    def RestartScript(mode, port, token):
         device = platform.system()
         killScript(port, device)
-        startScript(mode, port, device)
+        return startScript(port, mode, token, device)
 
     @staticmethod
-    def RunWebsocketClent(ip, port, token):
+    def RunWebsocketClient(ip, port, token):
         device = platform.system()
-        return startScript(ip, port, "Client", token,  device)
+        return startScript(port, "Client", token, device, ip)
