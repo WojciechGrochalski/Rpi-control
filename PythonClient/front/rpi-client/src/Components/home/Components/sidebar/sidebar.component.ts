@@ -16,12 +16,18 @@ export class SidebarComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   mode = '';
   constructor(
-    private gpioService: GpioService
+    private gpioService: GpioService,
+    private conn: LocalConnectionService
   ) { }
 
   ngOnInit(): void {
-    this.subscription = this.gpioService.getMode().subscribe(newmode => this.mode = newmode);
-  }
+    this.subscription = this.gpioService.getMode().subscribe(newmode => {
+      this.mode = newmode;
+    });
+    this.mode = this.gpioService.getModeString();
+    }
+
+
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }

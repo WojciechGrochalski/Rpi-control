@@ -1,6 +1,7 @@
 import asyncio
 import json
 import platform
+import time
 from threading import Thread
 import requests
 from flask import Flask, jsonify, request, abort, Response
@@ -137,7 +138,11 @@ def connect_to_server():
         result = ScriptsManager.RunWebsocketClient(ip, port, token)
         if result:
             response = jsonify(result)
-            response.status_code = 200
+            time.sleep(3)
+            if ScriptsManager.CheckWebsocketStatus(port):
+                response.status_code = 200
+            else:
+                response.status_code = 409
         else:
             response = jsonify(result)
             response.status_code = 409
@@ -158,6 +163,16 @@ def post():
         newGpio = json.loads(gpios)
         json.dump(newGpio, outfile, indent=4)
     return jsonify(data)
+
+
+@app.route('/disconnect', methods=['POST'])
+def disconnect():
+    data = request.json
+    port = data["port"]
+    ScriptsManager.KillScript(port)
+    response = jsonify("disconnected")
+    response.status_code = 200
+    return response
 
 
 if __name__ == '__main__':

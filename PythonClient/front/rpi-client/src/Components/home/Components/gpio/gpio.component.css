@@ -1,6 +1,6 @@
 table{
   max-width: 100%;
-  table-layout: auto ;
+  table-layout: fixed ;
 }
 .center {
   margin-left: auto;

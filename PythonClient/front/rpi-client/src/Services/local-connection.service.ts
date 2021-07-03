@@ -30,6 +30,9 @@ export class LocalConnectionService {
   ConnectToServer(conn: Connect){
     return this.http.post(this.baseUrl + 'connect', conn );
   }
+  DisconnectFromServer(data: number){
+    return this.http.post(this.baseUrl + 'disconnect', {port: data} );
+  }
 }
 
 

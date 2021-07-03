@@ -11,13 +11,17 @@ export class GpioService {
   baseUrl = 'http://localhost:5000/api/Rpi';
   baseLocalUrl = 'http://localhost:8080/';
   private mode = new Subject<string>();
+  actuallyMode = '';
 
   getMode(): Observable<string>{
     return this.mode.asObservable();
   }
+  getModeString(): string{
+    return this.actuallyMode;
+  }
   setMode(mode: string): void{
-    console.log(this.mode);
     this.mode.next(mode);
+    this.actuallyMode = mode;
   }
   constructor(private http: HttpClient) {
   }

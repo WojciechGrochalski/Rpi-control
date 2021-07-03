@@ -8,7 +8,7 @@
       <nav class="nav flex-column nav-pills  ">
         <li class="active">
           <a class="nav-link" routerLink="login" routerLinkActive="active">Log in</a>
-          <a class="nav-link" routerLink="change-mode" routerLinkActive="active">Set Mode</a>
+          <a *ngIf="!mode" class="nav-link" routerLink="change-mode" routerLinkActive="active">Set Mode</a>
           <a *ngIf="!mode" class="nav-link" routerLink="gpio" routerLinkActive="active">Local Rpi Pins</a>
 
           <div *ngIf="mode=='Server'" >
@@ -29,7 +29,7 @@
             <a href="#ClientSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">Client managements</a>
             <ul class="collapse list-unstyled " id="ClientSubmenu" >
               <li>
-                <a class="nav-link" routerLink="connect">Connect to server </a>
+                <a class="nav-link" routerLink="connect">Connection </a>
               </li>
               <li>
                 <a class="nav-link"  routerLink="gpio" >Show connected Rpi</a>
@@ -43,7 +43,7 @@
       </nav>
     </div>
 
-    <div class="col-4 gpio ">
+    <div class="col-sm-5 gpio ">
       <router-outlet  ></router-outlet>
     </div>
   </div>

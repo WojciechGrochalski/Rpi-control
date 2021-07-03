@@ -51,7 +51,6 @@ export class ChangemodeComponent implements OnInit {
       this.router.navigate(['connect']);
       this.btnClientState = !this.btnClientState;
       this.btnServerState = false;
-      this.gpioService.setMode(mode);
     }
   }
 }
