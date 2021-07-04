@@ -1,0 +1,10 @@
+.idea
+*Dockerfile*
+**node_modules**
+npm-debug.log
+*dockerign*
+venv
+Dockerfile*
+.dockerignore
+README.md
+LICENSE

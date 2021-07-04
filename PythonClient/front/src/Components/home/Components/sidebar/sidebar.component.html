@@ -1,0 +1,51 @@
+
+<div class="container-fluid">
+  <div class="row justify-content-md-center">
+    <div class="col-1  menu-left">
+      <div class="sidebar-header ">
+        <a class="back-to-menu" routerLink="/" style="text-underline: none"><h3 > Menu &nbsp;<img src="assets/raspberry-pi.svg" class="img-fluid rpi"></h3></a>
+      </div >
+      <nav class="nav flex-column nav-pills  ">
+        <li class="active">
+          <a class="nav-link" routerLink="login" routerLinkActive="active">Log in</a>
+          <a *ngIf="!mode" class="nav-link" routerLink="change-mode" routerLinkActive="active">Set Mode</a>
+          <a *ngIf="!mode" class="nav-link" routerLink="gpio" routerLinkActive="active">Local Rpi Pins</a>
+
+          <div *ngIf="mode=='Server'" >
+            <a href="#ServerSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">Server managements</a>
+            <ul class="collapse list-unstyled " id="ServerSubmenu" >
+              <li>
+                <a class="nav-link"  routerLink="get-token">Get Token</a>
+              </li>
+              <li>
+                <a class="nav-link"  href="#">Show connected Rpi</a>
+              </li>
+              <li>
+                <a  class="nav-link"  routerLink="gpio"  href="#">Shared Pins</a>
+              </li>
+            </ul>
+          </div>
+          <div *ngIf="mode=='Client'" >
+            <a href="#ClientSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">Client managements</a>
+            <ul class="collapse list-unstyled " id="ClientSubmenu" >
+              <li>
+                <a class="nav-link" routerLink="connect">Connection </a>
+              </li>
+              <li>
+                <a class="nav-link"  routerLink="gpio" >Show connected Rpi</a>
+              </li>
+              <li>
+                <a  class="nav-link"  routerLink="gpio" >Shared Pins</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+      </nav>
+    </div>
+
+    <div class="col-sm-5 gpio ">
+      <router-outlet  ></router-outlet>
+    </div>
+  </div>
+</div>
+

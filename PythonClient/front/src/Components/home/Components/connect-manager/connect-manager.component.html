@@ -1,0 +1,70 @@
+
+<div class="container   d-flex justify-content-center low-menu">
+  <div class="wrapper jumbotron my-auto ">
+
+    <div  id="formContent">
+      <ng-container *ngIf="mode== 'Client' ">
+
+        <h2 class="active"> Disconnect from server </h2>
+        <!-- Form -->
+        <flash-messages></flash-messages>
+        <form [formGroup]="disconnectForm" (ngSubmit)="Disconnect()">
+          <div class="form-group">
+            <input for="port" placeholder="Server port" type="text" maxlength="4" formControlName="port" id="port_dc" name="port" class="" [ngClass]="{ 'is-invalid': submitted && d.port.errors }" />
+            <div *ngIf="submitted && d.port.errors" class="invalid-feedback">
+              <div *ngIf="d.port.errors.required">To pole jest wymagane</div>
+            </div>
+          </div>
+          <br>
+          <div class="form-group">
+            <button [disabled]="loading" type="submit"  class="fadeIn fourth btn btn-primary btn-lg " value="Disconnect">
+              <span *ngIf="!loading">Disconnect</span>
+              <ng-container *ngIf="loading">
+                <span    class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Disconnecting...
+              </ng-container>
+            </button>
+          </div>
+        </form>
+      </ng-container>
+      <ng-container *ngIf="mode!= 'Client' ">
+        <!-- Tabs Titles -->
+        <h2 class="active"> Connect to server </h2>
+
+        <!-- Form -->
+        <flash-messages></flash-messages>
+        <form [formGroup]="connectForm" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <input for="ip"  placeholder="Ip address" type="text" [pattern]="ipPattern" formControlName="ip" name="ip" id="ip" class="fadeIn second" [ngClass]="{ 'is-invalid': submitted && f.ip.errors }" />
+            <div *ngIf="submitted && f.ip.errors" class="invalid-feedback">
+              <div *ngIf="f.ip.errors.required">To pole jest wymagane</div>
+              <div *ngIf="f.ip.errors?.pattern">IP address is not valid</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <input for="port" placeholder="Server port" type="text" maxlength="4" formControlName="port" id="port" name="port" class="" [ngClass]="{ 'is-invalid': submitted && f.port.errors }" />
+            <div *ngIf="submitted && f.port.errors" class="invalid-feedback">
+              <div *ngIf="f.port.errors.required">To pole jest wymagane</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <input for="token" placeholder="Required token" type="text" formControlName="token" id="token" name="token" class="fadeIn third" [ngClass]="{ 'is-invalid': submitted && f.token.errors }" />
+            <div *ngIf="submitted && f.token.errors" class="invalid-feedback">
+              <div *ngIf="f.token.errors.required">To pole jest wymagane</div>
+            </div>
+          </div>
+          <br>
+          <div class="form-group">
+            <button [disabled]="loading" type="submit"  class="fadeIn fourth btn btn-primary btn-lg " value="Connect">
+              <span *ngIf="!loading">Connect</span>
+              <ng-container *ngIf="loading">
+                <span    class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Connecting...
+              </ng-container>
+            </button>
+          </div>
+        </form>
+      </ng-container>
+    </div>
+  </div>
+</div>

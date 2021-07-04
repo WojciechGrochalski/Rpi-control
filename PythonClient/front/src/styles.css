@@ -1,0 +1,31 @@
+@import "~bootstrap/dist/css/bootstrap.css";
+@import "~bootstrap-icons/font/bootstrap-icons.css";
+
+
+html, body {
+  height:100%;
+}
+body{
+
+  color: whitesmoke!important;
+  background-image: url("assets/bg3.jpg");
+  background-repeat: no-repeat  ;
+  background-position: center center;
+  background-attachment: fixed;
+  background-size: cover;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+
+}
+.low-menu{
+
+  margin-top: 20%;
+}
+
+body{
+
+
+  /*background: rgb(80,26,40);*/
+  /*background: radial-gradient(circle, rgba(80,26,40,1) 23%, rgba(47,5,16,0.87718837535014) 84%);*/
+}
