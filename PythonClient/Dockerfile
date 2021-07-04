@@ -8,7 +8,6 @@ WORKDIR /app
 COPY front/package.json /app
 COPY front/package-lock.json /app
 
-
 RUN npm install
 
 COPY front/. /app
@@ -32,5 +31,6 @@ COPY --from=build-step /app/dist /var/www/localhost/htdocs
 WORKDIR /server
 COPY start.sh /server
 RUN chmod +x start.sh
-EXPOSE 80 5000
+EXPOSE  80
+EXPOSE 5000 
 CMD ["sh", "start.sh"]

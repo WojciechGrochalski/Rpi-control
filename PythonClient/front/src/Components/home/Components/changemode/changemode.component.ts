@@ -1,7 +1,8 @@
-import {Component, OnInit, Output,  EventEmitter } from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {LocalConnectionService} from '../../../../Services/local-connection.service';
 import {Router} from '@angular/router';
 import {GpioService} from '../../../../Services/gpio.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-changemode',
@@ -12,6 +13,8 @@ export class ChangemodeComponent implements OnInit {
   btnClientState = false;
   btnServerState = false;
   alert = true;
+  subscription: Subscription;
+  mode = '';
   constructor(
     private localCon: LocalConnectionService,
     private gpioService: GpioService,
@@ -19,6 +22,22 @@ export class ChangemodeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.mode = this.gpioService.getModeString();
+  }
+
+  shutdown(): void{
+    this.localCon.ShutDownServer().subscribe( res =>{
+      if (res)
+      {
+        this.mode = null;
+        this.gpioService.setMode('');
+      }
+      else{
+        this.alert = false;
+      }
+    }, error => {
+      this.alert = false;
+    });
   }
   setMode(mode: string){
     if (mode === 'Server'){

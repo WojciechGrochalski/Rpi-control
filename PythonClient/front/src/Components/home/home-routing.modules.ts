@@ -6,6 +6,7 @@ import {GpioComponent} from './Components/gpio/gpio.component';
 import {TokenComponent} from './Components/token/token.component';
 import {ConnectManagerComponent} from './Components/connect-manager/connect-manager.component';
 import {ChangemodeComponent} from './Components/changemode/changemode.component';
+import {ConnectedRpiComponent} from './Components/connected-rpi/connected-rpi.component';
 
 
 
@@ -19,7 +20,8 @@ const routes: Routes = [
         { path: 'gpio', component: GpioComponent},
         { path: 'get-token', component: TokenComponent},
         { path: 'connect', component: ConnectManagerComponent},
-        { path: 'change-mode', component: ChangemodeComponent}
+        { path: 'change-mode', component: ChangemodeComponent},
+        { path: 'rpi', component: ConnectedRpiComponent}
       ]},
 ];
 

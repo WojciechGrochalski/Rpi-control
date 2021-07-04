@@ -1,3 +1,5 @@
+import platform
+
 import websockets
 import asyncio
 
@@ -15,7 +17,9 @@ class WebSocket:
         if self.connection.open:
             print('Connection stablished. Client correcly connected')
             # Send greeting
+            client = platform.node()
             await self.sendMessage(str(self.token))
+            await self.sendMessage(client)
             return self.connection
 
     async def sendMessage(self, message):
@@ -33,10 +37,10 @@ class WebSocket:
             await asyncio.sleep(2)
 
     async def heartbeat(self, connection):
+        device = platform.node()
         while True:
             try:
-                await connection.send('ping')
-
+                await connection.send(device)
             except websockets.exceptions.ConnectionClosed:
                 print('Connection with server closed')
                 break

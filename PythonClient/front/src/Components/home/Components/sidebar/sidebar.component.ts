@@ -1,8 +1,8 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {LocalConnectionService} from '../../../../Services/local-connection.service';
-import {Router} from '@angular/router';
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {GpioService} from '../../../../Services/gpio.service';
 import {Subscription} from 'rxjs';
+import {Rpi} from '../../../../Models/Rpi';
+import {LocalConnectionService} from '../../../../Services/local-connection.service';
 
 
 
@@ -12,7 +12,6 @@ import {Subscription} from 'rxjs';
   styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent implements OnInit, OnDestroy {
-
   subscription: Subscription;
   mode = '';
   constructor(
@@ -24,9 +23,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this.subscription = this.gpioService.getMode().subscribe(newmode => {
       this.mode = newmode;
     });
-    this.mode = this.gpioService.getModeString();
-    }
-
+  }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();

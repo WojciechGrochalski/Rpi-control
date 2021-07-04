@@ -7,38 +7,39 @@
       </div >
       <nav class="nav flex-column nav-pills  ">
         <li class="active">
-          <a class="nav-link" routerLink="login" routerLinkActive="active">Log in</a>
+          <h3 *ngIf="mode" >You are in {{mode}} mode</h3>
+          <a  *ngIf="mode=='Remote'" class="nav-link" routerLink="login" routerLinkActive="active">Log in</a>
           <a *ngIf="!mode" class="nav-link" routerLink="change-mode" routerLinkActive="active">Set Mode</a>
           <a *ngIf="!mode" class="nav-link" routerLink="gpio" routerLinkActive="active">Local Rpi Pins</a>
 
-          <div *ngIf="mode=='Server'" >
+          <ng-container *ngIf="mode=='Server'" >
             <a href="#ServerSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">Server managements</a>
-            <ul class="collapse list-unstyled " id="ServerSubmenu" >
+            <ul class="collapse list-unstyled" id="ServerSubmenu" >
               <li>
-                <a class="nav-link"  routerLink="get-token">Get Token</a>
+                <a class="nav-link" routerLinkActive="active" routerLink="change-mode">Shut down server</a>
               </li>
               <li>
-                <a class="nav-link"  href="#">Show connected Rpi</a>
+                <a class="nav-link" routerLinkActive="active" routerLink="get-token">Get Token</a>
               </li>
               <li>
-                <a  class="nav-link"  routerLink="gpio"  href="#">Shared Pins</a>
+                <a  class="nav-link" routerLinkActive="active" routerLink="gpio" >Shared Pins</a>
+              </li>
+              <li>
+                <a class="nav-link" routerLinkActive="active" routerLink="rpi">Show connected Rpi</a>
               </li>
             </ul>
-          </div>
-          <div *ngIf="mode=='Client'" >
+          </ng-container>
+          <ng-container *ngIf="mode=='Client'" >
             <a href="#ClientSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">Client managements</a>
             <ul class="collapse list-unstyled " id="ClientSubmenu" >
               <li>
-                <a class="nav-link" routerLink="connect">Connection </a>
+                <a class="nav-link" routerLinkActive="active" routerLink="connect">Connection </a>
               </li>
               <li>
-                <a class="nav-link"  routerLink="gpio" >Show connected Rpi</a>
-              </li>
-              <li>
-                <a  class="nav-link"  routerLink="gpio" >Shared Pins</a>
+                <a  class="nav-link" routerLinkActive="active" routerLink="gpio" >Shared Pins</a>
               </li>
             </ul>
-          </div>
+          </ng-container>
         </li>
       </nav>
     </div>

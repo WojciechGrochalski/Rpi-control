@@ -4,7 +4,7 @@
         "GPIOName": "3v3 Power"
     },
     {
-        "GPIOMode": "IN",
+        "GPIOMode": "OUT",
         "GPIOName": "GPIO 2",
         "GPIONumber": 3,
         "GPIOStatus": 1

@@ -1,10 +1,10 @@
 import asyncio
+import datetime
 import json
-
 import requests
 import websockets
 
-from backend.tools.GpioControl import GpioControl
+from tools.GpioControl import GpioControl
 
 token = ""
 
@@ -26,16 +26,20 @@ async def Server(websocket, path):
     invalid_user = True
     msg = await websocket.recv()
     print(f"{msg=} {token=}")
-    if msg == token:
+    if msg == "token":
+        client = await websocket.recv()
+        new_client = {"name": client, "lastactivity": str(datetime.datetime.now())}
+        await websocket.send(f'New Client {new_client}')
+        requests.post("http://localhost:5000/newClient", json=new_client)
         invalid_user = False
-        local_gpio = requests.get("http:/localhost:5000/local/gpio/websocket").json()
+        local_gpio = requests.get("http://localhost:5000/local/gpio/websocket").json()
         await websocket.send(local_gpio)
     while True:
         if invalid_user:
             print("invalid token")
             break
         try:
-            remote_gpio = requests.get("http:/localhost:500/local/gpio/websocket").json()
+            remote_gpio = requests.get("http://localhost:5000/local/gpio/websocket").json()
             if check_it_not_equal(remote_gpio, local_gpio):
                 diffrent_pins = GpioControl.get_diffrent_pins(json.loads(remote_gpio), json.loads(local_gpio))
                 local_gpio = remote_gpio

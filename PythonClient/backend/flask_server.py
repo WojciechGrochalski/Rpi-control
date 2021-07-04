@@ -1,11 +1,15 @@
 import asyncio
+import datetime
 import json
 import platform
 import time
+from datetime import datetime as dt
 from threading import Thread
 import requests
 from flask import Flask, jsonify, request, abort
 from flask_cors import CORS
+
+from Rpi import Rpi
 from WebSocket import WebSocketRemoteClient
 from WebSocket.ScriptsManager import ScriptsManager
 from tools import TokenManager
@@ -15,6 +19,26 @@ localurl = "ws://localhost:8085"
 url2 = "wss://dockerinz.azurewebsites.net/ws"
 shutdown = False
 jwt_token = ""
+RpiClients = []
+
+
+def removeDisconnectedClients():
+    for item in RpiClients:
+        lastactivity = dt.strptime(item.Lastactivity, '%Y-%m-%d %H:%M:%S.%f')
+        diff = datetime.datetime.now() - lastactivity
+        if diff.seconds > 25:
+            RpiClients.remove(item)
+
+
+def addClientToList(client):
+    if len(RpiClients) > 0:
+        for item in RpiClients:
+            if item.Name == client.Name:
+                item = client
+            else:
+                RpiClients.append(client)
+    else:
+        RpiClients.append(client)
 
 
 def connect_to_dotnetServer():
@@ -38,8 +62,9 @@ def connect_to_dotnetServer():
 
 app = Flask(__name__)
 app.config["DEBUG"] = True
-cors = CORS(app, resources={r"/*": {"origins": "http://localhost:4200/*"}})
-with open('AllPins.json', ) as file:
+cors = CORS(app, resources={
+    r"/*": {"origins": ["http://localhost:4200/*", "http://localhost:80/*", "http://localhost:8080/*"]}})
+with open('AllPins.json') as file:
     gpios = file.read()
 
 
@@ -74,6 +99,24 @@ def createToken():
     return response
 
 
+@app.route('/newClient', methods=['POST'])
+def get_new_client():
+    client = request.json
+    print(client['name'])
+    print(client['lastactivity'])
+    name = client['name']
+    new_client = Rpi(name, client['lastactivity'])
+    addClientToList(new_client)
+    return jsonify("ok")
+
+
+@app.route('/clients', methods=['GET'])
+def get_rpi_clients():
+    removeDisconnectedClients()
+    json_string = json.dumps([ob.__dict__ for ob in RpiClients])
+    return json_string
+
+
 @app.route('/gpio', methods=['GET'])
 def get_gpio():
     return jsonify(WebSocketRemoteClient.get_gpio())
@@ -95,6 +138,12 @@ def run_server():
     thread.daemon = True
     thread.start()
     return jsonify("Server is starting up ...")
+
+
+@app.route('/shutdown_server', methods=['GET'])
+def shutdown_server():
+    ScriptsManager.KillScript(8085)
+    return jsonify("Server is shutdown")
 
 
 @app.route('/reload_server', methods=['GET'])
@@ -176,7 +225,7 @@ def disconnect():
 
 
 if __name__ == '__main__':
-    app.run(port=5000, threaded=True)
+    app.run(host='0.0.0.0', port=5000, threaded=True)
     with open("AllPins.json", "w") as outfile:
         gpios = json.loads(gpios)
         json.dump(gpios, outfile, indent=4)

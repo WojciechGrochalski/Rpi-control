@@ -24,7 +24,7 @@ export class HttpInterceptorService implements HttpInterceptor {
         });
         return next.handle(request);
       } else {
-        console.log('access');
+        //console.log('access');
         const accessToken = localStorage.getItem('accessToken');
         if (accessToken) {
           request = request.clone({

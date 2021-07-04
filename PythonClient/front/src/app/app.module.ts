@@ -4,11 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {ForgetPasswordComponent} from '../Components/forget-password/forget-password.component';
-import {RegisterComponent} from '../Components/register/register.component';
 import {LogInComponent} from '../Components/home/Components/Login/log-in.component';
-import {VerifyUserComponent} from '../Components/verify-user/verify-user.component';
-import {NewPasswordComponent} from '../Components/new-password/new-password.component';
 import {HttpInterceptorService} from '../Services/http-interceptor.service';
 import {ErrorInterceptorService} from '../Services/error-interceptor.service';
 import {RouterModule} from '@angular/router';
@@ -20,6 +16,7 @@ import {HomeRoutingModules} from '../Components/home/home-routing.modules';
 import { TokenComponent } from '../Components/home/Components/token/token.component';
 import { ConnectManagerComponent } from '../Components/home/Components/connect-manager/connect-manager.component';
 import { ChangemodeComponent } from '../Components/home/Components/changemode/changemode.component';
+import { ConnectedRpiComponent } from '../Components/home/Components/connected-rpi/connected-rpi.component';
 
 
 
@@ -27,17 +24,14 @@ import { ChangemodeComponent } from '../Components/home/Components/changemode/ch
 @NgModule({
   declarations: [
     AppComponent,
-    ForgetPasswordComponent,
     LogInComponent,
-    RegisterComponent,
-    VerifyUserComponent,
-    NewPasswordComponent,
     HomeComponent,
     SidebarComponent,
     GpioComponent,
     TokenComponent,
     ConnectManagerComponent,
     ChangemodeComponent,
+    ConnectedRpiComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -49,9 +43,6 @@ import { ChangemodeComponent } from '../Components/home/Components/changemode/ch
       {path: '', component: HomeComponent},
       {path: '**', component: HomeComponent, pathMatch: 'full'},
       { path: 'login/:confirm', component: LogInComponent},
-      { path: 'register', component: RegisterComponent},
-      { path: 'new-password', component: NewPasswordComponent},
-      { path: 'forgot-password', component: ForgetPasswordComponent},
     ]),
     HomeRoutingModules
   ],

@@ -62,7 +62,7 @@ export class ConnectManagerComponent implements OnInit, OnDestroy {
       return;
     }
     else {
-      console.log('loadding');
+
       this.loading = true;
       this.conn.DisconnectFromServer(this.d.port.value).subscribe(res => {
           if (res === 'disconnected') {

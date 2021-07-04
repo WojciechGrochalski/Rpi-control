@@ -2,9 +2,17 @@
   <div class="wrapper jumbotron my-auto">
     <div  class="alert alert-warning alert-dismissible fade show" role="alert"  [hidden]="alert">
       <strong> Something goes wrong</strong>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+      </button>
     </div>
-    <div class=" right-menu ">
+    <ng-container *ngIf="mode=='Server'" class=" right-menu">
+      <h3 style="color: #0d0d0d">Shutdown the Server</h3>
+      <button class="btn btn-danger btn-lg mt-5"
+              type="button" (click)="shutdown()" >
+        ShutDown
+      </button>
+    </ng-container>
+    <div *ngIf="mode!='Server'" class=" right-menu ">
       <button class="btn btn-success btn-lg m-2" [disabled]="btnServerState"
               type="button" (click)="setMode('Server')" >
         Server Mode
