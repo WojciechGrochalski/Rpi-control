@@ -1,5 +1,0 @@
-requests~=2.25.1
-Flask~=2.0.1
-websockets~=9.1
-
-PyJWT~=2.1.0
