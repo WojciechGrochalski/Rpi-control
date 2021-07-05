@@ -9,7 +9,7 @@ import {Subscription} from 'rxjs';
   templateUrl: './changemode.component.html',
   styleUrls: ['./changemode.component.css']
 })
-export class ChangemodeComponent implements OnInit {
+export class ChangemodeComponent implements OnInit, OnDestroy {
   btnClientState = false;
   btnServerState = false;
   alert = true;
@@ -22,7 +22,14 @@ export class ChangemodeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.mode = this.gpioService.getModeString();
+    this.subscription = this.gpioService.getMode().subscribe(newMode => {
+      this.mode = newMode;
+      localStorage.setItem('mode', this.mode);
+    });
+    console.log(this.mode, 'mode');
+    if ( this.mode === ''){
+      this.mode = localStorage.getItem('mode').toString();
+    }
   }
 
   shutdown(): void{
@@ -71,5 +78,8 @@ export class ChangemodeComponent implements OnInit {
       this.btnClientState = !this.btnClientState;
       this.btnServerState = false;
     }
+  }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }

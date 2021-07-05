@@ -22,6 +22,7 @@ export class GpioService {
   setMode(mode: string): void{
     this.mode.next(mode);
     this.actuallyMode = mode;
+    localStorage.setItem('mode', mode);
   }
   constructor(private http: HttpClient) {
   }

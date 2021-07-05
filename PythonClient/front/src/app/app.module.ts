@@ -40,10 +40,10 @@ import { ConnectedRpiComponent } from '../Components/home/Components/connected-r
     HttpClientModule,
     FlashMessagesModule.forRoot(),
     RouterModule.forRoot([
-      {path: '', component: HomeComponent},
+      {path: '', component: HomeComponent },
       {path: '**', component: HomeComponent, pathMatch: 'full'},
       { path: 'login/:confirm', component: LogInComponent},
-    ]),
+    ], { useHash: true }),
     HomeRoutingModules
   ],
   providers: [

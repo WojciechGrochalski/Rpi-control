@@ -26,7 +26,7 @@ async def Server(websocket, path):
     invalid_user = True
     msg = await websocket.recv()
     print(f"{msg=} {token=}")
-    if msg == "token":
+    if msg == token:
         client = await websocket.recv()
         new_client = {"name": client, "lastactivity": str(datetime.datetime.now())}
         await websocket.send(f'New Client {new_client}')
@@ -45,7 +45,6 @@ async def Server(websocket, path):
                 local_gpio = remote_gpio
                 print("Send message to client")
                 await websocket.send(json.dumps(diffrent_pins))
-
             msg = await websocket.recv()
             print(f"< {msg}")
         except websockets.exceptions.ConnectionClosed:

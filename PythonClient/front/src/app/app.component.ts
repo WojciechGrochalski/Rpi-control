@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 
 
 @Component({
@@ -8,4 +8,8 @@ import {Component, OnInit} from '@angular/core';
 })
 export class AppComponent  {
   constructor() {}
+  @HostListener('window:onbeforeunload', ['$event'])
+  clearLocalStorage(event): void{
+    localStorage.clear();
+  }
 }

@@ -1,4 +1,4 @@
-import {AfterContentInit, Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterContentInit, AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Connect} from '../../../../Models/Connect';
 import {LocalConnectionService} from '../../../../Services/local-connection.service';
@@ -30,10 +30,16 @@ export class ConnectManagerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.subscription = this.gpioService.getMode().subscribe(newmode => {
-      console.log('mode', newmode);
-      this.mode = newmode;
+    this.subscription = this.gpioService.getMode().subscribe(newMode => {
+      this.mode = newMode;
+      localStorage.setItem('mode', this.mode);
+      console.log(this.mode);
     });
+    console.log(this.mode, 'mode');
+    if ( this.mode === ''){
+      this.mode = localStorage.getItem('mode').toString();
+      console.log(this.mode, 'mode');
+    }
     this.connectForm = this.formBuilder.group({
       ip: ['', [Validators.required, Validators.pattern(this.ipPattern)]],
       port: ['', [Validators.required, Validators.maxLength(4)]],
@@ -42,8 +48,8 @@ export class ConnectManagerComponent implements OnInit, OnDestroy {
     this.disconnectForm = this.formBuilder.group({
       port: ['', [Validators.required, Validators.maxLength(4)]],
     });
-    this.mode =  this.gpioService.getModeString();
-    console.log('mode ',this.mode);
+
+
 
   }
 

@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {AuthService} from '../../../../Services/auth.service';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Subscription} from 'rxjs';
+import {GpioService} from '../../../../Services/gpio.service';
 
 
 @Component({
@@ -8,18 +8,31 @@ import {AuthService} from '../../../../Services/auth.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   title = 'rpi-client';
-
+  subscription: Subscription;
+  mode = '';
   constructor(
-    private http: HttpClient,
-
-    private authService: AuthService ) {
+    private gpioService: GpioService,
+  ) {
+    console.log('xd');
+    this.mode = localStorage.getItem('mode').toString();
+    console.log('xd', this.mode);
   }
 
-  async ngOnInit(): Promise<void>{
+  ngOnInit(): void {
+    this.subscription = this.gpioService.getMode().subscribe(newMode => {
+      this.mode = newMode;
+      localStorage.setItem('mode', this.mode);
+    });
+    if (this.mode === null || this.mode === ''){
+      this.mode = localStorage.getItem('mode').toString();
+    }
   }
 
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
 
 
 }

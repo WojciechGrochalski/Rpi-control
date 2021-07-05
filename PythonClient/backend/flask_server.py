@@ -1,3 +1,4 @@
+
 import asyncio
 import datetime
 import json
@@ -8,7 +9,6 @@ from threading import Thread
 import requests
 from flask import Flask, jsonify, request, abort
 from flask_cors import CORS
-
 from Rpi import Rpi
 from WebSocket import WebSocketRemoteClient
 from WebSocket.ScriptsManager import ScriptsManager

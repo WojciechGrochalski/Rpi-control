@@ -1,11 +1,16 @@
 import os
 import platform
 import subprocess
+import time
 
 
 def disconnect(port, device):
-    while CheckStatus(port, device):
-        killScript(port, device)
+    try:
+        while CheckStatus(port, device):
+            killScript(port, device)
+            time.sleep(1)
+    except Exception as e:
+        print(str(e))
 
 
 def getPID(pid, device):
@@ -15,8 +20,9 @@ def getPID(pid, device):
         return pid[4]
     if device == "Linux":
         pid = pid.split()
-        print(pid[10])
-        return pid[10]
+        print(pid[6])
+        linux_pid = pid[6]
+        return linux_pid[0:2]
     if device == "Darwin":
         pid = pid.split()
         print(pid[1])
@@ -24,13 +30,14 @@ def getPID(pid, device):
 
 
 def startScript(port, mode, token, device, ip='127.0.0.1'):
+    pid = None
     try:
         if device == "Windows":
             os.system(f"start /b python websocket.py {mode} {ip} {port} {token} ")
             pid = os.popen(f"netstat -ano | findstr :{port}").read()
         if device == "Linux":
             os.system(f"python3 websocket.py {mode} {ip} {port} {token} & ")
-            pid = os.popen(f"lsof -i :{port}").read()
+            pid = os.popen(f"netstat -plten | grep LISTEN | grep {port}").read()
         if device == "Darwin":
             os.system(f"python3 websocket.py {mode} {ip} {port} {token} & ")
             pid = os.popen(f"lsof -nP -i4TCP:${port} | grep LISTEN").read()
@@ -44,14 +51,14 @@ def startScript(port, mode, token, device, ip='127.0.0.1'):
 
 
 def CheckStatus(port, device) -> bool:
+    pid = None
     try:
         if device == "Windows":
             pid = os.popen(f"netstat -ano | findstr :{port}").read()
         if device == "Linux":
-            pid = os.popen(f"lsof -i :{port}").read()
+            pid = os.popen(f"netstat -plten | grep LISTEN | grep {port}").read()
         if device == "Darwin":
             pid = os.popen(f"lsof -nP -i4TCP:${port} | grep LISTEN").read()
-
         if pid:
             print("ok websocket is runnig")
             return True
@@ -70,11 +77,10 @@ def killScript(port, device):
                 output = subprocess.Popen(f"Taskkill /PID {pid} /F  ", stdout=subprocess.PIPE)
                 print(output.communicate()[0])
         if device == "Linux":
-            pid = os.popen(f"lsof -i :{port}").read()
+            pid = os.popen(f"netstat -plten | grep LISTEN | grep {port}").read()
             if pid:
                 pid = getPID(pid, device)
-                output = subprocess.Popen(f"kill  -9 {pid} ", stdout=subprocess.PIPE)
-                print(output.communicate()[0])
+                os.kill(int(pid), 9)
         if device == "Darwin":
             pid = os.popen(f"lsof -nP -i4TCP:${port} | grep LISTEN").read()
             if pid:

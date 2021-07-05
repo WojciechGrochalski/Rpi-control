@@ -31,6 +31,8 @@ COPY --from=build-step /app/dist /var/www/localhost/htdocs
 WORKDIR /server
 COPY start.sh /server
 RUN chmod +x start.sh
+RUN chmod +x kill.sh
 EXPOSE  80
 EXPOSE 5000 
+EXPOSE 8085
 CMD ["sh", "start.sh"]

@@ -3,6 +3,9 @@ import {GPIO} from '../../../../Models/GPIO';
 import {GpioService} from '../../../../Services/gpio.service';
 import {AuthService} from '../../../../Services/auth.service';
 import {LoginResult} from '../../../../Models/LoginResult';
+import {interval, Subscription} from 'rxjs';
+import {startWith, switchMap} from 'rxjs/operators';
+import {LocalConnectionService} from '../../../../Services/local-connection.service';
 
 interface Pin{
   Number: number;
@@ -16,23 +19,39 @@ interface Pin{
 })
 export class GpioComponent implements OnInit {
   User: LoginResult;
+  interval: Subscription;
   Gpio: GPIO[];
   leftGpio: GPIO[];
   rightGpio: GPIO[];
   constructor(
     private gpioService: GpioService,
-    private authService: AuthService) { }
+    private authService: AuthService,
+    private conn: LocalConnectionService ) { }
 
   ngOnInit(): void {
     this.User = this.authService.currentUserValue;
-    this.gpioService.GetLocalGpio().subscribe(res => {
-      this.leftGpio = res.splice(0, 20);
-      this.rightGpio = res.splice(0, 20);
-      this.SetColour();
-    });
-    this.gpioService.GetLocalGpio().subscribe(res => {
-      this.Gpio = res;
-    });
+    //this.gpioService.GetLocalGpio().subscribe( res => this.Gpio = res);
+    this.interval = interval(8000)
+      .pipe(
+        startWith(0),
+        switchMap(() => this.gpioService.GetLocalGpio())
+      ).subscribe(res => {
+        this.Gpio = res.slice();
+        this.leftGpio = res.splice(0, 20);
+        this.rightGpio = res.splice(0, 20);
+        this.SetColour();
+        }, error => {
+          console.log(error.error);
+        }
+      );
+    // this.gpioService.GetLocalGpio().subscribe(res => {
+    //   this.leftGpio = res.splice(0, 20);
+    //   this.rightGpio = res.splice(0, 20);
+    //   this.SetColour();
+    // });
+    // this.gpioService.GetLocalGpio().subscribe(res => {
+    //   this.Gpio = res;
+    // });
   }
 
   UpdateModePin(item: GPIO, newMode: string): void{

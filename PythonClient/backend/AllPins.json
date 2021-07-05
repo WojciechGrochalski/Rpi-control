@@ -7,7 +7,8 @@
         "GPIOMode": "OUT",
         "GPIOName": "GPIO 2",
         "GPIONumber": 3,
-        "GPIOStatus": 1
+        "GPIOStatus": 0,
+        "color": "green"
     },
     {
         "GPIONumber": 5,
@@ -16,10 +17,11 @@
         "GPIOStatus": 1
     },
     {
-        "GPIONumber": 7,
         "GPIOMode": "IN",
         "GPIOName": "GPIO 4",
-        "GPIOStatus": 0
+        "GPIONumber": 7,
+        "GPIOStatus": 1,
+        "color": "green"
     },
     {
         "GPIONumber": 9,
@@ -122,16 +124,18 @@
         "GPIOName": "Ground"
     },
     {
-        "GPIONumber": 8,
         "GPIOMode": "OUT",
         "GPIOName": "GPIO 14",
-        "GPIOStatus": 0
+        "GPIONumber": 8,
+        "GPIOStatus": 1,
+        "color": "green"
     },
     {
-        "GPIONumber": 10,
         "GPIOMode": "IN",
         "GPIOName": "GPIO 15",
-        "GPIOStatus": 0
+        "GPIONumber": 10,
+        "GPIOStatus": 1,
+        "color": "green"
     },
     {
         "GPIONumber": 12,
