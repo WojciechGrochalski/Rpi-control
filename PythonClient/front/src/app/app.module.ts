@@ -17,6 +17,7 @@ import { TokenComponent } from '../Components/home/Components/token/token.compon
 import { ConnectManagerComponent } from '../Components/home/Components/connect-manager/connect-manager.component';
 import { ChangemodeComponent } from '../Components/home/Components/changemode/changemode.component';
 import { ConnectedRpiComponent } from '../Components/home/Components/connected-rpi/connected-rpi.component';
+import {TimeagoModule} from 'ngx-timeago';
 
 
 
@@ -38,6 +39,7 @@ import { ConnectedRpiComponent } from '../Components/home/Components/connected-r
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    TimeagoModule.forRoot(),
     FlashMessagesModule.forRoot(),
     RouterModule.forRoot([
       {path: '', component: HomeComponent },

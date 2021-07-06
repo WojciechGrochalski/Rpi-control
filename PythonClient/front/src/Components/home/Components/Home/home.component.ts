@@ -15,9 +15,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   constructor(
     private gpioService: GpioService,
   ) {
-    console.log('xd');
-    this.mode = localStorage.getItem('mode').toString();
-    console.log('xd', this.mode);
+    if (localStorage.getItem('mode')){
+      this.mode = localStorage.getItem('mode').toString() ;
+    }
   }
 
   ngOnInit(): void {
@@ -26,7 +26,9 @@ export class HomeComponent implements OnInit, OnDestroy {
       localStorage.setItem('mode', this.mode);
     });
     if (this.mode === null || this.mode === ''){
-      this.mode = localStorage.getItem('mode').toString();
+      if (localStorage.getItem('mode')){
+        this.mode = localStorage.getItem('mode').toString() ;
+      }
     }
   }
 

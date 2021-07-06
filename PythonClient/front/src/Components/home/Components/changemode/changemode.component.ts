@@ -19,16 +19,23 @@ export class ChangemodeComponent implements OnInit, OnDestroy {
     private localCon: LocalConnectionService,
     private gpioService: GpioService,
     private router: Router
-  ) { }
+  ) {
+      if (this.mode === null || this.mode === ''){
+      if (localStorage.getItem('mode')){
+        this.mode = localStorage.getItem('mode').toString() ;
+      }
+    }
+  }
 
   ngOnInit(): void {
     this.subscription = this.gpioService.getMode().subscribe(newMode => {
       this.mode = newMode;
       localStorage.setItem('mode', this.mode);
     });
-    console.log(this.mode, 'mode');
-    if ( this.mode === ''){
-      this.mode = localStorage.getItem('mode').toString();
+    if (this.mode === null || this.mode === ''){
+      if (localStorage.getItem('mode')){
+        this.mode = localStorage.getItem('mode').toString() ;
+      }
     }
   }
 

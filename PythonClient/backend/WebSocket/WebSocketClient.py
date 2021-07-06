@@ -1,7 +1,10 @@
+import json
 import platform
 
 import websockets
 import asyncio
+
+from tools.GpioControl import GpioControl
 
 
 class WebSocket:
@@ -31,6 +34,7 @@ class WebSocket:
             try:
                 message = await connection.recv()
                 print('Received message from server: ' + str(message))
+                GpioControl.change_pin(json.loads(message))
             except websockets.exceptions.ConnectionClosed:
                 print('Connection with server closed')
                 break

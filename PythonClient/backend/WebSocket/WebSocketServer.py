@@ -29,7 +29,6 @@ async def Server(websocket, path):
     if msg == token:
         client = await websocket.recv()
         new_client = {"name": client, "lastactivity": str(datetime.datetime.now())}
-        await websocket.send(f'New Client {new_client}')
         requests.post("http://localhost:5000/newClient", json=new_client)
         invalid_user = False
         local_gpio = requests.get("http://localhost:5000/local/gpio/websocket").json()
@@ -44,6 +43,7 @@ async def Server(websocket, path):
                 diffrent_pins = GpioControl.get_diffrent_pins(json.loads(remote_gpio), json.loads(local_gpio))
                 local_gpio = remote_gpio
                 print("Send message to client")
+                GpioControl.change_pin(diffrent_pins)
                 await websocket.send(json.dumps(diffrent_pins))
             msg = await websocket.recv()
             print(f"< {msg}")

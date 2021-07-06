@@ -2,6 +2,7 @@
 import asyncio
 import datetime
 import json
+import os
 import platform
 import time
 from datetime import datetime as dt
@@ -225,7 +226,11 @@ def disconnect():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, threaded=True)
+    env = os.environ.get('container', False)
+    if env:
+        app.run(port=5000, threaded=True)
+    else:
+        app.run(host="0.0.0.0", port=5000, threaded=True)
     with open("AllPins.json", "w") as outfile:
         gpios = json.loads(gpios)
         json.dump(gpios, outfile, indent=4)

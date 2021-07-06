@@ -27,18 +27,22 @@ export class ConnectManagerComponent implements OnInit, OnDestroy {
     private gpioService: GpioService,
     private conn: LocalConnectionService,
     private flashMessagesService: FlashMessagesService ) {
+    if (this.mode === null || this.mode === ''){
+      if (localStorage.getItem('mode')){
+        this.mode = localStorage.getItem('mode').toString() ;
+      }
+    }
   }
 
   ngOnInit(): void {
     this.subscription = this.gpioService.getMode().subscribe(newMode => {
       this.mode = newMode;
       localStorage.setItem('mode', this.mode);
-      console.log(this.mode);
     });
-    console.log(this.mode, 'mode');
-    if ( this.mode === ''){
-      this.mode = localStorage.getItem('mode').toString();
-      console.log(this.mode, 'mode');
+    if (this.mode === null || this.mode === ''){
+      if (localStorage.getItem('mode')){
+        this.mode = localStorage.getItem('mode').toString() ;
+      }
     }
     this.connectForm = this.formBuilder.group({
       ip: ['', [Validators.required, Validators.pattern(this.ipPattern)]],
@@ -113,6 +117,6 @@ export class ConnectManagerComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-     this.subscription.unsubscribe();
+    this.subscription.unsubscribe();
   }
 }
