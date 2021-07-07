@@ -35,5 +35,4 @@ RUN chmod +x kill.sh
 EXPOSE  80
 EXPOSE 5000 
 EXPOSE 8085
-ENV container=true
 CMD ["sh", "start.sh"]

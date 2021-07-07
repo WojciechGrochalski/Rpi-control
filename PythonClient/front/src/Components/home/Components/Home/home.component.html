@@ -1,7 +1,6 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <div class="top ">
   <div class="menu">
-
     <div class="container-fluid">
       <div class="row justify-content-md-center">
         <div class="col-1  menu-left">
@@ -16,30 +15,25 @@
               <a *ngIf="!mode" class="nav-link" routerLink="gpio" routerLinkActive="active">Local Rpi Pins</a>
 
               <ng-container *ngIf="mode=='Server'" >
-<!--                <a routerLink="/"  aria-expanded="false" class=" nav-link">Server managements</a>-->
-<!--                <ul class="collapse list-unstyled" id="ServerSubmenu" >-->
+                <!--                <a routerLink="/"  aria-expanded="false" class=" nav-link">Server managements</a>-->
+                <!--                <ul class="collapse list-unstyled" id="ServerSubmenu" >-->
 
-                    <a class="nav-link" routerLinkActive="active" routerLink="change-mode">Shut down server</a>
+                <a class="nav-link" routerLinkActive="active" routerLink="change-mode">Shut down server</a>
 
 
-                    <a class="nav-link" routerLinkActive="active" routerLink="get-token">Get Token</a>
+                <a class="nav-link" routerLinkActive="active" routerLink="get-token">Get Token</a>
 
-                    <a  class="nav-link" routerLinkActive="active" routerLink="gpio" >Shared Pins</a>
+                <a  class="nav-link" routerLinkActive="active" routerLink="gpio" >Shared Pins</a>
 
-                    <a class="nav-link" routerLinkActive="active" routerLink="rpi">Show connected Rpi</a>
+                <a class="nav-link" routerLinkActive="active" routerLink="rpi">Show connected Rpi</a>
 
-<!--                </ul>-->
+                <!--                </ul>-->
               </ng-container>
               <ng-container *ngIf="mode=='Client'" >
-                <a href="#ClientSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">Client managements</a>
-                <ul class="collapse list-unstyled " id="ClientSubmenu" >
-                  <li>
-                    <a class="nav-link" routerLinkActive="active" routerLink="connect">Connection </a>
-                  </li>
-                  <li>
-                    <a  class="nav-link" routerLinkActive="active" routerLink="gpio" >Shared Pins</a>
-                  </li>
-                </ul>
+
+                <a class="nav-link" routerLinkActive="active" routerLink="connect">Connection </a>
+
+                <a  class="nav-link" routerLinkActive="active" routerLink="gpio" >Shared Pins</a>
               </ng-container>
             </li>
           </nav>

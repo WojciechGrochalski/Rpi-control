@@ -11,7 +11,6 @@ def get_number(value) -> int:
 
 
 def get_mode(value) -> str:
-    newvalue = ''
     newvalue = value.split('=')
     return newvalue[1]
 
@@ -26,11 +25,12 @@ class GpioControl:
 
     @staticmethod
     def change_pin(pins):
-        for pin in pins:
-            os.system(f"gpio -g mode {pin.GPIONumber} {pin.GPIOMode}")
-            os.system(f"gpio -g write {pin.GPIONumber} {pin.GPIOStatus}")
-            result = os.popen(f"raspi-gpio get | grep '{pin.GPIONumber}'").read()
-            print(f'{result=}')
+        if platform.machine() == "armv7l":
+            for pin in pins:
+                os.system(f"gpio -g mode {pin.GPIONumber} {pin.GPIOMode}")
+                os.system(f"gpio -g write {pin.GPIONumber} {pin.GPIOStatus}")
+                result = os.popen(f"raspi-gpio get | grep '{pin.GPIONumber}'").read()
+                print(f'{result=}')
 
     @staticmethod
     def get_local_status(gpiolist):

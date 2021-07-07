@@ -6,7 +6,6 @@ import {CreatedUser} from '../Models/CreatedUser';
 
 import {AuthModel} from '../Models/AuthModel';
 import {LoginResult} from '../Models/LoginResult';
-import {NewPassword} from '../Models/NewPassword';
 import {JwtHelperService} from '@auth0/angular-jwt';
 
 
@@ -39,22 +38,6 @@ export class AuthService {
     }
     return false;
   }
-
-  Register(user: CreatedUser) {
-    return this.http.post<any>(this.BaseUrl + 'User', user);
-  }
-
-  ResetPassword(Email: string) {
-    const data = new NewPassword('', Email);
-    return this.http.post<any>(this.BaseUrl + 'User/resetPassword', data);
-  }
-
-  SetNewPassword(data: NewPassword) {
-
-    return this.http.post<any>(this.BaseUrl + 'User/setPassword', data);
-  }
-
-
   login(user: AuthModel) {
     return this.http.post<LoginResult>(this.BaseUrl + 'User/login', user)
       .pipe(map( user => {

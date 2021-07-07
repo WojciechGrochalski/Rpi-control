@@ -6,7 +6,6 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {LogInComponent} from '../Components/home/Components/Login/log-in.component';
 import {HttpInterceptorService} from '../Services/http-interceptor.service';
-import {ErrorInterceptorService} from '../Services/error-interceptor.service';
 import {RouterModule} from '@angular/router';
 import {FlashMessagesModule} from 'flash-messages-angular';
 import { HomeComponent } from '../Components/home/Components/Home/home.component';
@@ -50,7 +49,6 @@ import {TimeagoModule} from 'ngx-timeago';
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptorService, multi: true },
     { provide: 'BASE_URL', useFactory: getBaseUrl, deps: [] }
   ],
   bootstrap: [AppComponent]

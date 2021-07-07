@@ -1,8 +1,6 @@
-
 import asyncio
 import datetime
 import json
-import os
 import platform
 import time
 from datetime import datetime as dt
@@ -14,6 +12,7 @@ from Rpi import Rpi
 from WebSocket import WebSocketRemoteClient
 from WebSocket.ScriptsManager import ScriptsManager
 from tools import TokenManager
+from tools.GpioControl import GpioControl
 
 url = "http://localhost:5001/ws/dc/wojtek/123"
 localurl = "ws://localhost:8085"
@@ -65,8 +64,6 @@ app = Flask(__name__)
 app.config["DEBUG"] = True
 cors = CORS(app, resources={
     r"/*": {"origins": ["http://localhost:4200/*", "http://localhost:80/*", "http://localhost:8080/*"]}})
-with open('AllPins.json') as file:
-    gpios = file.read()
 
 
 def change_pin(pin):
@@ -196,7 +193,8 @@ def connect_to_server():
         else:
             response = jsonify(result)
             response.status_code = 409
-    except:
+    except Exception as e:
+        print(str(e))
         response = jsonify(result)
         response.status_code = 409
 
@@ -209,9 +207,9 @@ def post():
     print(str(data))
     global gpios
     gpios = change_pin(data)
-    with open("AllPins.json", "w") as outfile:
+    with open("AllPins.json", "w") as out_file:
         newGpio = json.loads(gpios)
-        json.dump(newGpio, outfile, indent=4)
+        json.dump(newGpio, out_file, indent=4)
     return jsonify(data)
 
 
@@ -226,11 +224,16 @@ def disconnect():
 
 
 if __name__ == '__main__':
-    env = os.environ.get('container', False)
-    if env:
-        app.run(port=5000, threaded=True)
-    else:
-        app.run(host="0.0.0.0", port=5000, threaded=True)
+    with open('AllPins.json') as file:
+        gpios = file.read()
+
+    if platform.machine() == "armv7l":
+        gpios = json.loads(gpios)
+        local_pins = GpioControl.get_local_status(gpios)
+        with open("LocalPins.json", "w") as outfile:
+            json.dump(local_pins, outfile, indent=4)
+        gpios = json.dumps(gpios)
+    app.run(host="0.0.0.0", port=5000, threaded=True)
     with open("AllPins.json", "w") as outfile:
         gpios = json.loads(gpios)
         json.dump(gpios, outfile, indent=4)

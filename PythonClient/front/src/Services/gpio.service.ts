@@ -1,6 +1,6 @@
 import {Inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Observable, Subject} from 'rxjs';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {GPIO} from '../Models/GPIO';
 
 @Injectable({
@@ -10,17 +10,17 @@ export class GpioService {
 
   baseUrl = 'http://localhost:5000/api/Rpi';
   baseLocalUrl = 'http://localhost:5000/';
-  private mode = new Subject<string>();
+  private mode$ = new BehaviorSubject<string>(' ');
   actuallyMode = '';
 
   getMode(): Observable<string>{
-    return this.mode.asObservable();
+    return this.mode$.asObservable();
   }
   getModeString(): string{
     return this.actuallyMode;
   }
   setMode(mode: string): void{
-    this.mode.next(mode);
+    this.mode$.next(mode);
     this.actuallyMode = mode;
     localStorage.setItem('mode', mode);
   }
