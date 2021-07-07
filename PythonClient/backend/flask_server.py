@@ -224,15 +224,16 @@ def disconnect():
 
 
 if __name__ == '__main__':
-    with open('AllPins.json') as file:
-        gpios = file.read()
-
+  
     if platform.machine() == "armv7l":
         gpios = json.loads(gpios)
         local_pins = GpioControl.get_local_status(gpios)
         with open("LocalPins.json", "w") as outfile:
             json.dump(local_pins, outfile, indent=4)
         gpios = json.dumps(gpios)
+    else:
+        with open('AllPins.json') as file:
+            gpios = file.read()
     app.run(host="0.0.0.0", port=5000, threaded=True)
     with open("AllPins.json", "w") as outfile:
         gpios = json.loads(gpios)

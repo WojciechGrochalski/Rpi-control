@@ -1,3 +1,4 @@
+import json
 import os
 from sys import platform
 
@@ -35,8 +36,12 @@ class GpioControl:
     @staticmethod
     def get_local_status(gpiolist):
         for item in gpiolist:
-            result = os.popen(f"raspi-gpio get | grep '{item.GPIONumber}'").read()
+            result = os.popen(f"raspi-gpio get | grep 'GPIO {item['GPIONumber']}:'").read()
             result = result.split()
             status = get_number(result[2])
-            item.GPIOStatus = status
-            item.GPIOMode = get_mode(result[4])
+            item['GPIOStatus'] = status
+            item['GPIOMode'] = get_mode(result[4])
+        return gpiolist
+
+
+
