@@ -42,18 +42,20 @@ class GpioControl:
         if platform.machine() == "armv7l":
             GPIO.setmode(GPIO.BCM)
             for pin in pins:
-                if pin.GPIOMode.upper() == 'OUT':
-                    GPIO.setup(pin.GPIONumber, GPIO.OUT)
-                    GPIO.output(pin.GPIONumber, pin.GPIOStatus)
-                if pin.GPIOMode.upper() == 'IN':
-                    GPIO.setup(pin.GPIONumber, GPIO.IN)
-                    GPIO.output(pin.GPIONumber, pin.GPIOStatus)
+                if pin.GPIONumber != 41:
+                    if pin.GPIOMode.upper() == 'OUT':
+                        GPIO.setup(pin.GPIONumber, GPIO.OUT)
+                        GPIO.output(pin.GPIONumber, pin.GPIOStatus)
+                    if pin.GPIOMode.upper() == 'IN':
+                        GPIO.setup(pin.GPIONumber, GPIO.IN)
+                        GPIO.output(pin.GPIONumber, pin.GPIOStatus)
 
 
 
     @staticmethod
     def get_local_status(gpiolist):
         GPIO.setmode(GPIO.BCM)
+        print(type(gpiolist))
         for item in gpiolist:
             try:
                 state = int(GPIO.input(item.GPIONumber))
