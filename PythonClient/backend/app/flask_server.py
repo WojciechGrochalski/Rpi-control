@@ -233,6 +233,6 @@ if __name__ == '__main__':
             json.dump(local_pins, outfile, indent=4)
         gpios = json.dumps(gpios)
     app.run(host="0.0.0.0", port=5000, threaded=True)
-    with open("AllPins.json", "w") as outfile:
-        gpios = json.loads(gpios)
-        json.dump(gpios, outfile, indent=4)
+    # with open("AllPins.json", "w") as outfile:
+    #     gpios = json.loads(gpios)
+    #     json.dump(gpios, outfile, indent=4)
