@@ -4,7 +4,7 @@ import json
 import requests
 import websockets
 
-from tools.GpioControl import GpioControl
+from app.tools.GpioControl import GpioControl
 
 token = ""
 

@@ -1,6 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {GpioService} from '../../../../Services/gpio.service';
+import {LocalConnectionService} from '../../../../Services/local-connection.service';
+import {Rpi} from '../../../../Models/Rpi';
 
 
 @Component({
@@ -12,8 +14,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   title = 'rpi-client';
   subscription: Subscription;
   mode = '';
+  RpiClients: Rpi[];
   constructor(
     private gpioService: GpioService,
+    private conn: LocalConnectionService
   ) {
     if (localStorage.getItem('mode')){
       this.mode = localStorage.getItem('mode').toString() ;
@@ -30,6 +34,9 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.mode = localStorage.getItem('mode').toString() ;
       }
     }
+    this.conn.RpiClients().subscribe(res => {
+      this.RpiClients = res;
+    });
   }
 
   ngOnDestroy(): void {

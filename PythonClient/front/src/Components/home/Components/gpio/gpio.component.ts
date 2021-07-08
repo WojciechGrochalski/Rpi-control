@@ -63,12 +63,12 @@ export class GpioComponent implements OnInit {
     const index = this.Gpio.findIndex(pin => pin.GPIONumber === item.GPIONumber);
     if (this.Gpio[index].GPIOMode !== newMode) {
       console.log(newMode);
-      if (newMode === 'out'){
-        this.Gpio[index].GPIOStatus = 1;
-      }
-      else{
-        this.Gpio[index].GPIOStatus = 0;
-      }
+      // if (newMode === 'out'){
+      //   this.Gpio[index].GPIOStatus = 1;
+      // }
+      // else{
+      //   this.Gpio[index].GPIOStatus = 0;
+      // }
       this.Gpio[index].GPIOMode = newMode;
       this.gpioService.SetPin( this.Gpio[index]).subscribe();
       console.log(this.Gpio[index]);
@@ -80,12 +80,12 @@ export class GpioComponent implements OnInit {
     const index = this.Gpio.findIndex(pin => pin.GPIONumber === item.GPIONumber);
     if (this.Gpio[index].GPIOStatus !== newStatus) {
       console.log(newStatus);
-      if (newStatus === 1){
-        this.Gpio[index].GPIOMode = 'out';
-      }
-      else{
-        this.Gpio[index].GPIOMode = 'in';
-      }
+      // if (newStatus === 1){
+      //   this.Gpio[index].GPIOMode = 'out';
+      // }
+      // else{
+      //   this.Gpio[index].GPIOMode = 'in';
+      // }
       this.Gpio[index].GPIOStatus = newStatus;
       this.gpioService.SetPin( this.Gpio[index]).subscribe();
       console.log(this.Gpio[index]);

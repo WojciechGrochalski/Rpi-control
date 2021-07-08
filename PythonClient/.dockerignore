@@ -8,3 +8,5 @@ Dockerfile*
 .dockerignore
 README.md
 LICENSE
+venv
+__pychache__

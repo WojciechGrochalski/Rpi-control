@@ -11,8 +11,8 @@
             <li class="active">
               <h3 *ngIf="mode" >You are in {{mode}} mode</h3>
               <a  *ngIf="mode=='Remote'" class="nav-link" routerLink="login" routerLinkActive="active">Log in</a>
-              <a *ngIf="!mode" class="nav-link" routerLink="change-mode" routerLinkActive="active">Set Mode</a>
-              <a *ngIf="!mode" class="nav-link" routerLink="gpio" routerLinkActive="active">Local Rpi Pins</a>
+              <a *ngIf="mode!=='Client' && mode !== 'Server'" class="nav-link" routerLink="change-mode" routerLinkActive="active">Set Mode</a>
+              <a *ngIf="mode!=='Client' && mode !== 'Server'"  class="nav-link" routerLink="gpio" routerLinkActive="active">Local Rpi Pins</a>
 
               <ng-container *ngIf="mode=='Server'" >
                 <!--                <a routerLink="/"  aria-expanded="false" class=" nav-link">Server managements</a>-->
@@ -25,7 +25,7 @@
 
                 <a  class="nav-link" routerLinkActive="active" routerLink="gpio" >Shared Pins</a>
 
-                <a class="nav-link" routerLinkActive="active" routerLink="rpi">Show connected Rpi</a>
+                <a *ngIf="RpiClients?.length > 0" class="nav-link" routerLinkActive="active" routerLink="rpi">Show connected Rpi</a>
 
                 <!--                </ul>-->
               </ng-container>
