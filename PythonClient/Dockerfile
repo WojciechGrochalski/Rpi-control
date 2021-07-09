@@ -29,8 +29,10 @@ ENV PYTHONPATH="${PYTHONPATH}:/home/root/server/dependencies"
 COPY start.sh /home/root/server/
 RUN chmod +x start.sh
 COPY backend/. .
-RUN echo "ServerName localhost" >> /etc/apache2/httpd.conf
+
 COPY --from=build-step /app/dist /var/www/localhost/htdocs
+COPY  apache.conf  /etc/apache2/httpd.conf
+RUN echo "ServerName localhost" >> /etc/apache2/httpd.conf
 EXPOSE 5000
 EXPOSE 8085
 EXPOSE 80

@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request, abort
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 import datetime
 import json
 import platform
@@ -17,9 +17,15 @@ RpiClients = []
 
 app = Flask(__name__)
 app.config["DEBUG"] = True
-cors = CORS(app, resources={
-    r"/*": {"origins": ["http://localhost:4200/*", "http://localhost:80/*", "http://localhost:8080/*"]}})
 
+cors = CORS(app, resources={r"/*": {"origins": "*", 'Access-Control-Allow-Origin': '*','Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,OPTIONS'}})
+
+@app.after_request
+def after_request(response):
+  response.headers.add('Access-Control-Allow-Origin', '*')
+  response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
+  response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+  return response
 
 def removeDisconnectedClients():
     for item in RpiClients:
@@ -50,7 +56,8 @@ def change_pin(pin):
 
 @app.route('/', methods=['GET'])
 def home():
-    return jsonify("RpiControllApp")
+    response = jsonify("RpiControllApp")
+    return response
 
 
 @app.route('/getToken', methods=['GET'])
@@ -95,6 +102,7 @@ def get_gpio():
 
 
 @app.route('/local/gpio', methods=['GET'])
+@cross_origin(origin='*')
 def get_local_gpio():
     return jsonify(json.loads(gpios))
 
@@ -180,7 +188,7 @@ if __name__ == '__main__':
         with open("LocalPins.json", "w") as outfile:
             json.dump(local_pins, outfile, indent=4)
        
-    app.run(host="0.0.0.0", port=5000, threaded=True)
+    app.run(host="0.0.0.0", port=5000, threaded=True, debug=True)
     with open("AllPins.json", "w") as outfile:
         gpios = json.loads(gpios)
         json.dump(gpios, outfile, indent=4)
