@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {GPIO} from '../../../../Models/GPIO';
 import {GpioService} from '../../../../Services/gpio.service';
 import {AuthService} from '../../../../Services/auth.service';
 import {LoginResult} from '../../../../Models/LoginResult';
-import {interval, Subscription} from 'rxjs';
+import {interval, Observable, Subscription} from 'rxjs';
 import {startWith, switchMap} from 'rxjs/operators';
 import {LocalConnectionService} from '../../../../Services/local-connection.service';
+import {Store} from '@ngrx/store';
 
 
 @Component({
@@ -14,8 +15,8 @@ import {LocalConnectionService} from '../../../../Services/local-connection.serv
   styleUrls: ['./gpio.component.css']
 })
 export class GpioComponent implements OnInit {
-  subscription: Subscription;
   mode = '';
+  mode$: Observable<string>;
   User: LoginResult;
   interval: Subscription;
   Gpio: GPIO[];
@@ -24,24 +25,18 @@ export class GpioComponent implements OnInit {
   constructor(
     private gpioService: GpioService,
     private authService: AuthService,
-    private conn: LocalConnectionService ) {
-    if (this.mode === null || this.mode === ''){
-      if (localStorage.getItem('mode')){
-        this.mode = localStorage.getItem('mode').toString() ;
-      }
-    }
+    private store: Store<{mode: string}> ) {
+    this.mode$ = this.store.select('mode');
+    this.mode$.subscribe(res => {
+      this.mode = res;
+    });
   }
 
   ngOnInit(): void {
-    this.subscription = this.gpioService.getMode().subscribe(newMode => {
-      this.mode = newMode;
-      localStorage.setItem('mode', this.mode);
+    this.mode$ = this.store.select('mode');
+    this.mode$.subscribe(res => {
+      this.mode = res;
     });
-    if (this.mode === null || this.mode === ''){
-      if (localStorage.getItem('mode')){
-        this.mode = localStorage.getItem('mode').toString() ;
-      }
-    }
     this.User = this.authService.currentUserValue;
     this.interval = interval(8000)
       .pipe(
@@ -116,5 +111,6 @@ export class GpioComponent implements OnInit {
       }
     });
   }
+
 
 }

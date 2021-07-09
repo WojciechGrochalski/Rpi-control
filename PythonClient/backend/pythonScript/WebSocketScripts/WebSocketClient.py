@@ -4,7 +4,7 @@ import platform
 import websockets
 import asyncio
 
-from app.tools.GpioControl import GpioControl
+
 
 
 class WebSocket:

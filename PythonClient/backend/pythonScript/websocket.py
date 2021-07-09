@@ -1,11 +1,9 @@
 import sys
-
-from WebSocket import WebSocketServer as ws, WebSocketClient
+from WebSocketScripts import WebSocketServer as ws, WebSocketClient
 import asyncio
 
-url = "ws://localhost:5001/ws/wojtek"
 localurl = "ws://localhost:"
-url2 = "wss://dockerinz.azurewebsites.net/ws"
+
 
 mode = sys.argv[1]
 ip = sys.argv[2]

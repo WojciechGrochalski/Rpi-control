@@ -17,6 +17,8 @@ import { ConnectManagerComponent } from '../Components/home/Components/connect-m
 import { ChangemodeComponent } from '../Components/home/Components/changemode/changemode.component';
 import { ConnectedRpiComponent } from '../Components/home/Components/connected-rpi/connected-rpi.component';
 import {TimeagoModule} from 'ngx-timeago';
+import {StoreModule} from '@ngrx/store';
+import {modeReducer} from '../Services/ModeState';
 
 
 
@@ -39,6 +41,7 @@ import {TimeagoModule} from 'ngx-timeago';
     ReactiveFormsModule,
     HttpClientModule,
     TimeagoModule.forRoot(),
+    StoreModule.forRoot({mode: modeReducer}),
     FlashMessagesModule.forRoot(),
     RouterModule.forRoot([
       {path: '', component: HomeComponent },

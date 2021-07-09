@@ -9,7 +9,7 @@
         "GPIOName": "SDA. 1",
         "GPIONumber": 2,
         "GPIOPin": 3,
-        "GPIOStatus": 0,
+        "GPIOStatus": 1,
         "color": "green"
     },
     {
@@ -33,11 +33,11 @@
         "GPIOName": "Ground"
     },
     {
-        "GPIOMode": "out",
+        "GPIOMode": "IN",
         "GPIOName": "GPIO. 0",
         "GPIONumber": 17,
         "GPIOPin": 11,
-        "GPIOStatus": 1,
+        "GPIOStatus": 0,
         "color": "green"
     },
     {

@@ -18,7 +18,8 @@
 
     <!--    Normal mode-->
 
-    <tbody *ngIf="mode != 'Client'">
+    <tbody >
+    <ng-container *ngIf="mode !== 'Client'">
     <tr *ngFor="let item  of leftGpio let i = index" ngSwitch="{{item.GPIOMode}}">
 
       <td style="width:8%" class="w3-{{item.color}}">{{item.GPIOName}}  </td>
@@ -83,20 +84,22 @@
       </div>
       <td style="width:8%" class="w3-{{rightGpio[i].color}}">{{rightGpio[i].GPIOName}}</td>
     </tr>
+    </ng-container>
     <!--    Client mode-->
-    <tbody *ngIf="mode == 'Client'">
+
+  <ng-container  *ngIf="mode == 'Client'" >
     <tr *ngFor="let item  of leftGpio let i = index" ngSwitch="{{item.GPIOMode}}">
 
-      <td style="width:8%" class="w3-{{item.color}}" >{{item.GPIOName}}  </td>
-      <td style="width:8%; font-size: large"  >{{item.GPIOMode | uppercase}}</td>
+      <td style="width:5%" class="w3-{{item.color}}" >{{item.GPIOName}}  </td>
+      <td style="width:5%; font-size: large"  >{{item.GPIOMode | uppercase}}</td>
       <ng-container *ngIf="item.GPIOStatus!==1 && item.GPIOStatus !==0" >
         <td style="width:5%"></td>
       </ng-container>
       <ng-container *ngIf="item.GPIOStatus == 1 ">
-        <td style="width:8%; font-size: large"  class="bg-danger" >{{item.GPIOStatus }}  </td>
+        <td style="width:5%; font-size: large"  class="bg-danger" >{{item.GPIOStatus }}  </td>
       </ng-container>
       <ng-container *ngIf="item.GPIOStatus == 0 ">
-        <td style="width:8%; font-size: large" class="bg-primary">{{item.GPIOStatus}}</td>
+        <td style="width:5%; font-size: large" class="bg-primary">{{item.GPIOStatus}}</td>
       </ng-container>
 
       <td style="width:5%; font-size: large" class="text-capitalize" ><strong>{{item.GPIOPin}}</strong> </td>
@@ -107,21 +110,21 @@
       </ng-container>
       <ng-container *ngIf="rightGpio[i].GPIOStatus===1 || rightGpio[i].GPIOStatus ===0 ">
         <ng-container *ngIf="rightGpio[i].GPIOStatus == 1 ">
-          <td style="width:8%; font-size: large" class="bg-danger"  >{{rightGpio[i].GPIOStatus}} </td>
+          <td style="width:5%; font-size: large" class="bg-danger"  >{{rightGpio[i].GPIOStatus}} </td>
         </ng-container>
         <ng-container *ngIf="rightGpio[i].GPIOStatus == 0 ">
-          <td style="width:8%; font-size: large" class="bg-danger" >{{rightGpio[i].GPIOStatus}}</td>
+          <td style="width:5%; font-size: large" class="bg-danger" >{{rightGpio[i].GPIOStatus}}</td>
         </ng-container>
       </ng-container>
 
       <div *ngIf="rightGpio[i].GPIOMode != null; else empty ">
-        <td style="width:8%; font-size: large"  >{{rightGpio[i].GPIOMode | uppercase}}</td>
+        <td style="width:5%; font-size: large"  >{{rightGpio[i].GPIOMode | uppercase}}</td>
       </div>
-      <td style="width:8%" class="w3-{{rightGpio[i].color}}">{{rightGpio[i].GPIOName}}</td>
+      <td style="width:5%" class="w3-{{rightGpio[i].color}}">{{rightGpio[i].GPIOName}}</td>
     </tr>
+  </ng-container>
     </tbody>
   </table>
-
 </div>
 
 

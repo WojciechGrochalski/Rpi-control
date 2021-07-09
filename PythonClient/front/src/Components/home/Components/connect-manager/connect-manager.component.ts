@@ -6,44 +6,42 @@ import {Router} from '@angular/router';
 import {FlashMessagesService} from 'flash-messages-angular';
 import {GpioService} from '../../../../Services/gpio.service';
 import {Observable, Subscription} from 'rxjs';
+import {Store} from '@ngrx/store';
+import {set} from '../../../../Services/ModeState';
+import {take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-connect-manager',
   templateUrl: './connect-manager.component.html',
   styleUrls: ['./connect-manager.component.css']
 })
-export class ConnectManagerComponent implements OnInit, OnDestroy {
+export class ConnectManagerComponent implements OnInit {
   loading = false;
   submitted = false;
   connectForm: FormGroup;
   disconnectForm: FormGroup;
   ipPattern = '^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$';
   mode = '';
-  subscription: Subscription;
+  mode$: Observable<string>;
   constructor(
     private formBuilder: FormBuilder,
     private localConn: LocalConnectionService,
     private router: Router,
     private gpioService: GpioService,
     private conn: LocalConnectionService,
-    private flashMessagesService: FlashMessagesService ) {
-    if (this.mode === null || this.mode === ''){
-      if (localStorage.getItem('mode')){
-        this.mode = localStorage.getItem('mode').toString() ;
-      }
-    }
+    private flashMessagesService: FlashMessagesService,
+    private store: Store<{mode: string}> ) {
+    this.mode$ = this.store.select('mode');
+    this.mode$.pipe(take(1)).subscribe(res => {
+      this.mode = res;
+    });
   }
 
   ngOnInit(): void {
-    this.subscription = this.gpioService.getMode().subscribe(newMode => {
-      this.mode = newMode;
-      localStorage.setItem('mode', this.mode);
+    this.mode$ = this.store.select('mode');
+    this.mode$.pipe(take(1)).subscribe(res => {
+      this.mode = res;
     });
-    if (this.mode === null || this.mode === ''){
-      if (localStorage.getItem('mode')){
-        this.mode = localStorage.getItem('mode').toString() ;
-      }
-    }
     this.connectForm = this.formBuilder.group({
       ip: ['', [Validators.required, Validators.pattern(this.ipPattern)]],
       port: ['', [Validators.required, Validators.maxLength(4)]],
@@ -77,6 +75,8 @@ export class ConnectManagerComponent implements OnInit, OnDestroy {
       this.conn.DisconnectFromServer(this.d.port.value).subscribe(res => {
           if (res === 'disconnected') {
             this.gpioService.setMode('');
+            const mode = '';
+            this.store.dispatch(set({mode}));
             this.loading = false;
             this.router.navigate(['change-mode']);
           }
@@ -103,6 +103,8 @@ export class ConnectManagerComponent implements OnInit, OnDestroy {
       this.localConn.ConnectToServer(connect).subscribe(res => {
           if (res) {
             this.gpioService.setMode('Client');
+            const mode = 'Client';
+            this.store.dispatch(set({mode}));
             this.router.navigate(['gpio']);
           } else {
             this.flashMessagesService.show('Nieprawidłowe dane', {cssClass: 'alert-danger', timeout: 3000});
@@ -116,7 +118,4 @@ export class ConnectManagerComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
-  }
 }

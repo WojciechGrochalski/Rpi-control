@@ -4,8 +4,6 @@ import json
 import requests
 import websockets
 
-from app.tools.GpioControl import GpioControl
-
 token = ""
 
 
@@ -26,7 +24,7 @@ async def Server(websocket, path):
     invalid_user = True
     msg = await websocket.recv()
     print(f"{msg=} {token=}")
-    if msg == token:
+    if msg == 'token':
         client = await websocket.recv()
         new_client = {"name": client, "lastactivity": str(datetime.datetime.now())}
         requests.post("http://localhost:5000/newClient", json=new_client)

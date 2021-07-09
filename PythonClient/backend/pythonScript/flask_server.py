@@ -9,15 +9,13 @@ import requests
 from flask import Flask, jsonify, request, abort
 from flask_cors import CORS
 from Rpi import Rpi
-from WebSocket import WebSocketRemoteClient
-from WebSocket.ScriptsManager import ScriptsManager
-from tools import TokenManager
-from tools.GpioControl import GpioControl
+from WebSocketScripts import WebSocketRemoteClient
+from WebSocketScripts.ScriptsManager import ScriptsManager
+from myTools import TokenManager
+from pythonScript.myTools.GpioControl import GpioControl
 
-url = "http://localhost:5001/ws/dc/wojtek/123"
+
 localurl = "ws://localhost:8085"
-url2 = "wss://dockerinz.azurewebsites.net/ws"
-shutdown = False
 jwt_token = ""
 RpiClients = []
 
@@ -41,23 +39,6 @@ def addClientToList(client):
         RpiClients.append(client)
 
 
-def connect_to_dotnetServer():
-    url = "ws://localhost:5001/ws/wojtek" + "/" + "123"
-    print("Connecting to dotnet server...")
-    try:
-        client = WebSocketRemoteClient.WebSocket(url)
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        connection = loop.run_until_complete(client.connect())
-        tasks = [
-            asyncio.ensure_future(client.receiveMessage(connection)),
-            asyncio.ensure_future(client.heartbeat(connection))
-
-        ]
-        loop.run_until_complete(asyncio.wait(tasks))
-    except Exception as e:
-        print(str(e))
-        print("Cannot connect to remote server")
 
 
 app = Flask(__name__)
@@ -130,12 +111,7 @@ def get_local_gpio_ws():
     return jsonify(gpios)
 
 
-@app.route('/run_server', methods=['GET'])
-def run_server():
-    thread = Thread(target=connect_to_dotnetServer)
-    thread.daemon = True
-    thread.start()
-    return jsonify("Server is starting up ...")
+
 
 
 @app.route('/shutdown_server', methods=['GET'])
@@ -144,19 +120,6 @@ def shutdown_server():
     return jsonify("Server is shutdown")
 
 
-@app.route('/reload_server', methods=['GET'])
-def reload_server():
-    try:
-        response = requests.get(url)
-        if response.status_code == 200:
-            thread = Thread(target=connect_to_dotnetServer)
-            thread.daemon = True
-            thread.start()
-            return jsonify("Server is starting up ...")
-        else:
-            return jsonify("Socket cant be disconnected")
-    except Exception as e:
-        print(str(e))
 
 
 @app.route('/setMode', methods=['POST'])
@@ -165,12 +128,8 @@ def set_mode():
     mode = data["mode"]
     port = data["port"]
     token = data["token"]
-    print(f"{mode=}")
-    print(f"{port=}")
-    print(f"{token=}")
     ScriptsManager.RestartScript(mode, port, token)
     response = jsonify(f"Start websocket in {mode=}")
-    response.headers.add("Access-Control-Allow-Origin", "*")
     return response
 
 
