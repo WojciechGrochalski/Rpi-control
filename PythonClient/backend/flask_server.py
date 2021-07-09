@@ -1,33 +1,24 @@
-
-
 from flask import Flask, jsonify, request, abort
 from flask_cors import CORS
-
-app = Flask(__name__)
-app.config["DEBUG"] = True
-cors = CORS(app, resources={
-    r"/*": {"origins": ["http://localhost:4200/*", "http://localhost:80/*", "http://localhost:8080/*"]}})
-    
-import asyncio
 import datetime
 import json
 import platform
 import time
 from datetime import datetime as dt
-from threading import Thread
-import requests
-
 from Rpi import Rpi
 from WebSocketScripts import WebSocketRemoteClient
 from WebSocketScripts.ScriptsManager import ScriptsManager
 from myTools import TokenManager
-from pythonScript.myTools.GpioControl import GpioControl
-
-
+from myTools.ControlGpio import GpioControl
 
 localurl = "ws://localhost:8085"
 jwt_token = ""
 RpiClients = []
+
+app = Flask(__name__)
+app.config["DEBUG"] = True
+cors = CORS(app, resources={
+    r"/*": {"origins": ["http://localhost:4200/*", "http://localhost:80/*", "http://localhost:8080/*"]}})
 
 
 def removeDisconnectedClients():
@@ -47,9 +38,6 @@ def addClientToList(client):
                 RpiClients.append(client)
     else:
         RpiClients.append(client)
-
-
-
 
 
 def change_pin(pin):
@@ -116,15 +104,10 @@ def get_local_gpio_ws():
     return jsonify(gpios)
 
 
-
-
-
 @app.route('/shutdown_server', methods=['GET'])
 def shutdown_server():
     ScriptsManager.KillScript(8085)
     return jsonify("Server is shutdown")
-
-
 
 
 @app.route('/setMode', methods=['POST'])

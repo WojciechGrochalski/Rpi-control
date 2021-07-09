@@ -45,10 +45,10 @@ class GpioControl:
                 if pin.GPIONumber != 41:
                     if pin.GPIOMode.upper() == 'OUT':
                         GPIO.setup(pin['GPIONumber'], GPIO.OUT)
-                        GPIO.output(pin['GPIONumber'], pin.GPIOStatus)
+                        GPIO.output(pin['GPIONumber'], pin['GPIOStatus'])
                     if pin.GPIOMode.upper() == 'IN':
                         GPIO.setup(pin['GPIONumber'], GPIO.IN)
-                        GPIO.output(pin['GPIONumber'], pin.GPIOStatus)
+                        GPIO.output(pin['GPIONumber'], pin['GPIOStatus'])
 
 
 
