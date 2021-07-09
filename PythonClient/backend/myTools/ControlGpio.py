@@ -28,6 +28,13 @@ def get_status(status) -> int:
         return 1
     return  0
 
+def set_gpio_mode(pin):
+    GPIO.setmode(GPIO.BCM)
+    if pin['GPIONumber'] != 41:
+        if pin['GPIOMode'].upper() == 'OUT':
+                GPIO.setup(pin['GPIONumber'], GPIO.OUT)
+                state = int(GPIO.input(pin['GPIONumber']))
+                pin['GPIOStatus'] = get_status(state)
 
 class GpioControl:
 
@@ -42,11 +49,11 @@ class GpioControl:
         if platform.machine() == "armv7l":
             GPIO.setmode(GPIO.BCM)
             for pin in pins:
-                if pin.GPIONumber != 41:
-                    if pin.GPIOMode.upper() == 'OUT':
+                if pin['GPIONumber'] != 41:
+                    if pin['GPIOMode'].upper() == 'OUT':
                         GPIO.setup(pin['GPIONumber'], GPIO.OUT)
                         GPIO.output(pin['GPIONumber'], pin['GPIOStatus'])
-                    if pin.GPIOMode.upper() == 'IN':
+                    if pin['GPIOMode'].upper() == 'IN':
                         GPIO.setup(pin['GPIONumber'], GPIO.IN)
                         GPIO.output(pin['GPIONumber'], pin['GPIOStatus'])
 
@@ -58,8 +65,7 @@ class GpioControl:
         print(type(gpiolist))
         for item in gpiolist:
             try:
-                state = int(GPIO.input(item['GPIONumber']))
-                item['GPIOStatus'] = get_status(state)
+                set_gpio_mode(item)
             except Exception as e:
                 print(str(e))
 

@@ -9,7 +9,7 @@
         "GPIOName": "SDA. 1",
         "GPIONumber": 2,
         "GPIOPin": 3,
-        "GPIOStatus": 1,
+        "GPIOStatus": 0,
         "color": "green"
     },
     {
@@ -17,7 +17,7 @@
         "GPIOMode": "OUT",
         "GPIOPin": 5,
         "GPIOName": "SCL.1",
-        "GPIOStatus": 1
+        "GPIOStatus": 0
     },
     {
         "GPIOMode": "IN",
