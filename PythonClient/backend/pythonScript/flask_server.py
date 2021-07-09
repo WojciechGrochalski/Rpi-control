@@ -1,3 +1,13 @@
+
+
+from flask import Flask, jsonify, request, abort
+from flask_cors import CORS
+
+app = Flask(__name__)
+app.config["DEBUG"] = True
+cors = CORS(app, resources={
+    r"/*": {"origins": ["http://localhost:4200/*", "http://localhost:80/*", "http://localhost:8080/*"]}})
+    
 import asyncio
 import datetime
 import json
@@ -6,13 +16,13 @@ import time
 from datetime import datetime as dt
 from threading import Thread
 import requests
-from flask import Flask, jsonify, request, abort
-from flask_cors import CORS
+
 from Rpi import Rpi
 from WebSocketScripts import WebSocketRemoteClient
 from WebSocketScripts.ScriptsManager import ScriptsManager
 from myTools import TokenManager
 from pythonScript.myTools.GpioControl import GpioControl
+
 
 
 localurl = "ws://localhost:8085"
@@ -40,11 +50,6 @@ def addClientToList(client):
 
 
 
-
-app = Flask(__name__)
-app.config["DEBUG"] = True
-cors = CORS(app, resources={
-    r"/*": {"origins": ["http://localhost:4200/*", "http://localhost:80/*", "http://localhost:8080/*"]}})
 
 
 def change_pin(pin):
@@ -129,7 +134,7 @@ def set_mode():
     port = data["port"]
     token = data["token"]
     ScriptsManager.RestartScript(mode, port, token)
-    response = jsonify(f"Start websocket in {mode=}")
+    response = jsonify(f"Start websocket in {mode}")
     return response
 
 
@@ -139,7 +144,6 @@ def connect_to_server():
     ip = data["ip"]
     port = data["port"]
     token = data["token"]
-    print(f"{ip=} {port=} {token=}")
     try:
         result = ScriptsManager.RunWebsocketClient(ip, port, token)
         if result:
@@ -192,6 +196,6 @@ if __name__ == '__main__':
             json.dump(local_pins, outfile, indent=4)
         gpios = json.dumps(gpios)
     app.run(host="0.0.0.0", port=5000, threaded=True)
-    # with open("AllPins.json", "w") as outfile:
-    #     gpios = json.loads(gpios)
-    #     json.dump(gpios, outfile, indent=4)
+    with open("AllPins.json", "w") as outfile:
+        gpios = json.loads(gpios)
+        json.dump(gpios, outfile, indent=4)
