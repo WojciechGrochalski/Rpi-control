@@ -129,7 +129,7 @@ def set_mode():
     port = data["port"]
     token = data["token"]
     ScriptsManager.RestartScript(mode, port, token)
-    response = jsonify(f"Start websocket in {mode=}")
+    response = jsonify(f"Start websocket in {mode}")
     return response
 
 
