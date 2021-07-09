@@ -1,4 +1,5 @@
-
+import json
+import os
 from sys import platform
 
 try:
@@ -43,11 +44,11 @@ class GpioControl:
             for pin in pins:
                 if pin.GPIONumber != 41:
                     if pin.GPIOMode.upper() == 'OUT':
-                        GPIO.setup(pin.GPIONumber, GPIO.OUT)
-                        GPIO.output(pin.GPIONumber, pin.GPIOStatus)
+                        GPIO.setup(pin['GPIONumber'], GPIO.OUT)
+                        GPIO.output(pin['GPIONumber'], pin.GPIOStatus)
                     if pin.GPIOMode.upper() == 'IN':
-                        GPIO.setup(pin.GPIONumber, GPIO.IN)
-                        GPIO.output(pin.GPIONumber, pin.GPIOStatus)
+                        GPIO.setup(pin['GPIONumber'], GPIO.IN)
+                        GPIO.output(pin['GPIONumber'], pin.GPIOStatus)
 
 
 
@@ -57,8 +58,8 @@ class GpioControl:
         print(type(gpiolist))
         for item in gpiolist:
             try:
-                state = int(GPIO.input(item.GPIONumber))
-                item.GPIOStatus = get_status(state)
+                state = int(GPIO.input(item['GPIONumber']))
+                item['GPIOStatus'] = get_status(state)
             except Exception as e:
                 print(str(e))
 
