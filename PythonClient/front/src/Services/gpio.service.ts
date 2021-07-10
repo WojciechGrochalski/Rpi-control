@@ -2,6 +2,7 @@ import {Inject, Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {GPIO} from '../Models/GPIO';
+import {environment} from '../environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class GpioService {
 
   baseUrl = 'http://localhost:5000/api/Rpi';
   baseLocalUrl = 'http://localhost:5000/';
-
+  //baseLocalUrl =  environment.base_url;
 
   private mode$ = new BehaviorSubject<string>(' ');
   actuallyMode = '';
@@ -34,12 +35,7 @@ export class GpioService {
   }
 
   GetLocalGpio(): Observable<GPIO[]> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Access-Control-Allow-Origin': '*',
-      })
-    };
-    return this.http.get<GPIO[]>(this.baseLocalUrl + 'local/gpio', httpOptions);
+    return this.http.get<GPIO[]>(this.baseLocalUrl + 'local/gpio');
   }
   SetPin( pin: GPIO) {
     return this.http.post(this.baseLocalUrl + 'changeGPIO', pin);

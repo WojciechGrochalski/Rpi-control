@@ -1,3 +1,4 @@
+import os
 from flask import Flask, jsonify, request, abort
 from flask_cors import CORS, cross_origin
 import datetime
@@ -16,7 +17,6 @@ jwt_token = ""
 RpiClients = []
 
 app = Flask(__name__)
-app.config["DEBUG"] = True
 
 cors = CORS(app, resources={r"/*": {"origins": "*", 'Access-Control-Allow-Origin': '*',
                                     'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,OPTIONS'}})
@@ -105,7 +105,6 @@ def get_gpio():
 
 
 @app.route('/local/gpio', methods=['GET'])
-@cross_origin(origin='*')
 def get_local_gpio():
     return jsonify(json.loads(gpios))
 
@@ -192,7 +191,8 @@ if __name__ == '__main__':
         gpios = json.dumps(local_pins)
         with open("LocalPins.json", "w") as outfile:
             json.dump(local_pins, outfile, indent=4)
-    app.run(host="0.0.0.0", port=5000, threaded=True, debug=True)
+    addres = str(os.environ['ip'])
+    app.run(host=addres, port=5000, threaded=True)
 
     with open("AllPins.json", "w") as outfile:
         gpios = json.loads(gpios)
