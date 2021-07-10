@@ -1,7 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {GPIO} from '../../../../Models/GPIO';
 import {GpioService} from '../../../../Services/gpio.service';
-import {AuthService} from '../../../../Services/auth.service';
 import {LoginResult} from '../../../../Models/LoginResult';
 import {interval, Observable, Subscription} from 'rxjs';
 import {startWith, switchMap} from 'rxjs/operators';
@@ -24,7 +23,6 @@ export class GpioComponent implements OnInit {
   rightGpio: GPIO[];
   constructor(
     private gpioService: GpioService,
-    private authService: AuthService,
     private store: Store<{mode: string}> ) {
     this.mode$ = this.store.select('mode');
     this.mode$.subscribe(res => {
@@ -37,7 +35,6 @@ export class GpioComponent implements OnInit {
     this.mode$.subscribe(res => {
       this.mode = res;
     });
-    this.User = this.authService.currentUserValue;
     this.interval = interval(8000)
       .pipe(
         startWith(0),

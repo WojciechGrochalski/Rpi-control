@@ -9,17 +9,15 @@ RUN pip install --upgrade pip
 RUN pip3 install --target=/home/root/server/dependencies  -r requirements.txt 
 RUN pip3 install --target=/home/root/server/dependencies  RPi.GPIO 
 
-FROM python:3.8.9-alpine3.13
+FROM python:3.8-slim
 WORKDIR /home/root/server
 # include runtime libraries (if any)
-#RUN apk --no-cache update && apk add libusb-dev 
 COPY --from=pythonBuilder   /home/root/server .
 ENV PYTHONPATH="${PYTHONPATH}:/home/root/server/dependencies"
-COPY start.sh /home/root/server/
-RUN chmod +x start.sh
 COPY backend/. .
-ENV ip = 127.0.0.0
+ENV ip = 127.0.0.1
 EXPOSE 5000
 EXPOSE 8085
-CMD ["sh", "/home/root/server/start.sh"]
+ENTRYPOINT ["python", "/home/root/server/flask_server.py"]
+CMD ["python", "/home/root/server/flask_server.py"]
 

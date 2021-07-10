@@ -1,16 +1,19 @@
 version: "3.9"  # optional since v1.27.0
+
 services:
-  angular-app:
-    image: wojciech9/angular-app:lates
+  frontend:
+    image: wojciech9/angular-app:latest
     ports:
       - "4200:80"
-    depends_on:
-      - flask_server
-  
-  flask_server:
+    links:
+      - "backend"
+
+  backend:
       image: wojciech9/rpi-app:latest
       ports:
        - "5000:5000"
        - "8085:8085"
-        
-   
+      environment:
+        - ip=0.0.0.0
+      privileged: true
+     

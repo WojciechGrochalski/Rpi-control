@@ -4,8 +4,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {LogInComponent} from '../Components/home/Components/Login/log-in.component';
-import {HttpInterceptorService} from '../Services/http-interceptor.service';
 import {RouterModule} from '@angular/router';
 import {FlashMessagesModule} from 'flash-messages-angular';
 import { HomeComponent } from '../Components/home/Components/Home/home.component';
@@ -26,7 +24,6 @@ import {modeReducer} from '../Services/ModeState';
 @NgModule({
   declarations: [
     AppComponent,
-    LogInComponent,
     HomeComponent,
     SidebarComponent,
     GpioComponent,
@@ -46,12 +43,10 @@ import {modeReducer} from '../Services/ModeState';
     RouterModule.forRoot([
       {path: '', component: HomeComponent },
       {path: '**', component: HomeComponent, pathMatch: 'full'},
-      { path: 'login/:confirm', component: LogInComponent},
     ], { useHash: true }),
     HomeRoutingModules
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true },
     { provide: 'BASE_URL', useFactory: getBaseUrl, deps: [] }
   ],
   bootstrap: [AppComponent]

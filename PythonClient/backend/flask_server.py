@@ -191,8 +191,8 @@ if __name__ == '__main__':
         gpios = json.dumps(local_pins)
         with open("LocalPins.json", "w") as outfile:
             json.dump(local_pins, outfile, indent=4)
-    addres = str(os.environ['ip'])
-    app.run(host=addres, port=5000, threaded=True)
+    #addres = str(os.environ['ip'])
+    app.run(host='0.0.0.0', port=5000, threaded=True)
 
     with open("AllPins.json", "w") as outfile:
         gpios = json.loads(gpios)

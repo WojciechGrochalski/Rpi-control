@@ -1,6 +1,4 @@
-import json
-import os
-from sys import platform
+import platform
 
 try:
     from RPi import GPIO as GPIO
@@ -35,6 +33,10 @@ def set_gpio_mode(pin):
                 GPIO.setup(pin['GPIONumber'], GPIO.OUT)
                 state = int(GPIO.input(pin['GPIONumber']))
                 pin['GPIOStatus'] = get_status(state)
+        if pin['GPIOMode'].upper() == 'IN':
+                GPIO.setup(pin['GPIONumber'], GPIO.IN)
+                state = int(GPIO.input(pin['GPIONumber']))
+                pin['GPIOStatus'] = get_status(state)
 
 class GpioControl:
 
@@ -56,7 +58,7 @@ class GpioControl:
                         print(f" GPIO.output(pin['GPIONumber']  pin['GPIOStatus'])")
                     if pin['GPIOMode'].upper() == 'IN':
                         GPIO.setup(pin['GPIONumber'], GPIO.IN)
-                        GPIO.output(pin['GPIONumber'], pin['GPIOStatus'])
+
 
 
 

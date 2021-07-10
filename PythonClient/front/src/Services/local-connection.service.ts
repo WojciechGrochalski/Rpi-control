@@ -1,9 +1,10 @@
-import {Injectable, OnDestroy} from '@angular/core';
+import {Inject, Injectable, OnDestroy} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable, Subject, Subscription, timer} from 'rxjs';
 import {Connect} from '../Models/Connect';
 import {Rpi} from '../Models/Rpi';
 import {retry, share, switchMap, takeUntil, tap} from 'rxjs/operators';
+import {environment} from '../environments/environment.prod';
 
 export interface JWT{
   token: string;
@@ -13,11 +14,15 @@ export interface JWT{
 })
 export class LocalConnectionService {
 
-  baseUrl = 'http://localhost:5000/';
+  baseUrl = environment.base_url;
 
   constructor(
-    private http: HttpClient ) { }
-
+    private http: HttpClient,
+    @Inject('BASE_URL') baseUrl: string) {
+    const splitAddres = baseUrl.split(':', 2);
+    const ip = splitAddres[0].toString() + ':' +  splitAddres[1].toString();
+    this.baseUrl = ip + ':5000/';
+  }
   SetMode(body: string, Servertoken?: string, portNumber = 8085){
     return this.http.post(this.baseUrl + 'setMode', {mode: body, port: portNumber, token: Servertoken} );
   }

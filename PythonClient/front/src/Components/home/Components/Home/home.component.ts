@@ -22,7 +22,6 @@ export class HomeComponent implements OnInit{
     private store: Store<{mode: string}>
   ) {
     this.mode$ = this.store.select('mode');
-    console.log('mode in constructor', this.mode$);
     this.mode$.subscribe(res => {
       this.mode = res;
     });

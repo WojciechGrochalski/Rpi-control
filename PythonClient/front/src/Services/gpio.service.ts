@@ -10,8 +10,7 @@ import {environment} from '../environments/environment.prod';
 export class GpioService {
 
   baseUrl = 'http://localhost:5000/api/Rpi';
-  baseLocalUrl = 'http://localhost:5000/';
-  //baseLocalUrl =  environment.base_url;
+  baseLocalUrl =  environment.base_url;
 
   private mode$ = new BehaviorSubject<string>(' ');
   actuallyMode = '';
@@ -27,7 +26,12 @@ export class GpioService {
     this.actuallyMode = mode;
     localStorage.setItem('mode', mode);
   }
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    @Inject('BASE_URL') baseUrl: string) {
+    const splitAddres = baseUrl.split(':', 2);
+    const ip = splitAddres[0].toString() + ':' +  splitAddres[1].toString();
+    this.baseLocalUrl = ip + ':5000/';
   }
 
   GetGpio(): Observable<any> {
