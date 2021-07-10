@@ -1,15 +1,4 @@
 
-FROM node:14-buster as build-step
-
-RUN mkdir -p /app
-WORKDIR /app
-COPY front/package.json /app
-COPY front/package-lock.json /app
-RUN npm install
-COPY front/. /app
-RUN npm run build --prod
-
-
 
 FROM python:3.8-slim as pythonBuilder
 WORKDIR /home/root/server

@@ -1,0 +1,14 @@
+
+FROM node:14-buster as build-step
+
+RUN mkdir -p /app
+WORKDIR /app
+COPY front/package.json /app
+COPY front/package-lock.json /app
+RUN npm install
+COPY front/. /app
+RUN npm run build --prod
+
+FROM nginx:1.17.1-alpine
+EXPOSE 80
+COPY --from=build-step /app/dist /usr/share/nginx/html

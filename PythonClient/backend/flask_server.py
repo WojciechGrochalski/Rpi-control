@@ -18,14 +18,17 @@ RpiClients = []
 app = Flask(__name__)
 app.config["DEBUG"] = True
 
-cors = CORS(app, resources={r"/*": {"origins": "*", 'Access-Control-Allow-Origin': '*','Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,OPTIONS'}})
+cors = CORS(app, resources={r"/*": {"origins": "*", 'Access-Control-Allow-Origin': '*',
+                                    'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,OPTIONS'}})
 
-@app.after_request
-def after_request(response):
-  response.headers.add('Access-Control-Allow-Origin', '*')
-  response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
-  response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
-  return response
+
+# @app.after_request
+# def after_request(response):
+#     response.headers.add('Access-Control-Allow-Origin', '*')
+#     response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
+#     response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+#     return response
+
 
 def removeDisconnectedClients():
     for item in RpiClients:
@@ -161,6 +164,8 @@ def post():
     print(str(data))
     global gpios
     gpios = change_pin(data)
+    newGpio = json.loads(gpios)
+    GpioControl.change_pin(newGpio)
     with open("AllPins.json", "w") as out_file:
         newGpio = json.loads(gpios)
         json.dump(newGpio, out_file, indent=4)
@@ -187,8 +192,8 @@ if __name__ == '__main__':
         gpios = json.dumps(local_pins)
         with open("LocalPins.json", "w") as outfile:
             json.dump(local_pins, outfile, indent=4)
-       
     app.run(host="0.0.0.0", port=5000, threaded=True, debug=True)
+
     with open("AllPins.json", "w") as outfile:
         gpios = json.loads(gpios)
         json.dump(gpios, outfile, indent=4)
