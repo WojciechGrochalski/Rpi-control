@@ -20,9 +20,9 @@ def getPID(pid, device):
         return pid[4]
     if device == "Linux":
         pid = pid.split()
-        print(pid[6])
-        linux_pid = pid[6]
-        return linux_pid[0:2]
+        print(pid[1])
+        #linux_pid = pid[6]
+        return pid[1]
     if device == "Darwin":
         pid = pid.split()
         print(pid[1])
@@ -37,7 +37,8 @@ def startScript(port, mode, token, device, ip='127.0.0.1'):
             pid = os.popen(f"netstat -ano | findstr :{port}").read()
         if device == "Linux":
             os.system(f"python3 websocket.py {mode} {ip} {port} {token} & ")
-            pid = os.popen(f"netstat -plten | grep LISTEN | grep {port}").read()
+            time.sleep(1)
+            pid = os.popen(f"lsof -i 4 | grep {port}").read()
         if device == "Darwin":
             os.system(f"python3 websocket.py {mode} {ip} {port} {token} & ")
             pid = os.popen(f"lsof -nP -i4TCP:${port} | grep LISTEN").read()
@@ -56,7 +57,7 @@ def CheckStatus(port, device) -> bool:
         if device == "Windows":
             pid = os.popen(f"netstat -ano | findstr :{port}").read()
         if device == "Linux":
-            pid = os.popen(f"netstat -plten | grep LISTEN | grep {port}").read()
+            pid = os.popen(f"lsof -i 4 | grep {port}").read()
         if device == "Darwin":
             pid = os.popen(f"lsof -nP -i4TCP:${port} | grep LISTEN").read()
         if pid:
@@ -77,7 +78,7 @@ def killScript(port, device):
                 output = subprocess.Popen(f"Taskkill /PID {pid} /F  ", stdout=subprocess.PIPE)
                 print(output.communicate()[0])
         if device == "Linux":
-            pid = os.popen(f"netstat -plten | grep LISTEN | grep {port}").read()
+            pid = os.popen(f"lsof -i 4 | grep {port}").read()
             if pid:
                 pid = getPID(pid, device)
                 os.kill(int(pid), 9)
@@ -113,3 +114,7 @@ class ScriptsManager:
     def RunWebsocketClient(ip, port, token):
         device = platform.system()
         return startScript(port, "Client", token, device, ip)
+
+
+
+

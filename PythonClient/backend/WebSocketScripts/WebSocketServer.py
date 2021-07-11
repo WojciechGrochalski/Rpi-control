@@ -9,8 +9,17 @@ from myTools.ControlGpio import GpioControl
 token = ""
 
 
-def change_pin(pin):
-    print(f"new pin is {pin}")
+def get_first_free_name(client, listOfClients):
+    count = 1
+    new_name = client
+    if len(listOfClients) > 0:
+        is_free = any(item['Name'] == client for item in listOfClients)
+        while is_free:
+            new_name = client + '_' + str(count)
+            print(new_name)
+            is_free = any(item['Name'] == new_name for item in listOfClients)
+            count += 1
+    return new_name
 
 
 def check_it_not_equal(local_gpio, remote_gpio):
@@ -24,11 +33,16 @@ def check_it_not_equal(local_gpio, remote_gpio):
 
 async def Server(websocket, path):
     invalid_user = True
+    # token
     msg = await websocket.recv()
-    print(f"{msg=} {token=}")
-    if msg == 'token':
+    if msg == token:
+        # hostname
         client = await websocket.recv()
-        new_client = {"name": client, "lastactivity": str(datetime.datetime.now())}
+        listOfClients = requests.get("http://localhost:5000/clients").json()
+        print(type(listOfClients))
+        print(listOfClients)
+        name = get_first_free_name(str(client), listOfClients)
+        new_client = {"name": name, "lastactivity": str(datetime.datetime.utcnow())}
         requests.post("http://localhost:5000/newClient", json=new_client)
         invalid_user = False
         local_gpio = requests.get("http://localhost:5000/local/gpio/websocket").json()

@@ -35,6 +35,9 @@ export class ConnectManagerComponent implements OnInit {
     this.mode$.pipe(take(1)).subscribe(res => {
       this.mode = res;
     });
+    this.checkState();
+
+    console.log('mode', this.mode);
   }
 
   ngOnInit(): void {
@@ -50,6 +53,7 @@ export class ConnectManagerComponent implements OnInit {
     this.disconnectForm = this.formBuilder.group({
       port: ['', [Validators.required, Validators.maxLength(4)]],
     });
+    this.checkState();
 
 
 
@@ -77,6 +81,8 @@ export class ConnectManagerComponent implements OnInit {
             this.gpioService.setMode('');
             const mode = '';
             this.store.dispatch(set({mode}));
+            sessionStorage.setItem('state', mode);
+            this.checkState();
             this.loading = false;
             this.router.navigate(['change-mode']);
           }
@@ -105,6 +111,8 @@ export class ConnectManagerComponent implements OnInit {
             this.gpioService.setMode('Client');
             const mode = 'Client';
             this.store.dispatch(set({mode}));
+            sessionStorage.setItem('state', mode);
+            this.checkState();
             this.router.navigate(['gpio']);
           } else {
             this.flashMessagesService.show('Nieprawidłowe dane', {cssClass: 'alert-danger', timeout: 3000});
@@ -115,6 +123,18 @@ export class ConnectManagerComponent implements OnInit {
           this.flashMessagesService.show('Cannot connect to server on ip ' + ip, {cssClass: 'alert-danger', timeout: 3000});
           this.loading = false;
         });
+    }
+  }
+  checkState(): void{
+    let state = '';
+    try {
+      state = sessionStorage.getItem('state');
+    }
+    catch (e) {
+      state = '';
+    }
+    if (state !== ''){
+      this.mode = state;
     }
   }
 

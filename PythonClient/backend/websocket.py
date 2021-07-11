@@ -1,9 +1,9 @@
+import os
 import sys
 from WebSocketScripts import WebSocketServer as ws, WebSocketClient
 import asyncio
 
 localurl = "ws://localhost:"
-
 
 mode = sys.argv[1]
 ip = sys.argv[2]
@@ -15,7 +15,11 @@ if mode == "Server":
     ws.run(port, token)
 if mode == "Client":
     print("Connecting to  server...")
-    client = WebSocketClient.WebSocket(ip, port, token)
+    try:
+        hostname = str(os.environ['hostname'])
+    except:
+        hostname = ''
+    client = WebSocketClient.WebSocket(ip, port, token, hostname)
     loop = asyncio.get_event_loop()
     connection = loop.run_until_complete(client.connect())
     tasks = [

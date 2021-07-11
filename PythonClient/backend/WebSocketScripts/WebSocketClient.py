@@ -9,9 +9,10 @@ from myTools.ControlGpio import GpioControl
 
 class WebSocket:
 
-    def __init__(self, ip, port, token):
+    def __init__(self, ip, port, token, hostname=''):
         self.ip = f"ws://{ip}:{port}"
         self.token = token
+        self.hostname = hostname
         pass
 
     async def connect(self):
@@ -42,9 +43,11 @@ class WebSocket:
 
     async def heartbeat(self, connection):
         device = platform.node()
+        if self.hostname == '':
+            self.hostname = device
         while True:
             try:
-                await connection.send(device)
+                await connection.send(self.hostname)
             except websockets.exceptions.ConnectionClosed:
                 print('Connection with server closed')
                 break

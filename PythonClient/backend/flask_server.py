@@ -141,7 +141,7 @@ def connect_to_server():
         result = ScriptsManager.RunWebsocketClient(ip, port, token)
         if result:
             response = jsonify(result)
-            time.sleep(3)
+            time.sleep(2)
             if ScriptsManager.CheckWebsocketStatus(port):
                 response.status_code = 200
             else:

@@ -22,9 +22,16 @@ export class HomeComponent implements OnInit{
     private store: Store<{mode: string}>
   ) {
     this.mode$ = this.store.select('mode');
-    this.mode$.subscribe(res => {
+    this.mode$.pipe(take(1)).subscribe(res => {
       this.mode = res;
+      console.log('mode', this.mode);
     });
+    this.conn.RpiClients().subscribe(res => {
+      this.RpiClients = res;
+    });
+    this.checkState();
+
+    console.log('mode', this.mode);
   }
 
   ngOnInit(): void {
@@ -35,5 +42,18 @@ export class HomeComponent implements OnInit{
     this.conn.RpiClients().subscribe(res => {
       this.RpiClients = res;
     });
+    this.checkState();
+  }
+  checkState(): void{
+    let state = '';
+    try {
+      state = sessionStorage.getItem('state');
+    }
+    catch (e) {
+      state = '';
+    }
+    if (state !== ''){
+      this.mode = state;
+    }
   }
 }

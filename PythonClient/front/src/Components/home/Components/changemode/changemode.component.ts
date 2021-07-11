@@ -27,7 +27,10 @@ export class ChangemodeComponent implements OnInit {
     this.mode$ = this.store.select('mode');
     this.mode$.pipe(take(1)).subscribe(res => {
       this.mode = res;
+      console.log('mode', this.mode);
     });
+    this.checkState();
+    console.log('mode', this.mode);
   }
 
   ngOnInit(): void {
@@ -35,6 +38,7 @@ export class ChangemodeComponent implements OnInit {
     this.mode$.pipe(take(1)).subscribe(res => {
       this.mode = res;
     });
+    this.checkState();
   }
 
   shutdown(): void{
@@ -45,6 +49,8 @@ export class ChangemodeComponent implements OnInit {
         this.gpioService.setMode('');
         const mode = '';
         this.store.dispatch(set({mode}));
+        sessionStorage.setItem('state', mode);
+        this.checkState();
       }
       else{
         this.alert = false;
@@ -53,16 +59,19 @@ export class ChangemodeComponent implements OnInit {
       this.alert = false;
     });
   }
-  setMode(mode: string){
-    if (mode === 'Server'){
+  setMode(currentMode: string){
+    if (currentMode === 'Server'){
       this.localCon.CreateToken().subscribe( ServerToken => {
           const token = ServerToken.toString();
           if (token ) {
-            this.localCon.SetMode(mode, token).subscribe(res => {
+            this.localCon.SetMode(currentMode, token).subscribe(res => {
                 if (res) {
                   this.router.navigate(['/get-token']);
-                  this.gpioService.setMode(mode);
+                  this.gpioService.setMode(currentMode);
+                  const mode = 'Server';
                   this.store.dispatch(set({mode}));
+                  sessionStorage.setItem('state', mode);
+                  this.checkState();
                   this.btnServerState = !this.btnServerState;
                   this.btnClientState = false;
                 }
@@ -85,6 +94,19 @@ export class ChangemodeComponent implements OnInit {
       this.router.navigate(['connect']);
       this.btnClientState = !this.btnClientState;
       this.btnServerState = false;
+    }
+  }
+
+  checkState(): void{
+    let state = '';
+    try {
+      state = sessionStorage.getItem('state');
+    }
+    catch (e) {
+      state = '';
+    }
+    if (state !== ''){
+      this.mode = state;
     }
   }
 
