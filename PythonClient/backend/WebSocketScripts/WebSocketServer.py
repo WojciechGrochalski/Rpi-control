@@ -4,6 +4,7 @@ import json
 import requests
 import websockets
 
+from Rpi import Rpi
 from myTools.ControlGpio import GpioControl
 
 token = ""
@@ -37,13 +38,6 @@ async def Server(websocket, path):
     msg = await websocket.recv()
     if msg == token:
         # hostname
-        client = await websocket.recv()
-        listOfClients = requests.get("http://localhost:5000/clients").json()
-        print(type(listOfClients))
-        print(listOfClients)
-        name = get_first_free_name(str(client), listOfClients)
-        new_client = {"name": name, "lastactivity": str(datetime.datetime.utcnow())}
-        requests.post("http://localhost:5000/newClient", json=new_client)
         invalid_user = False
         local_gpio = requests.get("http://localhost:5000/local/gpio/websocket").json()
         await websocket.send(local_gpio)
@@ -52,14 +46,25 @@ async def Server(websocket, path):
             print("invalid token")
             break
         try:
+            client = await websocket.recv()
+            try:
+                listOfClients = requests.get("http://localhost:5000/clients").json()
+                print(type(listOfClients))
+                print(listOfClients)
+                name = get_first_free_name(str(client), json.loads(listOfClients))
+                new_client = {"Name": name, "Lastactivity": str(datetime.datetime.now())}
+                requests.post("http://localhost:5000/newClient", json=json.dumps(new_client))
+            except Exception as e:
+                new_client = {"Name": client, "Lastactivity": str(datetime.datetime.now())}
+                requests.post("http://localhost:5000/newClient", json=json.dumps(new_client))
+                print(str(e))
             remote_gpio = requests.get("http://localhost:5000/local/gpio/websocket").json()
             if check_it_not_equal(remote_gpio, local_gpio):
                 diffrent_pins = GpioControl.get_diffrent_pins(json.loads(remote_gpio), json.loads(local_gpio))
                 local_gpio = remote_gpio
                 print("Send message to client")
                 GpioControl.change_pin(diffrent_pins)
-                await websocket.send(json.dumps(diffrent_pins))
-            msg = await websocket.recv()
+                await websocket.send(diffrent_pins)
             print(f"< {msg}")
         except websockets.exceptions.ConnectionClosed:
             print('Connection with client closed')

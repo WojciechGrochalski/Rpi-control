@@ -27,13 +27,12 @@ export class ConnectedRpiComponent implements OnInit, OnDestroy {
         startWith(0),
         switchMap(() => this.conn.RpiClients())
       ).subscribe(res => {
-        this.RpiClients = res;
-        this.RpiClients.forEach(item => {
-          const time = new Date(item.Lastactivity);
-          const currentDate = new Date(Date.now());
-          const diffTime = Math.abs(time.getTime() - currentDate.getTime());
-          item.Lastactivity = diffTime.toString();
-       });
+        if (res.toString() !== 'No Clients') {
+          this.RpiClients = res;
+          this.RpiClients.forEach(item => {
+            item.Lastactivity = new Date(item.Lastactivity).toString();
+          });
+        }
       }, error => {
         console.log(error.error);
       }

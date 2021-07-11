@@ -31,17 +31,20 @@ cors = CORS(app, resources={r"/*": {"origins": "*", 'Access-Control-Allow-Origin
 
 
 def removeDisconnectedClients():
+    global RpiClients
     for item in RpiClients:
-        lastactivity = dt.strptime(item.Lastactivity, '%Y-%m-%d %H:%M:%S.%f')
+        lastactivity = dt.strptime(item['Lastactivity'], '%Y-%m-%d %H:%M:%S.%f')
         diff = datetime.datetime.now() - lastactivity
-        if diff.seconds > 25:
+        print("diff", diff)
+        if diff.seconds > 60:
+            print("removed ", item)
             RpiClients.remove(item)
 
 
 def addClientToList(client):
     if len(RpiClients) > 0:
         for item in RpiClients:
-            if item.Name == client.Name:
+            if item['Name'] == client['Name']:
                 item = client
             else:
                 RpiClients.append(client)
@@ -49,13 +52,18 @@ def addClientToList(client):
         RpiClients.append(client)
 
 
-def change_pin(pin):
+def change_pin(pins):
     gpio = json.loads(gpios)
-    for i in range(len(gpio)):
-        if gpio[i]["GPIONumber"] == pin["GPIONumber"]:
-            gpio[i] = pin
+    if type(pins) == dict:
+        for i in range(len(gpio)):
+            if gpio[i]["GPIONumber"] == pins["GPIONumber"]:
+                gpio[i] = pins
+    else:
+        for i in range(len(gpio)):
+            for j in range(len(pins)):
+                if gpio[i]["GPIONumber"] == pins[j]["GPIONumber"]:
+                    gpio[i] = pins[j]
     return json.dumps(gpio, indent=4)
-
 
 @app.route('/', methods=['GET'])
 def home():
@@ -83,20 +91,22 @@ def createToken():
 
 @app.route('/newClient', methods=['POST'])
 def get_new_client():
-    client = request.json
-    print(client['name'])
-    print(client['lastactivity'])
-    name = client['name']
-    new_client = Rpi(name, client['lastactivity'])
-    addClientToList(new_client)
+    new_client = request.json
+    t = json.loads(new_client)
+    client = {"Name": t['Name'], "Lastactivity": t['Lastactivity']}
+    addClientToList(client)
     return jsonify("ok")
 
 
 @app.route('/clients', methods=['GET'])
 def get_rpi_clients():
-    removeDisconnectedClients()
-    json_string = json.dumps([ob.__dict__ for ob in RpiClients])
-    return json_string
+    global RpiClients
+    print(RpiClients)
+    if len(RpiClients) > 0:
+        removeDisconnectedClients()
+        return jsonify(RpiClients)
+    else:
+        return jsonify("No Clients")
 
 
 @app.route('/gpio', methods=['GET'])
@@ -111,6 +121,9 @@ def get_local_gpio():
 
 @app.route('/local/gpio/websocket', methods=['GET'])
 def get_local_gpio_ws():
+    global gpios
+    if type(gpios) == type(list):
+        gpios = json.dumps(gpios)
     return jsonify(gpios)
 
 
@@ -156,7 +169,7 @@ def connect_to_server():
 
     return response
 
-
+# nie działa chyba
 @app.route('/changeGPIO', methods=['POST'])
 def post():
     data = request.json
@@ -183,7 +196,7 @@ def disconnect():
 
 if __name__ == '__main__':
 
-    with open('AllPins.json') as file:
+    with open("LocalPins.json") as file:
         gpios = file.read()
     if platform.machine() == "armv7l":
         local_pins = json.loads(gpios)
@@ -191,9 +204,9 @@ if __name__ == '__main__':
         gpios = json.dumps(local_pins)
         with open("LocalPins.json", "w") as outfile:
             json.dump(local_pins, outfile, indent=4)
-    #addres = str(os.environ['ip'])
-    app.run(host='0.0.0.0', port=5000, threaded=True)
+    # addres = str(os.environ['ip'])
+    app.run(host='0.0.0.0', port=5000, threaded=True, debug=True)
 
-    with open("AllPins.json", "w") as outfile:
+    with open("LocalPins.json", "w") as outfile:
         gpios = json.loads(gpios)
         json.dump(gpios, outfile, indent=4)

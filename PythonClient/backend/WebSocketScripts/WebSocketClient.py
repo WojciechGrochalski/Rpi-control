@@ -1,6 +1,7 @@
 import json
 import platform
 
+import requests
 import websockets
 import asyncio
 
@@ -21,9 +22,8 @@ class WebSocket:
         if self.connection.open:
             print('Connection stablished. Client correcly connected')
             # Send greeting
-            client = platform.node()
+
             await self.sendMessage(str(self.token))
-            await self.sendMessage(client)
             return self.connection
 
     async def sendMessage(self, message):
@@ -36,6 +36,9 @@ class WebSocket:
                 message = await connection.recv()
                 print('Received message from server: ' + str(message))
                 GpioControl.change_pin(json.loads(message))
+                requests.post("http://localhost:5000/changeGPIO", json=json.loads(message))
+                client = platform.node()
+                await self.sendMessage(client)
             except websockets.exceptions.ConnectionClosed:
                 print('Connection with server closed')
                 break
