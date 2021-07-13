@@ -30,7 +30,8 @@ export class ConnectedRpiComponent implements OnInit, OnDestroy {
         if (res.toString() !== 'No Clients') {
           this.RpiClients = res;
           this.RpiClients.forEach(item => {
-            item.Lastactivity = new Date(item.Lastactivity).toLocaleTimeString();
+            console.log(item.Lastactivity);
+            item.Lastactivity = new Date(item.Lastactivity).toString();
           });
         }
       }, error => {

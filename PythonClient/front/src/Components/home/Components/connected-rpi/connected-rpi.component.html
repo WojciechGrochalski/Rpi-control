@@ -1,7 +1,7 @@
 <div class="container   d-flex justify-content-center low-menu">
   <div class="wrapper jumbotron my-auto ">
     <div *ngFor="let rpi of RpiClients">
-      <p><img src="assets/raspberry-pi.svg" class="img-fluid rpi"> Hostname: {{rpi.Name}}  Last activity: {{ rpi.Lastactivity  | timeago }} </p>
+      <p><img src="assets/raspberry-pi.svg" class="img-fluid rpi"> Hostname: {{rpi.Name}}  Last activity: {{ rpi.Lastactivity  | date: 'yyyy-MM-dd HH:mm:ss' | timeago }}   </p>
     </div>
     </div>
   </div>

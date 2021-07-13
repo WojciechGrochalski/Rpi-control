@@ -31,7 +31,6 @@ def get_first_free_name(client, listOfClients):
     return new_name
 
 
-
 def check_it_not_equal(local_gpio, remote_gpio):
     if local_gpio == remote_gpio:
         print("equal")
@@ -60,12 +59,12 @@ async def Server(websocket, path):
                 print(type(listOfClients))
                 print(listOfClients)
                 name = get_first_free_name(str(client), listOfClients)
-                new_client = {"Name": name, "Lastactivity": str(datetime.datetime.now())}
+                new_client = {"Name": name, "Lastactivity": str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))}
                 requests.post("http://localhost:5000/newClient", json=json.dumps(new_client))
             except Exception as e:
-                new_client = {"Name": client, "Lastactivity": str(datetime.datetime.now())}
+                new_client = {"Name": client, "Lastactivity": str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))}
                 requests.post("http://localhost:5000/newClient", json=json.dumps(new_client))
-                print("Exceptions ",str(e))
+                print("Exceptions ", str(e))
             remote_gpio = requests.get("http://localhost:5000/local/gpio/websocket").json()
             if check_it_not_equal(remote_gpio, local_gpio):
                 diffrent_pins = GpioControl.get_diffrent_pins(json.loads(remote_gpio), json.loads(local_gpio))

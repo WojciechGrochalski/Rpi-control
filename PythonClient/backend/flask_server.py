@@ -1,6 +1,6 @@
 import os
 from flask import Flask, jsonify, request, abort
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
 import datetime
 import json
 import platform
@@ -22,12 +22,10 @@ cors = CORS(app, resources={r"/*": {"origins": "*", 'Access-Control-Allow-Origin
                                     'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,OPTIONS'}})
 
 
-
-
 def removeDisconnectedClients():
     global RpiClients
     for item in RpiClients:
-        lastactivity = dt.strptime(item['Lastactivity'], '%Y-%m-%d %H:%M:%S.%f')
+        lastactivity = dt.strptime(item['Lastactivity'], '%Y-%m-%d %H:%M:%S')
         diff = datetime.datetime.now() - lastactivity
         if diff.seconds > 60:
             print("removed ", item)
@@ -38,7 +36,7 @@ def addClientToList(client):
     if len(RpiClients) > 0:
         for item in RpiClients:
             if item['Name'] == client['Name']:
-                item.update({"Name": client['Name'], "Lastactivity": str(datetime.datetime.now())})
+                item.update({"Name": client['Name'], "Lastactivity": str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))})
             else:
                 RpiClients.append(client)
     else:
@@ -87,7 +85,7 @@ def createToken():
 def get_new_client():
     new_client = request.json
     t = json.loads(new_client)
-    client = {"Name": t['Name'], "Lastactivity": str(datetime.datetime.now())}
+    client = {"Name": t['Name'], "Lastactivity": str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))}
     addClientToList(client)
     return jsonify("ok")
 
@@ -185,7 +183,7 @@ def ChangeLocalGPIO():
     global gpios
     gpios = change_pin(data)
     newGpio = json.loads(gpios)
-    #GpioControl.change_pin(newGpio)
+    # GpioControl.change_pin(newGpio)
     with open("AllPins.json", "w") as out_file:
         newGpio = json.loads(gpios)
         json.dump(newGpio, out_file, indent=4)
