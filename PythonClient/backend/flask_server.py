@@ -22,12 +22,6 @@ cors = CORS(app, resources={r"/*": {"origins": "*", 'Access-Control-Allow-Origin
                                     'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,OPTIONS'}})
 
 
-# @app.after_request
-# def after_request(response):
-#     response.headers.add('Access-Control-Allow-Origin', '*')
-#     response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
-#     response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
-#     return response
 
 
 def removeDisconnectedClients():
@@ -35,7 +29,6 @@ def removeDisconnectedClients():
     for item in RpiClients:
         lastactivity = dt.strptime(item['Lastactivity'], '%Y-%m-%d %H:%M:%S.%f')
         diff = datetime.datetime.now() - lastactivity
-        print("diff", diff)
         if diff.seconds > 60:
             print("removed ", item)
             RpiClients.remove(item)
@@ -45,7 +38,7 @@ def addClientToList(client):
     if len(RpiClients) > 0:
         for item in RpiClients:
             if item['Name'] == client['Name']:
-                item = client
+                item.update({"Name": client['Name'], "Lastactivity": str(datetime.datetime.now())})
             else:
                 RpiClients.append(client)
     else:
@@ -64,6 +57,7 @@ def change_pin(pins):
                 if gpio[i]["GPIONumber"] == pins[j]["GPIONumber"]:
                     gpio[i] = pins[j]
     return json.dumps(gpio, indent=4)
+
 
 @app.route('/', methods=['GET'])
 def home():
@@ -93,7 +87,7 @@ def createToken():
 def get_new_client():
     new_client = request.json
     t = json.loads(new_client)
-    client = {"Name": t['Name'], "Lastactivity": t['Lastactivity']}
+    client = {"Name": t['Name'], "Lastactivity": str(datetime.datetime.now())}
     addClientToList(client)
     return jsonify("ok")
 
@@ -169,15 +163,29 @@ def connect_to_server():
 
     return response
 
+
 # nie działa chyba
 @app.route('/changeGPIO', methods=['POST'])
 def post():
     data = request.json
     print(str(data))
+    data = change_pin(data)
+    global gpios
+    gpios = data
+    with open("AllPins.json", "w") as out_file:
+        newGpio = json.loads(gpios)
+        json.dump(newGpio, out_file, indent=4)
+    return jsonify("ok")
+
+
+@app.route('/changeLocalGPIO', methods=['POST'])
+def ChangeLocalGPIO():
+    data = request.json
+    print(str(data))
     global gpios
     gpios = change_pin(data)
     newGpio = json.loads(gpios)
-    GpioControl.change_pin(newGpio)
+    #GpioControl.change_pin(newGpio)
     with open("AllPins.json", "w") as out_file:
         newGpio = json.loads(gpios)
         json.dump(newGpio, out_file, indent=4)
