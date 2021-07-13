@@ -1,19 +1,17 @@
 import asyncio
-import datetime
 import json
 import requests
 import websockets
-
 from Rpi import Rpi
 from myTools.ControlGpio import GpioControl
-from datetime import datetime as dt
+from datetime import datetime, timedelta
 
 token = ""
 
 
 def get_time(time):
-    lastactivity = dt.strptime(time, '%Y-%m-%d %H:%M:%S.%f')
-    diff = datetime.datetime.now() - lastactivity
+    lastactivity = (datetime.now() + timedelta(hours=+2)).strftime("%Y-%m-%d %H:%M:%S")
+    diff = datetime.datetime.now() + timedelta(hours=+2) - lastactivity
     print("diff", diff)
     return diff.seconds
 
@@ -59,10 +57,12 @@ async def Server(websocket, path):
                 print(type(listOfClients))
                 print(listOfClients)
                 name = get_first_free_name(str(client), listOfClients)
-                new_client = {"Name": name, "Lastactivity": str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))}
+                new_client = {"Name": name,
+                              "Lastactivity": str((datetime.now() + timedelta(hours=+2)).strftime("%Y-%m-%d %H:%M:%S"))}
                 requests.post("http://localhost:5000/newClient", json=json.dumps(new_client))
             except Exception as e:
-                new_client = {"Name": client, "Lastactivity": str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))}
+                new_client = {"Name": client,
+                              "Lastactivity": str((datetime.now() + timedelta(hours=+2)).strftime("%Y-%m-%d %H:%M:%S"))}
                 requests.post("http://localhost:5000/newClient", json=json.dumps(new_client))
                 print("Exceptions ", str(e))
             remote_gpio = requests.get("http://localhost:5000/local/gpio/websocket").json()

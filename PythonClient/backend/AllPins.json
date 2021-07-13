@@ -37,8 +37,8 @@
     {
         "GPIONumber": 17,
         "GPIOMode": "in",
-        "GPIOName": "GPIO. 1",
-        "GPIOStatus": 1,
+        "GPIOName": "GPIO. 0",
+        "GPIOStatus": 0,
         "color": "green"
     },
     {
@@ -128,11 +128,11 @@
         "color": "green"
     },
     {
+        "GPIOMode": "OUT",
+        "GPIOName": "GPIO. 25",
         "GPIONumber": 26,
         "GPIOPin": 37,
-        "GPIOMode": "IN",
-        "GPIOName": "GPIO. 25",
-        "GPIOStatus": 0,
+        "GPIOStatus": 1,
         "color": "green"
     },
     {

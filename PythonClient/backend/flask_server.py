@@ -1,11 +1,11 @@
 import os
 from flask import Flask, jsonify, request, abort
 from flask_cors import CORS
-import datetime
+from datetime import datetime, timedelta
 import json
 import platform
 import time
-from datetime import datetime as dt
+
 from Rpi import Rpi
 from WebSocketScripts import WebSocketRemoteClient
 from WebSocketScripts.ScriptsManager import ScriptsManager
@@ -25,8 +25,8 @@ cors = CORS(app, resources={r"/*": {"origins": "*", 'Access-Control-Allow-Origin
 def removeDisconnectedClients():
     global RpiClients
     for item in RpiClients:
-        lastactivity = dt.strptime(item['Lastactivity'], '%Y-%m-%d %H:%M:%S')
-        diff = datetime.datetime.now() - lastactivity
+        lastactivity = datetime.strptime(item['Lastactivity'], '%Y-%m-%d %H:%M:%S')
+        diff = datetime.now() + timedelta(hours=+2) - lastactivity
         if diff.seconds > 60:
             print("removed ", item)
             RpiClients.remove(item)
@@ -36,7 +36,8 @@ def addClientToList(client):
     if len(RpiClients) > 0:
         for item in RpiClients:
             if item['Name'] == client['Name']:
-                item.update({"Name": client['Name'], "Lastactivity": str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))})
+                item.update({"Name": client['Name'],
+                             "Lastactivity": str((datetime.now() + timedelta(hours=+2)).strftime("%Y-%m-%d %H:%M:%S"))})
             else:
                 RpiClients.append(client)
     else:
@@ -85,7 +86,8 @@ def createToken():
 def get_new_client():
     new_client = request.json
     t = json.loads(new_client)
-    client = {"Name": t['Name'], "Lastactivity": str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))}
+    client = {"Name": t['Name'],
+              "Lastactivity": str((datetime.now() + timedelta(hours=+2)).strftime("%Y-%m-%d %H:%M:%S"))}
     addClientToList(client)
     return jsonify("ok")
 
