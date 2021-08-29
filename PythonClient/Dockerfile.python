@@ -1,15 +1,15 @@
+FROM python:3.8 as pythonBuilder
 
-
-FROM python:3.8-slim as pythonBuilder
 WORKDIR /home/root/server
-
 COPY backend/requirements.txt /home/root/server/
-RUN apt-get update && apt-get install -y --no-install-recommends  gcc libc-dev  libusb-dev musl-dev 
-RUN pip install --upgrade pip setuptools wheel
+RUN apt-get update && apt-get install -y --no-install-recommends  gcc libc-dev  libusb-dev musl-dev  
+RUN pip3 install --upgrade pip setuptools wheel
 RUN pip3 install --target=/home/root/server/dependencies  -r requirements.txt 
-RUN pip3 install --target=/home/root/server/dependencies  RPi.GPIO 
+
+RUN pip3 install --target=/home/root/server/dependencies RPi.GPIO
 
 FROM python:3.8-slim
+
 RUN apt-get update && apt-get install -y --no-install-recommends lsof \
     && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
 	&& rm -rf /var/lib/apt/lists/* 
@@ -23,4 +23,3 @@ EXPOSE 5000
 EXPOSE 8085
 ENTRYPOINT ["python", "/home/root/server/flask_server.py"]
 CMD ["python", "/home/root/server/flask_server.py"]
-

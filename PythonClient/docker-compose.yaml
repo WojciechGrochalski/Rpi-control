@@ -1,22 +1,22 @@
 version: "3.8"  # optional since v1.27.0
-# docker-compose -up --build
+# docker-compose up --build
 
 services:
   frontend:
-    build:
- 
-        dockerfile: Dockerfile.angular
-
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile.angular
+    image: wojciech9/angular-app 
     ports:
       - "4200:80"
     links:
       - "backend"
 
   backend:
-      build:
-        context: .
-        dockerfile: Dockerfile.python
-
+      # build:
+      #   context: .
+      #   dockerfile: Dockerfile.python
+      image: wojciech9/python-app  
       ports:
        - "5000:5000"
        - "8085:8085"
