@@ -54,6 +54,8 @@ class WebSocket:
                 client = platform.node()
                 if self.hostname == '':
                     self.hostname = client
+                else:
+                    client = self.hostname
                 await self.sendMessage(client)
             except websockets.exceptions.ConnectionClosed:
                 print('Connection with server closed')

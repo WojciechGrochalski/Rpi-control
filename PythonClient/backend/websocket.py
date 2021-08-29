@@ -19,6 +19,7 @@ if mode == "Client":
         hostname = str(os.environ['hostname'])
     except:
         hostname = ''
+    hostname = "Client-Test2"
     client = WebSocketClient.WebSocket(ip, port, token, hostname)
     loop = asyncio.get_event_loop()
     connection = loop.run_until_complete(client.connect())

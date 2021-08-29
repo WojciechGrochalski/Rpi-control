@@ -27,7 +27,7 @@ def removeDisconnectedClients():
     for item in RpiClients:
         lastactivity = datetime.strptime(item['Lastactivity'], '%Y-%m-%d %H:%M:%S')
         diff = datetime.now() + timedelta(hours=+2) - lastactivity
-        if diff.seconds > 60:
+        if diff.seconds > datetime.now() + timedelta(seconds=+60):
             print("removed ", item)
             RpiClients.remove(item)
 

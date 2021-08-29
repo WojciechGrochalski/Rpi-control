@@ -2,10 +2,10 @@
 
 FROM python:3.8-slim as pythonBuilder
 WORKDIR /home/root/server
-# any dependencies in python which requires a compiled c/c++ code (if any)
+
 COPY backend/requirements.txt /home/root/server/
 RUN apt-get update && apt-get install -y --no-install-recommends  gcc libc-dev  libusb-dev musl-dev 
-RUN pip install --upgrade pip
+RUN pip install --upgrade pip setuptools wheel
 RUN pip3 install --target=/home/root/server/dependencies  -r requirements.txt 
 RUN pip3 install --target=/home/root/server/dependencies  RPi.GPIO 
 
@@ -14,11 +14,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends lsof \
     && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
 	&& rm -rf /var/lib/apt/lists/* 
 WORKDIR /home/root/server
-# include runtime libraries (if any)
 COPY --from=pythonBuilder   /home/root/server .
 ENV PYTHONPATH="${PYTHONPATH}:/home/root/server/dependencies"
 COPY backend/. .
 ENV ip = 127.0.0.1
+
 EXPOSE 5000
 EXPOSE 8085
 ENTRYPOINT ["python", "/home/root/server/flask_server.py"]
