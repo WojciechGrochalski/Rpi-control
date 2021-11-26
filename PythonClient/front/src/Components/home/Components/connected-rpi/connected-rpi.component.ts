@@ -1,8 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {LocalConnectionService} from '../../../../Services/local-connection.service';
 import {Rpi} from '../../../../Models/Rpi';
-import {interval, Observable, Subject, Subscription, timer} from 'rxjs';
-import {map, retry, share, startWith, switchMap, takeUntil} from 'rxjs/operators';
+import {interval, Subscription} from 'rxjs';
+import {startWith, switchMap} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
 
 @Component({
@@ -27,21 +27,20 @@ export class ConnectedRpiComponent implements OnInit, OnDestroy {
         startWith(0),
         switchMap(() => this.conn.RpiClients())
       ).subscribe(res => {
-        if (res.toString() !== 'No Clients') {
-          this.RpiClients = res;
-          this.RpiClients.forEach(item => {
-            console.log(item.Lastactivity);
-            item.Lastactivity = new Date(item.Lastactivity).toString();
-          });
+          if (res.toString() !== 'No Clients') {
+            this.RpiClients = res;
+            this.RpiClients.forEach(item => {
+              console.log(item.Lastactivity);
+              item.Lastactivity = new Date(item.Lastactivity).toString();
+            });
+          }
+        }, error => {
+          console.log(error.error);
         }
-      }, error => {
-        console.log(error.error);
-      }
       );
   }
 
-
-  ngOnDestroy(): void{
+  ngOnDestroy(): void {
     this.interval.unsubscribe();
   }
 }

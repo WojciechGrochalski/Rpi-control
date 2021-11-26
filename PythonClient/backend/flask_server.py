@@ -2,6 +2,7 @@ import os
 from flask import Flask, jsonify, request, abort
 from flask_cors import CORS
 from datetime import datetime, timedelta
+import time
 import json
 import platform
 import time
@@ -25,23 +26,29 @@ cors = CORS(app, resources={r"/*": {"origins": "*", 'Access-Control-Allow-Origin
 def removeDisconnectedClients():
     global RpiClients
     for item in RpiClients:
-        lastactivity = datetime.strptime(item['Lastactivity'], '%Y-%m-%d %H:%M:%S')
-        diff = datetime.now() + timedelta(hours=+2) - lastactivity
-        if diff.seconds > datetime.now() + timedelta(seconds=+60):
+        lastactivity = time.strptime(item['Lastactivity'], '%Y-%m-%d %H:%M:%S')
+        diff = time.localtime().tm_min - lastactivity.tm_min
+        print(f"{diff=} ")
+        if diff > 1:
             print("removed ", item)
             RpiClients.remove(item)
 
 
 def addClientToList(client):
-    if len(RpiClients) > 0:
-        for item in RpiClients:
-            if item['Name'] == client['Name']:
-                item.update({"Name": client['Name'],
-                             "Lastactivity": str((datetime.now() + timedelta(hours=+2)).strftime("%Y-%m-%d %H:%M:%S"))})
-            else:
-                RpiClients.append(client)
-    else:
+    print(f'start')
+    client_not_exsist = False
+    print(f'{RpiClients=}')
+    for item in RpiClients:
+        if item['Name'] == client['Name']:
+            item.update({"Name": client['Name'],
+                         "Lastactivity":  client['Lastactivity']})
+            print(f'{item=}')
+            client_not_exsist = True
+    print(f'end')
+    if not client_not_exsist:
+        print(f'{client=}')
         RpiClients.append(client)
+    return RpiClients
 
 
 def change_pin(pins):
@@ -84,18 +91,22 @@ def createToken():
 
 @app.route('/newClient', methods=['POST'])
 def get_new_client():
+    global RpiClients
     new_client = request.json
+    print(f'{new_client=}')
     t = json.loads(new_client)
+    Lastactivity = time.localtime()
     client = {"Name": t['Name'],
-              "Lastactivity": str((datetime.now() + timedelta(hours=+2)).strftime("%Y-%m-%d %H:%M:%S"))}
-    addClientToList(client)
+              "Lastactivity": str(time.strftime("%Y-%m-%d %H:%M:%S", Lastactivity))}
+    print(f'{client=}')
+    RpiClients = addClientToList(client)
     return jsonify("ok")
 
 
 @app.route('/clients', methods=['GET'])
 def get_rpi_clients():
     global RpiClients
-    print(RpiClients)
+    print(f'{RpiClients=}')
     if len(RpiClients) > 0:
         removeDisconnectedClients()
         return jsonify(RpiClients)

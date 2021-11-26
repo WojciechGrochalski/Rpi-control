@@ -7,8 +7,6 @@ import {ConnectManagerComponent} from './Components/connect-manager/connect-mana
 import {ChangemodeComponent} from './Components/changemode/changemode.component';
 import {ConnectedRpiComponent} from './Components/connected-rpi/connected-rpi.component';
 
-
-
 const routes: Routes = [
   {
     path: '',

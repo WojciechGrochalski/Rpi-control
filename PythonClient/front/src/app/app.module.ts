@@ -17,9 +17,6 @@ import {TimeagoModule} from 'ngx-timeago';
 import {StoreModule} from '@ngrx/store';
 import {modeReducer} from '../Services/ModeState';
 
-
-
-
 @NgModule({
   declarations: [
     AppComponent,

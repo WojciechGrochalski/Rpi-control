@@ -1,11 +1,11 @@
-import {AfterContentInit, AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Connect} from '../../../../Models/Connect';
 import {LocalConnectionService} from '../../../../Services/local-connection.service';
 import {Router} from '@angular/router';
 import {FlashMessagesService} from 'flash-messages-angular';
 import {GpioService} from '../../../../Services/gpio.service';
-import {Observable, Subscription} from 'rxjs';
+import {Observable} from 'rxjs';
 import {Store} from '@ngrx/store';
 import {set} from '../../../../Services/ModeState';
 import {take} from 'rxjs/operators';
@@ -23,6 +23,7 @@ export class ConnectManagerComponent implements OnInit {
   ipPattern = '^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$';
   mode = '';
   mode$: Observable<string>;
+
   constructor(
     private formBuilder: FormBuilder,
     private localConn: LocalConnectionService,
@@ -30,7 +31,7 @@ export class ConnectManagerComponent implements OnInit {
     private gpioService: GpioService,
     private conn: LocalConnectionService,
     private flashMessagesService: FlashMessagesService,
-    private store: Store<{mode: string}> ) {
+    private store: Store<{ mode: string }>) {
     this.mode$ = this.store.select('mode');
     this.mode$.pipe(take(1)).subscribe(res => {
       this.mode = res;
@@ -54,15 +55,12 @@ export class ConnectManagerComponent implements OnInit {
       port: ['', [Validators.required, Validators.maxLength(4)]],
     });
     this.checkState();
-
-
-
   }
-
 
   get f() {
     return this.connectForm.controls;
   }
+
   get d() {
     return this.disconnectForm.controls;
   }
@@ -72,8 +70,7 @@ export class ConnectManagerComponent implements OnInit {
     if (this.disconnectForm.invalid) {
       console.log('invalid');
       return;
-    }
-    else {
+    } else {
 
       this.loading = true;
       this.conn.DisconnectFromServer(this.d.port.value).subscribe(res => {
@@ -90,19 +87,16 @@ export class ConnectManagerComponent implements OnInit {
         error => {
           this.loading = false;
           this.flashMessagesService.show('Something goes wrong. Try again', {cssClass: 'alert-danger', timeout: 3000});
-
         });
     }
-
-
   }
+
   onSubmit() {
     this.submitted = true;
     // stop here if form is invalid
     if (this.connectForm.invalid) {
       return;
-    }
-    else {
+    } else {
       this.loading = true;
       const ip = this.f.ip.value;
       const connect = new Connect(this.f.ip.value, this.f.port.value, this.f.token.value);
@@ -125,17 +119,16 @@ export class ConnectManagerComponent implements OnInit {
         });
     }
   }
-  checkState(): void{
+
+  checkState(): void {
     let state = '';
     try {
       state = sessionStorage.getItem('state');
-    }
-    catch (e) {
+    } catch (e) {
       state = '';
     }
-    if (state !== ''){
+    if (state !== '') {
       this.mode = state;
     }
   }
-
 }

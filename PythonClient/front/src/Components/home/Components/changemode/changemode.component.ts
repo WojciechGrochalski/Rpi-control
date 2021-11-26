@@ -1,8 +1,8 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {LocalConnectionService} from '../../../../Services/local-connection.service';
 import {Router} from '@angular/router';
 import {GpioService} from '../../../../Services/gpio.service';
-import {Observable, Subscription} from 'rxjs';
+import {Observable} from 'rxjs';
 import {Store} from '@ngrx/store';
 import {set} from '../../../../Services/ModeState';
 import {take} from 'rxjs/operators';
@@ -18,11 +18,12 @@ export class ChangemodeComponent implements OnInit {
   alert = true;
   mode = '';
   mode$: Observable<string>;
+
   constructor(
     private localCon: LocalConnectionService,
     private gpioService: GpioService,
     private router: Router,
-    private store: Store<{mode: string}>
+    private store: Store<{ mode: string }>
   ) {
     this.mode$ = this.store.select('mode');
     this.mode$.pipe(take(1)).subscribe(res => {
@@ -41,29 +42,28 @@ export class ChangemodeComponent implements OnInit {
     this.checkState();
   }
 
-  shutdown(): void{
-    this.localCon.ShutDownServer().subscribe( res => {
-      if (res)
-      {
+  shutdown(): void {
+    this.localCon.ShutDownServer().subscribe(res => {
+      if (res) {
         this.mode = null;
         this.gpioService.setMode('');
         const mode = '';
         this.store.dispatch(set({mode}));
         sessionStorage.setItem('state', mode);
         this.checkState();
-      }
-      else{
+      } else {
         this.alert = false;
       }
     }, error => {
       this.alert = false;
     });
   }
-  setMode(currentMode: string){
-    if (currentMode === 'Server'){
-      this.localCon.CreateToken().subscribe( ServerToken => {
+
+  setMode(currentMode: string) {
+    if (currentMode === 'Server') {
+      this.localCon.CreateToken().subscribe(ServerToken => {
           const token = ServerToken.toString();
-          if (token ) {
+          if (token) {
             this.localCon.SetMode(currentMode, token).subscribe(res => {
                 if (res) {
                   this.router.navigate(['/get-token']);
@@ -80,34 +80,31 @@ export class ChangemodeComponent implements OnInit {
                 this.alert = false;
                 console.log(error.error);
               });
-          }
-          else {
+          } else {
             this.alert = false;
-          }},
+          }
+        },
         error => {
           this.alert = false;
           console.log(error.error);
         }
       );
-    }
-    else{
+    } else {
       this.router.navigate(['connect']);
       this.btnClientState = !this.btnClientState;
       this.btnServerState = false;
     }
   }
 
-  checkState(): void{
+  checkState(): void {
     let state = '';
     try {
       state = sessionStorage.getItem('state');
-    }
-    catch (e) {
+    } catch (e) {
       state = '';
     }
-    if (state !== ''){
+    if (state !== '') {
       this.mode = state;
     }
   }
-
 }

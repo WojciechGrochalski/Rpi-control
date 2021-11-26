@@ -10,8 +10,8 @@ token = ""
 
 
 def get_time(time):
-    lastactivity = (datetime.now() + timedelta(hours=+2)).strftime("%Y-%m-%d %H:%M:%S")
-    diff = datetime.datetime.now() + timedelta(hours=+2) - lastactivity
+    lastactivity = datetime.strptime(time['Lastactivity'], '%Y-%m-%d %H:%M:%S')
+    diff = datetime.now() - lastactivity
     print("diff", diff)
     return diff.seconds
 
@@ -20,7 +20,7 @@ def get_first_free_name(client, listOfClients):
     count = 1
     new_name = client
     if len(listOfClients) > 0:
-        is_free = any(item['Name'] == client and get_time(item['Lastactivity']) < 3 for item in listOfClients)
+        is_free = any(item['Name'] == client and get_time(item['Lastactivity']) < 1 for item in listOfClients)
         while is_free:
             new_name = client + '_' + str(count)
             print(new_name)
@@ -52,19 +52,18 @@ async def Server(websocket, path):
             break
         try:
             client = await websocket.recv()
-            try:
-                listOfClients = requests.get("http://localhost:5000/clients").json()
-                print(type(listOfClients))
-                print(listOfClients)
-                name = get_first_free_name(str(client), listOfClients)
-                new_client = {"Name": name,
-                              "Lastactivity": str((datetime.now() + timedelta(hours=+2)).strftime("%Y-%m-%d %H:%M:%S"))}
-                requests.post("http://localhost:5000/newClient", json=json.dumps(new_client))
-            except Exception as e:
-                new_client = {"Name": client,
-                              "Lastactivity": str((datetime.now() + timedelta(hours=+2)).strftime("%Y-%m-%d %H:%M:%S"))}
-                requests.post("http://localhost:5000/newClient", json=json.dumps(new_client))
-                print("Exceptions ", str(e))
+
+            listOfClients = requests.get("http://localhost:5000/clients").json()
+            print(listOfClients)
+                # name = get_first_free_name(str(client), listOfClients)
+            new_client = {"Name": str(client) }
+            print(" asd", new_client)
+            requests.post("http://localhost:5000/newClient", json=json.dumps(new_client))
+
+                # new_client = {"Name": client,
+                #               "Lastactivity": str(datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"))}
+                # requests.post("http://localhost:5000/newClient", json=json.dumps(new_client))
+
             remote_gpio = requests.get("http://localhost:5000/local/gpio/websocket").json()
             if check_it_not_equal(remote_gpio, local_gpio):
                 diffrent_pins = GpioControl.get_diffrent_pins(json.loads(remote_gpio), json.loads(local_gpio))

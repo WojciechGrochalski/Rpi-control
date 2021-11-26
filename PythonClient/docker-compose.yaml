@@ -1,4 +1,4 @@
-version: "3.8"  # optional since v1.27.0
+version: "3.4"  # optional since v1.27.0
 # docker-compose up --build
 
 services:
@@ -6,7 +6,7 @@ services:
     # build:
     #   context: .
     #   dockerfile: Dockerfile.angular
-    image: wojciech9/angular-app 
+    image: wojciech9/angular-app:latest
     ports:
       - "4200:80"
     links:
@@ -16,7 +16,7 @@ services:
       # build:
       #   context: .
       #   dockerfile: Dockerfile.python
-      image: wojciech9/python-app  
+      image: wojciech9/rpi-app:latest
       ports:
        - "5000:5000"
        - "8085:8085"

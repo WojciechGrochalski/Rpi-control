@@ -24,19 +24,21 @@ def get_status(status) -> int:
         return 0
     if status == 1:
         return 1
-    return  0
+    return 0
+
 
 def set_gpio_mode(pin):
     GPIO.setmode(GPIO.BCM)
     if pin['GPIONumber'] != 41:
         if pin['GPIOMode'].upper() == 'OUT':
-                GPIO.setup(pin['GPIONumber'], GPIO.OUT)
-                state = int(GPIO.input(pin['GPIONumber']))
-                pin['GPIOStatus'] = get_status(state)
+            GPIO.setup(pin['GPIONumber'], GPIO.OUT)
+            state = int(GPIO.input(pin['GPIONumber']))
+            pin['GPIOStatus'] = get_status(state)
         if pin['GPIOMode'].upper() == 'IN':
-                GPIO.setup(pin['GPIONumber'], GPIO.IN)
-                state = int(GPIO.input(pin['GPIONumber']))
-                pin['GPIOStatus'] = get_status(state)
+            GPIO.setup(pin['GPIONumber'], GPIO.IN)
+            state = int(GPIO.input(pin['GPIONumber']))
+            pin['GPIOStatus'] = get_status(state)
+
 
 class GpioControl:
 
@@ -58,9 +60,6 @@ class GpioControl:
                         print(f" GPIO.output(pin['GPIONumber']  pin['GPIOStatus'])")
                     if pin['GPIOMode'].upper() == 'IN':
                         GPIO.setup(pin['GPIONumber'], GPIO.IN)
-
-
-
 
     @staticmethod
     def get_local_status(gpiolist):
