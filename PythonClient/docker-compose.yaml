@@ -1,5 +1,6 @@
-version: "3.4"  # optional since v1.27.0
 # docker-compose up --build
+
+version: "3.4"  # optional since v1.27.0
 
 services:
   frontend:
