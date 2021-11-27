@@ -13,6 +13,10 @@ FROM python:3.8-slim
 RUN apt-get update && apt-get install -y --no-install-recommends lsof \
     && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
 	&& rm -rf /var/lib/apt/lists/* 
+RUN rm -rf /etc/localtime
+RUN echo "Europe/Warsaw" > /etc/timezone
+RUN ln -s /usr/share/zoneinfo/Europe/Warsaw /etc/localtime
+RUN dpkg-reconfigure -f noninteractive tzdata
 WORKDIR /home/root/server
 # include runtime libraries (if any)
 COPY --from=pythonBuilder   /home/root/server .

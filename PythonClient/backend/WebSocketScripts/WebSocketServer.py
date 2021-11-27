@@ -52,17 +52,12 @@ async def Server(websocket, path):
             break
         try:
             client = await websocket.recv()
-
+            # Add Client
             listOfClients = requests.get("http://localhost:5000/clients").json()
             print(listOfClients)
-                # name = get_first_free_name(str(client), listOfClients)
-            new_client = {"Name": str(client) }
+            new_client = {"Name": str(client)}
             print(" asd", new_client)
             requests.post("http://localhost:5000/newClient", json=json.dumps(new_client))
-
-                # new_client = {"Name": client,
-                #               "Lastactivity": str(datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"))}
-                # requests.post("http://localhost:5000/newClient", json=json.dumps(new_client))
 
             remote_gpio = requests.get("http://localhost:5000/local/gpio/websocket").json()
             if check_it_not_equal(remote_gpio, local_gpio):

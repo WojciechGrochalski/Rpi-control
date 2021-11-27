@@ -1,11 +1,10 @@
-import os
+import datetime
+import time
+import pytz
 from flask import Flask, jsonify, request, abort
 from flask_cors import CORS
-from datetime import datetime, timedelta
-import time
 import json
 import platform
-import time
 
 from Rpi import Rpi
 from WebSocketScripts import WebSocketRemoteClient
@@ -16,7 +15,6 @@ from myTools.ControlGpio import GpioControl
 localurl = "ws://localhost:8085"
 jwt_token = ""
 RpiClients = []
-
 app = Flask(__name__)
 
 cors = CORS(app, resources={r"/*": {"origins": "*", 'Access-Control-Allow-Origin': '*',
@@ -26,10 +24,14 @@ cors = CORS(app, resources={r"/*": {"origins": "*", 'Access-Control-Allow-Origin
 def removeDisconnectedClients():
     global RpiClients
     for item in RpiClients:
-        lastactivity = time.strptime(item['Lastactivity'], '%Y-%m-%d %H:%M:%S')
-        diff = time.localtime().tm_min - lastactivity.tm_min
+        current_time = time.time()
+        current_time = datetime.datetime.fromtimestamp(current_time)
+        current_time = pytz.timezone('Europe/Warsaw').localize(current_time)
+        lastactivity = datetime.datetime.strptime(item['Lastactivity'], '%Y-%m-%d %H:%M:%S')
+
+        diff = current_time.timestamp() - lastactivity.timestamp()
         print(f"{diff=} ")
-        if diff > 1:
+        if diff > 60:
             print("removed ", item)
             RpiClients.remove(item)
 
@@ -41,7 +43,7 @@ def addClientToList(client):
     for item in RpiClients:
         if item['Name'] == client['Name']:
             item.update({"Name": client['Name'],
-                         "Lastactivity":  client['Lastactivity']})
+                         "Lastactivity": client['Lastactivity']})
             print(f'{item=}')
             client_not_exsist = True
     print(f'end')
@@ -95,9 +97,11 @@ def get_new_client():
     new_client = request.json
     print(f'{new_client=}')
     t = json.loads(new_client)
-    Lastactivity = time.localtime()
+    Lastactivity = time.time()
+    Lastactivity = datetime.datetime.fromtimestamp(Lastactivity)
+    Lastactivity = pytz.timezone('Europe/Warsaw').localize(Lastactivity)
     client = {"Name": t['Name'],
-              "Lastactivity": str(time.strftime("%Y-%m-%d %H:%M:%S", Lastactivity))}
+              "Lastactivity": str(Lastactivity.strftime("%Y-%m-%d %H:%M:%S"))}
     print(f'{client=}')
     RpiClients = addClientToList(client)
     return jsonify("ok")
